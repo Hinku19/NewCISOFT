@@ -1,0 +1,14 @@
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\bin\Debug\net10.0\CISOFTDataOperations.deps.json
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\bin\Debug\net10.0\CISOFTDataOperations.dll
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\bin\Debug\net10.0\CISOFTDataOperations.pdb
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\CISOFTDataOperations.csproj.AssemblyReference.cache
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\CISOFTDataOperations.GeneratedMSBuildEditorConfig.editorconfig
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\CISOFTDataOperations.AssemblyInfoInputs.cache
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\CISOFTDataOperations.AssemblyInfo.cs
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\CISOFTDataOperations.csproj.CoreCompileInputs.cache
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\CISOFTDataOperations.sourcelink.json
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\CISOFTDataOperations.dll
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\refint\CISOFTDataOperations.dll
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\CISOFTDataOperations.pdb
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\ref\CISOFTDataOperations.dll
+C:\VSS2026\CISOFTDataOperations\CISOFTDataOperations\obj\Debug\net10.0\CISOFTDa.9ED8ACAA.Up2Date
