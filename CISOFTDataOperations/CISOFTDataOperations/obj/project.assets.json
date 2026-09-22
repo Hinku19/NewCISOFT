@@ -1225,23 +1225,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Usuario\\.nuget\\packages\\": {},
+    "C:\\Users\\RicardoMta\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\VSS2026\\CISOFTDataOperations\\CISOFTDataOperations\\CISOFTDataOperations.csproj",
+      "projectUniqueName": "C:\\Users\\RicardoMta\\Desktop\\CISOFTNEW\\CISOFTDataOperations\\CISOFTDataOperations\\CISOFTDataOperations.csproj",
       "projectName": "CISOFTDataOperations",
-      "projectPath": "C:\\VSS2026\\CISOFTDataOperations\\CISOFTDataOperations\\CISOFTDataOperations.csproj",
-      "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-      "outputPath": "C:\\VSS2026\\CISOFTDataOperations\\CISOFTDataOperations\\obj\\",
+      "projectPath": "C:\\Users\\RicardoMta\\Desktop\\CISOFTNEW\\CISOFTDataOperations\\CISOFTDataOperations\\CISOFTDataOperations.csproj",
+      "packagesPath": "C:\\Users\\RicardoMta\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\RicardoMta\\Desktop\\CISOFTNEW\\CISOFTDataOperations\\CISOFTDataOperations\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\RicardoMta\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1250,7 +1250,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

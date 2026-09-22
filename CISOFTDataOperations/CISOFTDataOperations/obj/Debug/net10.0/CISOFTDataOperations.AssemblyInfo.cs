@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CISOFTDataOperations")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a6b3bbdb57fc7e8c6cb8a5b9428785892487efbe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f935988f7eb1032de4b2ae57982906d562db9d03")]
 [assembly: System.Reflection.AssemblyProductAttribute("CISOFTDataOperations")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CISOFTDataOperations")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
