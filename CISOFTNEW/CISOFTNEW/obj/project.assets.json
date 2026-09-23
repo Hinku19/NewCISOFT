@@ -8,23 +8,23 @@
     "net10.0-windows": []
   },
   "packageFolders": {
-    "C:\\Users\\RicardoMta\\.nuget\\packages\\": {},
+    "C:\\Users\\Usuario\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\RicardoMta\\Desktop\\CISOFTNEW\\CISOFTNEW\\CISOFTNEW\\CISOFTNEW.csproj",
+      "projectUniqueName": "C:\\VSS2026\\CISOFTNEW\\CISOFTNEW\\CISOFTNEW.csproj",
       "projectName": "CISOFTNEW",
-      "projectPath": "C:\\Users\\RicardoMta\\Desktop\\CISOFTNEW\\CISOFTNEW\\CISOFTNEW\\CISOFTNEW.csproj",
-      "packagesPath": "C:\\Users\\RicardoMta\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\RicardoMta\\Desktop\\CISOFTNEW\\CISOFTNEW\\CISOFTNEW\\obj\\",
+      "projectPath": "C:\\VSS2026\\CISOFTNEW\\CISOFTNEW\\CISOFTNEW.csproj",
+      "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+      "outputPath": "C:\\VSS2026\\CISOFTNEW\\CISOFTNEW\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\RicardoMta\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -33,6 +33,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
