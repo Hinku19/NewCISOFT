@@ -1,6 +1,6 @@
 ﻿namespace CISOFTNEW
 {
-    partial class Form1
+    partial class Student
     {
         /// <summary>
         ///  Required designer variable.
