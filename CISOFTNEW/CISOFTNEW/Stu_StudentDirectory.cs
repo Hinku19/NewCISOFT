@@ -14,5 +14,15 @@ namespace CISOFTNEW
         {
             InitializeComponent();
         }
+
+        private void lblCatAlu_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void campoTexto1_TextoCambiado(object sender, EventArgs e)
+        {
+
+        }
     }
 }
