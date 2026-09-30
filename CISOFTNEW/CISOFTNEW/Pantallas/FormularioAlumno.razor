@@ -1,0 +1,232 @@
+@page "/alumnos/nuevo"
+@page "/alumnos/editar/{Matricula}"
+@inject ServicioAlumnos Servicio
+@inject NavigationManager Nav
+
+<EditForm Model="alumno" OnValidSubmit="Guardar" class="pila">
+    <DataAnnotationsValidator />
+
+    <header class="encabezado">
+        <div>
+            <div class="migas"><a href="alumnos">Alumnos</a> / @Titulo</div>
+            <h1>@Titulo</h1>
+            <p class="subtitulo">Los campos marcados con <span class="req">*</span> son obligatorios.</p>
+        </div>
+    </header>
+
+    @* ============ 1. Datos personales ============ *@
+    <section class="tarjeta seccion" aria-labelledby="h-personales">
+        <div>
+            <h2 id="h-personales">Datos personales</h2>
+            <p class="seccion-desc">Identificación oficial del alumno.</p>
+        </div>
+        <div class="rejilla">
+            <div class="campo">
+                <label for="matricula">Matrícula</label>
+                <input id="matricula" class="control" readonly value="@(alumno.Matricula ?? "Se asigna al guardar")" />
+            </div>
+            <div class="campo">
+                <label for="stg">No. cliente STG</label>
+                <InputText id="stg" class="control" @bind-Value="alumno.NoClienteStg" />
+            </div>
+            <div></div>
+
+            <div class="campo">
+                <label for="nombres">Nombre(s) <span class="req">*</span></label>
+                <InputText id="nombres" class="control" @bind-Value="alumno.Nombres" />
+                <ValidationMessage For="() => alumno.Nombres" />
+            </div>
+            <div class="campo">
+                <label for="paterno">Apellido paterno <span class="req">*</span></label>
+                <InputText id="paterno" class="control" @bind-Value="alumno.ApellidoPaterno" />
+                <ValidationMessage For="() => alumno.ApellidoPaterno" />
+            </div>
+            <div class="campo">
+                <label for="materno">Apellido materno</label>
+                <InputText id="materno" class="control" @bind-Value="alumno.ApellidoMaterno" />
+            </div>
+
+            <fieldset class="campo">
+                <legend>Sexo <span class="req">*</span></legend>
+                <InputRadioGroup @bind-Value="alumno.Sexo">
+                    <div class="segmentado">
+                        <label><InputRadio Value="@("Femenino")" /><span>Femenino</span></label>
+                        <label><InputRadio Value="@("Masculino")" /><span>Masculino</span></label>
+                    </div>
+                </InputRadioGroup>
+                <ValidationMessage For="() => alumno.Sexo" />
+            </fieldset>
+            <div class="campo">
+                <label for="nacimiento">Fecha de nacimiento <span class="req">*</span></label>
+                <InputDate id="nacimiento" class="control" @bind-Value="alumno.FechaNacimiento" />
+                <ValidationMessage For="() => alumno.FechaNacimiento" />
+            </div>
+            <div class="campo">
+                <label for="edad">Edad</label>
+                <input id="edad" class="control" readonly value="@(Edad?.ToString() ?? "Se calcula con la fecha")" />
+            </div>
+
+            <div class="campo">
+                <label for="curp">CURP <span class="req">*</span></label>
+                <InputText id="curp" class="control mayusculas" maxlength="18" @bind-Value="alumno.Curp" />
+                <span class="ayuda">18 caracteres</span>
+                <ValidationMessage For="() => alumno.Curp" />
+            </div>
+            <div class="campo">
+                <label for="rfc">RFC</label>
+                <InputText id="rfc" class="control mayusculas" maxlength="13" @bind-Value="alumno.Rfc" />
+                <span class="ayuda">13 caracteres, con homoclave</span>
+                <ValidationMessage For="() => alumno.Rfc" />
+            </div>
+        </div>
+    </section>
+
+    @* ============ 2. Contacto ============ *@
+    <section class="tarjeta seccion" aria-labelledby="h-contacto">
+        <div>
+            <h2 id="h-contacto">Contacto</h2>
+            <p class="seccion-desc">Al menos un teléfono o celular.</p>
+        </div>
+        <div class="rejilla">
+            <div class="campo">
+                <label for="email">Correo electrónico <span class="req">*</span></label>
+                <InputText id="email" type="email" class="control" placeholder="nombre@correo.com" @bind-Value="alumno.Email" />
+                <ValidationMessage For="() => alumno.Email" />
+            </div>
+            <div class="campo">
+                <label for="telefono">Teléfono</label>
+                <InputText id="telefono" type="tel" class="control" placeholder="10 dígitos" @bind-Value="alumno.Telefono" />
+                <ValidationMessage For="() => alumno.Telefono" />
+            </div>
+            <div class="campo">
+                <label for="celular">Celular</label>
+                <InputText id="celular" type="tel" class="control" placeholder="10 dígitos" @bind-Value="alumno.Celular" />
+                <ValidationMessage For="() => alumno.Celular" />
+            </div>
+        </div>
+    </section>
+
+    @* ============ 3. Domicilio ============ *@
+    <section class="tarjeta seccion" aria-labelledby="h-domicilio">
+        <div>
+            <h2 id="h-domicilio">Domicilio</h2>
+        </div>
+        <div class="rejilla rejilla-4">
+            <div class="campo span-2">
+                <label for="calle">Calle <span class="req">*</span></label>
+                <InputText id="calle" class="control" @bind-Value="alumno.Calle" />
+                <ValidationMessage For="() => alumno.Calle" />
+            </div>
+            <div class="campo">
+                <label for="exterior">No. exterior <span class="req">*</span></label>
+                <InputText id="exterior" class="control" @bind-Value="alumno.NoExterior" />
+                <ValidationMessage For="() => alumno.NoExterior" />
+            </div>
+            <div class="campo">
+                <label for="interior">No. interior</label>
+                <InputText id="interior" class="control" @bind-Value="alumno.NoInterior" />
+            </div>
+
+            <div class="campo">
+                <label for="cp">Código postal <span class="req">*</span></label>
+                <InputText id="cp" class="control" inputmode="numeric" maxlength="5" placeholder="5 dígitos" @bind-Value="alumno.CodigoPostal" />
+                <ValidationMessage For="() => alumno.CodigoPostal" />
+            </div>
+            <div class="campo span-3">
+                <label for="colonia">Colonia <span class="req">*</span></label>
+                <InputText id="colonia" class="control" @bind-Value="alumno.Colonia" />
+                <ValidationMessage For="() => alumno.Colonia" />
+            </div>
+
+            <div class="campo">
+                <label for="ciudad">Ciudad <span class="req">*</span></label>
+                <InputText id="ciudad" class="control" @bind-Value="alumno.Ciudad" />
+                <ValidationMessage For="() => alumno.Ciudad" />
+            </div>
+            <div class="campo">
+                <label for="estado">Estado <span class="req">*</span></label>
+                <InputText id="estado" class="control" @bind-Value="alumno.Estado" />
+                <ValidationMessage For="() => alumno.Estado" />
+            </div>
+            <div class="campo">
+                <label for="pais">País <span class="req">*</span></label>
+                <InputText id="pais" class="control" @bind-Value="alumno.Pais" />
+                <ValidationMessage For="() => alumno.Pais" />
+            </div>
+        </div>
+    </section>
+
+    @* ============ 4. Clasificación ============ *@
+    <section class="tarjeta seccion" aria-labelledby="h-clasificacion">
+        <div>
+            <h2 id="h-clasificacion">Clasificación y grupo</h2>
+        </div>
+        <div class="rejilla">
+            <div class="campo">
+                <label for="clasif">Clasificado como <span class="req">*</span></label>
+                <InputSelect id="clasif" class="control" @bind-Value="alumno.Clasificacion">
+                    <option value="">Selecciona una opción</option>
+                    @foreach (var c in Servicio.Clasificaciones)
+                    {
+                        <option value="@c">@c</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="() => alumno.Clasificacion" />
+            </div>
+            <div class="campo">
+                <label for="grupo">Grupo asignado</label>
+                <InputSelect id="grupo" class="control" @bind-Value="alumno.Grupo">
+                    <option value="">Sin grupo</option>
+                    @foreach (var g in Servicio.Grupos)
+                    {
+                        <option value="@g">@g</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+    </section>
+
+    <div class="barra-acciones">
+        <span class="estado">@(esNuevo ? "Borrador sin guardar" : "Editando registro existente")</span>
+        <button type="button" class="btn btn-secundario" @onclick='() => Nav.NavigateTo("alumnos")'>Cancelar</button>
+        <button type="submit" class="btn btn-primario">
+            <span class="ico" aria-hidden="true">&#xE73E;</span> Guardar alumno
+        </button>
+    </div>
+</EditForm>
+
+@code {
+    /// <summary>Viene de la ruta /alumnos/editar/{Matricula}. Es null cuando es un alumno nuevo.</summary>
+    [Parameter] public string? Matricula { get; set; }
+
+    private Alumno alumno = new();
+    private bool esNuevo = true;
+
+    protected override void OnParametersSet()
+    {
+        var existente = Matricula is null ? null : Servicio.ObtenerPorMatricula(Matricula);
+        esNuevo = existente is null;
+        // Trabajamos sobre una copia para que "Cancelar" no deje cambios a medias
+        alumno = existente?.Clonar() ?? new Alumno();
+    }
+
+    private string Titulo => esNuevo ? "Nuevo alumno" : "Editar alumno";
+
+    private int? Edad
+    {
+        get
+        {
+            if (alumno.FechaNacimiento is not DateTime f) return null;
+            var hoy = DateTime.Today;
+            int edad = hoy.Year - f.Year;
+            if (f.Date > hoy.AddYears(-edad)) edad--;
+            return edad;
+        }
+    }
+
+    private void Guardar()
+    {
+        Servicio.Guardar(alumno);
+        Nav.NavigateTo("alumnos");
+    }
+}

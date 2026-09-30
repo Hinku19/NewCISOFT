@@ -30,13 +30,13 @@
         {
             SuspendLayout();
             // 
-            // Form1
+            // Student
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1167, 450);
-            Name = "Form1";
-            Text = "Form1";
+            Name = "Student";
+            Text = "CISoft - Alumnos";
             ResumeLayout(false);
         }
 
