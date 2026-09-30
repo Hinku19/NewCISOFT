@@ -7,10 +7,11 @@ namespace CISOFTDataOperations.Objects.Menu
 {
     public class DashboardCard : Panel
     {
-        private Label lblIcon;
+       // private Label lblIcon;
         private Label lblTitle;
         private Label lblDescription;
         private Label lblValue;
+        private PictureBox pbIcon;
 
         private Color normalColor;
         private Color hoverColor;
@@ -23,8 +24,8 @@ namespace CISOFTDataOperations.Objects.Menu
 
         private void InitializeCard()
         {
-            this.Width = 220;
-            this.Height = 130;
+            this.Width = 440;
+            this.Height = 260;
 
             normalColor = Color.FromArgb(19, 64, 116);
             hoverColor = Color.FromArgb(19, 49, 92);
@@ -33,32 +34,29 @@ namespace CISOFTDataOperations.Objects.Menu
             this.BorderStyle = BorderStyle.FixedSingle;
             this.Cursor = Cursors.Hand;
 
-            lblIcon = new Label();
-            lblIcon.AutoSize = false;
-            lblIcon.Width = 55;
-            lblIcon.Height = 55;
-            lblIcon.TextAlign = ContentAlignment.MiddleCenter;
-            lblIcon.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            lblIcon.ForeColor = Color.White;
-            lblIcon.Location = new Point(15, 15);
-            lblIcon.BackColor = Color.Transparent;
+            pbIcon = new PictureBox();
+            pbIcon.Width = 110;
+            pbIcon.Height =110;
+            pbIcon.Location = new Point(15, 15);
+            pbIcon.SizeMode = PictureBoxSizeMode.Zoom;
+            pbIcon.BackColor = Color.Transparent;
 
             lblTitle = new Label();
             lblTitle.AutoSize = false;
             lblTitle.Width = 130;
             lblTitle.Height = 25;
-            lblTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblTitle.ForeColor = Color.White;
-            lblTitle.Location = new Point(75, 18);
+            lblTitle.Location = new Point(130, 18);
             lblTitle.BackColor = Color.Transparent;
 
             lblDescription = new Label();
             lblDescription.AutoSize = false;
-            lblDescription.Width = 130;
-            lblDescription.Height = 40;
-            lblDescription.Font = new Font("Segoe UI", 8.5F);
+            lblDescription.Width = 300;
+            lblDescription.Height = 260;
+            lblDescription.Font = new Font("Segoe UI", 12F);
             lblDescription.ForeColor = Color.FromArgb(238, 244, 237);
-            lblDescription.Location = new Point(75, 45);
+            lblDescription.Location = new Point(130, 60);
             lblDescription.BackColor = Color.Transparent;
 
             lblValue = new Label();
@@ -71,7 +69,7 @@ namespace CISOFTDataOperations.Objects.Menu
             lblValue.Location = new Point(15, 78);
             lblValue.BackColor = Color.Transparent;
 
-            this.Controls.Add(lblIcon);
+            this.Controls.Add(pbIcon);
             this.Controls.Add(lblTitle);
             this.Controls.Add(lblDescription);
             this.Controls.Add(lblValue);
@@ -82,17 +80,17 @@ namespace CISOFTDataOperations.Objects.Menu
             this.MouseEnter += Card_MouseEnter;
             this.MouseLeave += Card_MouseLeave;
 
-            lblIcon.MouseEnter += Card_MouseEnter;
+            pbIcon.MouseEnter += Card_MouseEnter;
             lblTitle.MouseEnter += Card_MouseEnter;
             lblDescription.MouseEnter += Card_MouseEnter;
             lblValue.MouseEnter += Card_MouseEnter;
 
-            lblIcon.MouseLeave += Card_MouseLeave;
+            pbIcon.MouseLeave += Card_MouseLeave;
             lblTitle.MouseLeave += Card_MouseLeave;
             lblDescription.MouseLeave += Card_MouseLeave;
             lblValue.MouseLeave += Card_MouseLeave;
 
-            lblIcon.Click += Card_Click;
+            pbIcon.Click += Card_Click;
             lblTitle.Click += Card_Click;
             lblDescription.Click += Card_Click;
             lblValue.Click += Card_Click;
@@ -116,8 +114,8 @@ namespace CISOFTDataOperations.Objects.Menu
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string CardIcon
         {
-            get { return lblIcon.Text; }
-            set { lblIcon.Text = value; }
+            get { return pbIcon.Image?.ToString() ?? string.Empty; }
+            set { pbIcon.Image = Image.FromFile(value); }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -157,6 +155,13 @@ namespace CISOFTDataOperations.Objects.Menu
         {
             get { return hoverColor; }
             set { hoverColor = value; }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Image CardImage
+        {
+            get { return pbIcon.Image; }
+            set { pbIcon.Image = value; }
         }
     }
 }

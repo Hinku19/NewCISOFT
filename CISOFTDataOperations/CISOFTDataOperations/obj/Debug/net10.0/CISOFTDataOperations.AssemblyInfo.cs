@@ -14,7 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CISOFTDataOperations")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b207f0c9fdbb6aac9d3d4a53995700138928e904")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f935988f7eb1032de4b2ae57982906d562db9d03")]
+>>>>>>> 5c16bc9ad74fc2e465848b9ff0e61efd707fc013
 [assembly: System.Reflection.AssemblyProductAttribute("CISOFTDataOperations")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CISOFTDataOperations")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

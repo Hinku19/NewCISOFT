@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CISOFTNEW")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b207f0c9fdbb6aac9d3d4a53995700138928e904")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c893ac3ed3347ec8dc22acea2578fa30368cc06d")]
 [assembly: System.Reflection.AssemblyProductAttribute("CISOFTNEW")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CISOFTNEW")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

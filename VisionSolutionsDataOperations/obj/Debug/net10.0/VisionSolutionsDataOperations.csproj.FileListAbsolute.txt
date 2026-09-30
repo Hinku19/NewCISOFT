@@ -1,0 +1,14 @@
+C:\VSS2026\VisionSolutionsDataOperations\bin\Debug\net10.0\VisionSolutionsDataOperations.deps.json
+C:\VSS2026\VisionSolutionsDataOperations\bin\Debug\net10.0\VisionSolutionsDataOperations.dll
+C:\VSS2026\VisionSolutionsDataOperations\bin\Debug\net10.0\VisionSolutionsDataOperations.pdb
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\VisionSolutionsDataOperations.GeneratedMSBuildEditorConfig.editorconfig
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\VisionSolutionsDataOperations.AssemblyInfoInputs.cache
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\VisionSolutionsDataOperations.AssemblyInfo.cs
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\VisionSolutionsDataOperations.csproj.CoreCompileInputs.cache
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\VisionSolutionsDataOperations.dll
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\refint\VisionSolutionsDataOperations.dll
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\VisionSolutionsDataOperations.pdb
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\ref\VisionSolutionsDataOperations.dll
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\VisionSo.AC75ABFC.Up2Date
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\VisionSolutionsDataOperations.csproj.AssemblyReference.cache
+C:\VSS2026\VisionSolutionsDataOperations\obj\Debug\net10.0\VisionSolutionsDataOperations.sourcelink.json
