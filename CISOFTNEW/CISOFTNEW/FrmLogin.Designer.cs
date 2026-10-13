@@ -69,7 +69,7 @@
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(92, 47);
             btnExit.TabIndex = 7;
-            btnExit.Text = "EXIT";
+            btnExit.Text = "SALIR";
             btnExit.UseVisualStyleBackColor = false;
             btnExit.Click += btnExit_Click;
             // 
@@ -85,7 +85,7 @@
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(92, 47);
             btnLogin.TabIndex = 6;
-            btnLogin.Text = "LOGIN";
+            btnLogin.Text = "INICIAR";
             btnLogin.UseVisualStyleBackColor = false;
             btnLogin.Click += btnLogin_Click;
             // 
@@ -99,6 +99,7 @@
             txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(236, 27);
             txtPassword.TabIndex = 5;
+            txtPassword.KeyPress += txtPassword_KeyPress;
             // 
             // txtUser
             // 
@@ -119,9 +120,9 @@
             lblPassword.ForeColor = Color.FromArgb(19, 49, 92);
             lblPassword.Location = new Point(77, 310);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(66, 17);
+            lblPassword.Size = new Size(77, 17);
             lblPassword.TabIndex = 3;
-            lblPassword.Text = "Password";
+            lblPassword.Text = "Contraseña";
             // 
             // lblUser
             // 
@@ -130,9 +131,9 @@
             lblUser.ForeColor = Color.FromArgb(19, 49, 92);
             lblUser.Location = new Point(77, 239);
             lblUser.Name = "lblUser";
-            lblUser.Size = new Size(69, 17);
+            lblUser.Size = new Size(55, 17);
             lblUser.TabIndex = 1;
-            lblUser.Text = "Username";
+            lblUser.Text = "Usuario";
             // 
             // pictureBox1
             // 

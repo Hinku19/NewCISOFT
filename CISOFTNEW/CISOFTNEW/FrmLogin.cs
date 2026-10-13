@@ -11,7 +11,7 @@ namespace CISOFTNEW
         public FrmLogin()
         {
             InitializeComponent();
-            
+
             CentrarPanelLogin();
 
             RedondearPanel(pnlLogin, 20);
@@ -206,6 +206,14 @@ namespace CISOFTNEW
             panel.Region = new Region(path);
 
             path.Dispose();
+        }
+
+        private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btnLogin.Focus();
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ namespace CISOFTNEW
         {
             FormBorderStyle = FormBorderStyle.Sizable;
             StartPosition = FormStartPosition.Manual;
-            WindowState = FormWindowState.Normal;
+            WindowState = FormWindowState.Maximized;
 
             Rectangle workingArea =
                 Screen.PrimaryScreen.WorkingArea;
@@ -79,7 +79,13 @@ namespace CISOFTNEW
 
             cardStudents.Click += (sender, e) =>
             {
-                MostrarControl(new Stu_StudentDirectory());
+                var studentsControl = new Stu_StudentDirectory();
+
+                studentsControl.BackRequested += (s, args) =>
+                    MostrarDashboard();
+
+                MostrarControl(studentsControl);
+                lblWelcome.Visible = false;
             };
 
             DashboardCard cardTeachers = CrearCard(
@@ -87,6 +93,17 @@ namespace CISOFTNEW
                 "Teacher management",
                 "",
                 Resource.Resources.Teachers);
+
+            cardTeachers.Click += (sender, e) =>
+            {
+                var teachersControl = new Tch_TeachersDirectory();
+
+                teachersControl.BackRequested += (s, args) =>
+                    MostrarDashboard();
+
+                MostrarControl(teachersControl);
+                lblWelcome.Visible = false;
+            };
 
             DashboardCard cardBooks = CrearCard(
                 "Books",
@@ -176,6 +193,7 @@ namespace CISOFTNEW
             pnlContent.Controls.Clear();
             pnlContent.Controls.Add(tlpDashboard);
             tlpDashboard.Dock = DockStyle.Fill;
+            lblWelcome.Visible = true;
         }
     }
 }
