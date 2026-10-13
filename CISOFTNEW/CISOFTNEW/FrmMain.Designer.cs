@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             tlpDashboard = new TableLayoutPanel();
             lblWelcome = new Label();
+            pnlContent = new Panel();
+            pnlContent.SuspendLayout();
             SuspendLayout();
             // 
             // tlpDashboard
@@ -41,12 +43,13 @@
             tlpDashboard.ColumnCount = 2;
             tlpDashboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tlpDashboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpDashboard.Location = new Point(603, 471);
+            tlpDashboard.Dock = DockStyle.Fill;
+            tlpDashboard.Location = new Point(0, 0);
             tlpDashboard.Name = "tlpDashboard";
             tlpDashboard.RowCount = 2;
             tlpDashboard.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tlpDashboard.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpDashboard.Size = new Size(0, 0);
+            tlpDashboard.Size = new Size(1822, 646);
             tlpDashboard.TabIndex = 0;
             // 
             // lblWelcome
@@ -60,17 +63,28 @@
             lblWelcome.TabIndex = 1;
             lblWelcome.TextAlign = ContentAlignment.TopCenter;
             // 
+            // pnlContent
+            // 
+            pnlContent.Controls.Add(tlpDashboard);
+            pnlContent.Dock = DockStyle.Fill;
+            pnlContent.Location = new Point(0, 25);
+            pnlContent.Name = "pnlContent";
+            pnlContent.Size = new Size(1822, 646);
+            pnlContent.TabIndex = 2;
+            // 
             // FrmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1822, 671);
+            Controls.Add(pnlContent);
             Controls.Add(lblWelcome);
-            Controls.Add(tlpDashboard);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
             Name = "FrmMain";
             Text = "SOCOADA English Center";
+            pnlContent.ResumeLayout(false);
+            pnlContent.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -79,5 +93,6 @@
 
         private TableLayoutPanel tlpDashboard;
         private Label lblWelcome;
+        private Panel pnlContent;
     }
 }

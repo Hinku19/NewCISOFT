@@ -14,6 +14,10 @@ namespace CISOFTNEW
         {
             
             InitializeComponent();
+            
+            pnlContent.Controls.Add(tlpDashboard);
+            tlpDashboard.Dock = DockStyle.Fill;
+            tlpDashboard.BringToFront();
 
             _session = session;
 
@@ -54,14 +58,14 @@ namespace CISOFTNEW
             for (int i = 0; i < 4; i++)
             {
                 tlpDashboard.ColumnStyles.Add(
-                    new ColumnStyle(SizeType.Percent, 25F));
+                    new ColumnStyle(SizeType.Percent, 50F));
             }
 
             // Filas
             for (int i = 0; i < 2; i++)
             {
                 tlpDashboard.RowStyles.Add(
-                    new RowStyle(SizeType.Percent, 25F));
+                    new RowStyle(SizeType.Percent, 50F));
             }
 
             tlpDashboard.Padding = new Padding(40);
@@ -72,6 +76,11 @@ namespace CISOFTNEW
                 "Consult, register and keep track of the student section",
                 "",
                 Resource.Resources.Students);
+
+            cardStudents.Click += (sender, e) =>
+            {
+                MostrarControl(new Stu_StudentDirectory());
+            };
 
             DashboardCard cardTeachers = CrearCard(
                 "Teachers",
@@ -152,6 +161,21 @@ namespace CISOFTNEW
             card.CardImage = imagen;
 
             return card;
+        }
+
+        private void MostrarControl(UserControl control)
+        {
+            pnlContent.Controls.Clear();
+
+            control.Dock = DockStyle.Fill;
+            pnlContent.Controls.Add(control);
+        }
+
+        private void MostrarDashboard()
+        {
+            pnlContent.Controls.Clear();
+            pnlContent.Controls.Add(tlpDashboard);
+            tlpDashboard.Dock = DockStyle.Fill;
         }
     }
 }
