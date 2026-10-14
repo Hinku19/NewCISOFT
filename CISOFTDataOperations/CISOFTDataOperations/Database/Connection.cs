@@ -107,6 +107,11 @@ namespace CISOFTDataOperations.Database
             return GetConnection("CertificateCiSoft_Prueba.xml");
         }
 
+        public static SqlConnection NewCiSoft()
+        {
+            return GetConnection("CertificateNewCiSoft.xml");
+        }
+
         public static string GetConnectionString(string certificate)
         {
             string filePath = Path.Combine(
