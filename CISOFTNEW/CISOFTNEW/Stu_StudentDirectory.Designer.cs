@@ -49,6 +49,7 @@
             colGrupo = new DataGridViewTextBoxColumn();
             colCelular = new DataGridViewTextBoxColumn();
             colVer = new DataGridViewLinkColumn();
+            btnSalir = new CISOFTNEW.Controles.BotonRedondeado();
             panelRedondeado1.SuspendLayout();
             panelRedondeado2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvAlumnos).BeginInit();
@@ -67,10 +68,11 @@
             botonRedondeado1.ForeColor = Color.White;
             botonRedondeado1.GrosorBorde = 0F;
             botonRedondeado1.Icono = "";
-            botonRedondeado1.Location = new Point(1004, 62);
+            botonRedondeado1.Location = new Point(777, 47);
+            botonRedondeado1.Margin = new Padding(3, 2, 3, 2);
             botonRedondeado1.Name = "botonRedondeado1";
             botonRedondeado1.Radio = 12;
-            botonRedondeado1.Size = new Size(212, 60);
+            botonRedondeado1.Size = new Size(186, 45);
             botonRedondeado1.TabIndex = 1;
             botonRedondeado1.Text = " + Nuevo alumno";
             botonRedondeado1.UseVisualStyleBackColor = false;
@@ -92,7 +94,7 @@
             panelRedondeado1.Margin = new Padding(0, 12, 0, 12);
             panelRedondeado1.Name = "panelRedondeado1";
             panelRedondeado1.Radio = 16;
-            panelRedondeado1.Size = new Size(1174, 101);
+            panelRedondeado1.Size = new Size(1027, 76);
             panelRedondeado1.TabIndex = 3;
             // 
             // comboBox1
@@ -180,9 +182,9 @@
             // 
             lblCatAlu.AutoSize = true;
             lblCatAlu.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblCatAlu.Location = new Point(42, 30);
+            lblCatAlu.Location = new Point(37, 22);
             lblCatAlu.Name = "lblCatAlu";
-            lblCatAlu.Size = new Size(195, 28);
+            lblCatAlu.Size = new Size(155, 21);
             lblCatAlu.TabIndex = 5;
             lblCatAlu.Text = "Catálogos / Alumnos";
             lblCatAlu.Click += lblCatAlu_Click;
@@ -191,9 +193,9 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(42, 67);
+            label1.Location = new Point(37, 50);
             label1.Name = "label1";
-            label1.Size = new Size(142, 41);
+            label1.Size = new Size(116, 32);
             label1.TabIndex = 6;
             label1.Text = "Alumnos";
             // 
@@ -201,9 +203,9 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(42, 108);
+            label2.Location = new Point(37, 81);
             label2.Name = "label2";
-            label2.Size = new Size(529, 28);
+            label2.Size = new Size(423, 21);
             label2.TabIndex = 7;
             label2.Text = "Consulta, registra y actualiza la información de los alumnos.";
             // 
@@ -317,17 +319,42 @@
             colVer.TrackVisitedState = false;
             colVer.UseColumnTextForLinkValue = true;
             // 
+            // btnSalir
+            // 
+            btnSalir.Alineacion = HorizontalAlignment.Center;
+            btnSalir.BackColor = Color.FromArgb(19, 64, 116);
+            btnSalir.ColorBorde = Color.Transparent;
+            btnSalir.ColorHover = Color.FromArgb(11, 37, 69);
+            btnSalir.ColorTextoHover = Color.Empty;
+            btnSalir.FlatAppearance.BorderSize = 0;
+            btnSalir.FlatStyle = FlatStyle.Flat;
+            btnSalir.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnSalir.ForeColor = Color.White;
+            btnSalir.GrosorBorde = 0F;
+            btnSalir.Icono = "";
+            btnSalir.Location = new Point(969, 47);
+            btnSalir.Margin = new Padding(3, 2, 3, 2);
+            btnSalir.Name = "btnSalir";
+            btnSalir.Radio = 12;
+            btnSalir.Size = new Size(95, 45);
+            btnSalir.TabIndex = 8;
+            btnSalir.Text = "Salir";
+            btnSalir.UseVisualStyleBackColor = false;
+            btnSalir.Click += btnSalir_Click;
+            // 
             // Stu_StudentDirectory
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 244, 237);
             Controls.Add(panelRedondeado2);
+            Controls.Add(btnSalir);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(lblCatAlu);
             Controls.Add(panelRedondeado1);
             Controls.Add(botonRedondeado1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Stu_StudentDirectory";
             Size = new Size(1280, 680);
             Load += Stu_StudentDirectory_Load;
@@ -360,5 +387,6 @@
         private DataGridViewTextBoxColumn colGrupo;
         private DataGridViewTextBoxColumn colCelular;
         private DataGridViewLinkColumn colVer;
+        private Controles.BotonRedondeado btnSalir;
     }
 }

@@ -8,6 +8,8 @@ namespace CISOFTDataOperations.Security
     {
         public int UserId { get; set; }
 
+        public string UserName { get; set; }
+
         public int CompanyId { get; set; }
 
         public int DivisionId { get; set; }
@@ -17,6 +19,7 @@ namespace CISOFTDataOperations.Security
         public UserSession()
         {
             UserId = 0;
+            UserName = string.Empty;
             CompanyId = 0;
             DivisionId = 0;
             SubsidiaryId = 0;
@@ -24,11 +27,13 @@ namespace CISOFTDataOperations.Security
 
         public UserSession(
             int userId,
+            string userName,
             int companyId,
             int divisionId,
             int subsidiaryId)
         {
             UserId = userId;
+            UserName = userName;
             CompanyId = companyId;
             DivisionId = divisionId;
             SubsidiaryId = subsidiaryId;

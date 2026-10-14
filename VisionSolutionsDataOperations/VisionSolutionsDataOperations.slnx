@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/Solution Items/" />
+  <Project Path="../VisionSolutionsEnglish/VisionSolutionsEnglish.csproj" />
+  <Project Path="VisionSolutionsDataOperations.csproj" />
+</Solution>
