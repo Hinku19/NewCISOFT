@@ -68,8 +68,8 @@ namespace CISOFTNEW
             if (string.IsNullOrEmpty(user))
             {
                 MessageBox.Show(
-                    "Please enter your username.",
-                    "Login",
+                    "Por favor, ingrese su nombre de usuario.",
+                    "Iniciar sesión",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
                 txtUser.Focus();
@@ -79,8 +79,8 @@ namespace CISOFTNEW
             if (string.IsNullOrEmpty(password))
             {
                 MessageBox.Show(
-                    "Please enter your password.",
-                    "Login",
+                    "Por favor, ingrese su contraseña.",
+                    "Iniciar sesión",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
                 txtPassword.Focus();
@@ -98,8 +98,8 @@ namespace CISOFTNEW
                 if (session == null)
                 {
                     MessageBox.Show(
-                        "Invalid username or password.",
-                        "Login",
+                        "Nombre de usuario o contraseña incorrectos.",
+                        "Iniciar sesión",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
                     txtUser.Focus();
@@ -132,8 +132,8 @@ namespace CISOFTNEW
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "An error occurred while trying to login.",
-                    "Login",
+                    "Ocurrió un error mientras se intentaba iniciar sesión.",
+                    "Iniciar sesión",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
