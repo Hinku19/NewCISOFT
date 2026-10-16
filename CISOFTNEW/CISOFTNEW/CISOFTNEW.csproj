@@ -17,11 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CISOFTDataOperations\CISOFTDataOperations\CISOFTDataOperations.csproj" />
+    <Reference Include="CISOFTDataOperations">
+      <HintPath>..\..\CISOFTDataOperations\CISOFTDataOperations\bin\Debug\net10.0-windows\CISOFTDataOperations.dll</HintPath>
+    </Reference>
   </ItemGroup>
-  <ItemGroup>
-
- </ItemGroup>
 
    <ItemGroup>
     <Compile Update="Controles\BotonRedondeado.cs">
