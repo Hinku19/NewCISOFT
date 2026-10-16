@@ -10,7 +10,7 @@ namespace CISOFTDataOperations.Security
         private const int Iterations = 10000;
         private const int HashSize = 32;
 
-        public static UserSession Authenticate(
+        public static UserSession? Authenticate(
             string nick,
             string password)
         {
@@ -67,17 +67,17 @@ namespace CISOFTDataOperations.Security
                         string dbUserName =
                             reader["Name"] == DBNull.Value
                                 ? string.Empty
-                                : reader["Name"].ToString();        
+                                : reader["Name"].ToString() ?? string.Empty;        
 
                         string storedPassword =
                             reader["Password"] == DBNull.Value
                                 ? string.Empty
-                                : reader["Password"].ToString();
+                                : reader["Password"].ToString() ?? string.Empty;
 
                         string storedSalt =
                             reader["Salt"] == DBNull.Value
                                 ? string.Empty
-                                : reader["Salt"].ToString();
+                                : reader["Salt"].ToString() ?? string.Empty;
 
                         int companyId = 0;
                         int divisionId = 0;
@@ -159,16 +159,13 @@ namespace CISOFTDataOperations.Security
 
             byte[] calculatedHash;
 
-            using (Rfc2898DeriveBytes pbkdf2 =
-                new Rfc2898DeriveBytes(
+            calculatedHash =
+                Rfc2898DeriveBytes.Pbkdf2(
                     password,
                     salt,
                     Iterations,
-                    HashAlgorithmName.SHA256))
-            {
-                calculatedHash =
-                    pbkdf2.GetBytes(HashSize);
-            }
+                    HashAlgorithmName.SHA256,
+                    HashSize);
 
             return CryptographicOperations.FixedTimeEquals(
                 calculatedHash,

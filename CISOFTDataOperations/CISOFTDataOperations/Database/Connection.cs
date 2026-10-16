@@ -32,7 +32,7 @@ namespace CISOFTDataOperations.Database
             }
 
             string connectionString =
-                Encrypt.Decrypt(conn[0].InnerText.Trim(), true);
+                Encrypt.Decrypt(conn[0]!.InnerText.Trim(), true);
 
             SqlConnectionStringBuilder builder =
                 new SqlConnectionStringBuilder(connectionString);
@@ -138,7 +138,7 @@ namespace CISOFTDataOperations.Database
 
             string connectionString =
                 Encrypt.Decrypt(
-                    conn[0].InnerText.Trim(),
+                    conn[0]!.InnerText.Trim(),
                     true);
 
             SqlConnectionStringBuilder builder =

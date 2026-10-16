@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -6,20 +6,30 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- MSB3277: Microsoft.Web.WebView2.Wpf (dependencia de BlazorWebView) pide WindowsBase 5.0; en WinForms se usa 4.0 y es inofensivo -->
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="10.0.110" />
     <PackageReference Include="Guna.UI2.WinForms" Version="2.0.4.8" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="CISOFTDataOperations">
-      <HintPath>..\..\CISOFTDataOperations\CISOFTDataOperations\bin\Debug\net10.0-windows\CISOFTDataOperations.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\CISOFTDataOperations\CISOFTDataOperations\CISOFTDataOperations.csproj" />
   </ItemGroup>
-
   <ItemGroup>
+
+ </ItemGroup>
+
+   <ItemGroup>
+    <Compile Update="Controles\BotonRedondeado.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controles\TablaRedondeada.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="Resource\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

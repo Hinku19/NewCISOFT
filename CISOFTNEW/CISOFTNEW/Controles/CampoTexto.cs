@@ -46,7 +46,6 @@ namespace CISOFTNEW.Controles
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint |
                      ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
             Size = new Size(260, 44);
-            Padding = new Padding(14, 0, 14, 0);
             Font = new Font("Segoe UI", 11f);
             ForeColor = Color.FromArgb(0x0B, 0x25, 0x45);
 
@@ -64,6 +63,8 @@ namespace CISOFTNEW.Controles
             Click += (s, e) => _caja.Focus();
             Reubicar();
         }
+
+        protected override Padding DefaultPadding => new Padding(14, 0, 14, 0);
 
         protected override void OnMouseEnter(EventArgs e) { _encima = true; Invalidate(); base.OnMouseEnter(e); }
         protected override void OnMouseLeave(EventArgs e) { _encima = false; Invalidate(); base.OnMouseLeave(e); }
@@ -87,7 +88,7 @@ namespace CISOFTNEW.Controles
         protected override void OnPaint(PaintEventArgs e)
         {
             var g = e.Graphics;
-            g.Clear(Parent?.BackColor ?? SystemColors.Control);
+            g.Clear(Formas.FondoDe(Parent));
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             float grosor = _conFoco ? 2.5f : 1.5f;

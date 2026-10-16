@@ -1,0 +1,146 @@
+@page "/alumnos"
+@inject ServicioAlumnos Servicio
+@inject NavigationManager Nav
+
+<header class="encabezado">
+    <div>
+        <div class="migas">Catálogos / Alumnos</div>
+        <h1>Alumnos</h1>
+        <p class="subtitulo">Consulta, registra y actualiza la información de los alumnos.</p>
+    </div>
+    <button type="button" class="btn btn-primario" @onclick='() => Nav.NavigateTo("alumnos/nuevo")'>
+        <span class="ico" aria-hidden="true">&#xE710;</span> Nuevo alumno
+    </button>
+</header>
+
+<section class="tarjeta filtros" aria-label="Buscar y filtrar">
+    <div class="campo" style="flex: 1">
+        <label for="buscar">Buscar alumno</label>
+        <input id="buscar" type="search" class="control"
+               placeholder="Nombre, matrícula, CURP o RFC"
+               @bind="busqueda" @bind:event="oninput" @bind:after="Actualizar" />
+    </div>
+
+    <div class="campo" style="width: 220px">
+        <label for="clasificacion">Clasificación</label>
+        <select id="clasificacion" class="control" @bind="clasificacion" @bind:after="Actualizar">
+            <option value="">Todas</option>
+            @foreach (var c in Servicio.Clasificaciones)
+            {
+                <option value="@c">@c</option>
+            }
+        </select>
+    </div>
+
+    <div class="campo" style="width: 200px">
+        <label for="grupo">Grupo asignado</label>
+        <select id="grupo" class="control" @bind="grupo" @bind:after="Actualizar">
+            <option value="">Todos</option>
+            @foreach (var g in Servicio.Grupos)
+            {
+                <option value="@g">@g</option>
+            }
+        </select>
+    </div>
+
+    <button type="button" class="btn btn-secundario" @onclick="Limpiar">Limpiar filtros</button>
+</section>
+
+<section class="tarjeta tabla-contenedor" aria-label="Lista de alumnos">
+    @if (filtrados.Count == 0)
+    {
+        <div class="vacio">No se encontraron alumnos con esos filtros.</div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Alumno</th>
+                    <th scope="col">Matrícula</th>
+                    <th scope="col">Clasificación</th>
+                    <th scope="col">Grupo</th>
+                    <th scope="col">Celular</th>
+                    <th scope="col" style="text-align: right">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in PaginaActual)
+                {
+                    <tr>
+                        <td>
+                            <div class="alumno">
+                                <div class="avatar" aria-hidden="true">@a.Iniciales</div>
+                                <div>
+                                    <div class="alumno-nombre">@a.NombreCompleto</div>
+                                    <div class="alumno-email">@a.Email</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>@a.Matricula</td>
+                        <td><span class="pastilla">@a.Clasificacion</span></td>
+                        <td>@a.Grupo</td>
+                        <td>@a.Celular</td>
+                        <td>
+                            <div class="acciones">
+                                <button type="button" class="btn btn-icono" title="Editar"
+                                        aria-label="@($"Editar a {a.NombreCompleto}")"
+                                        @onclick='() => Nav.NavigateTo($"alumnos/editar/{a.Matricula}")'>
+                                    <span class="ico" aria-hidden="true">&#xE70F;</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="pie-tabla">
+        <span>@Resumen</span>
+        <nav class="paginacion" aria-label="Paginación">
+            <button type="button" class="btn btn-icono" aria-label="Página anterior"
+                    disabled="@(pagina <= 1)" @onclick="() => pagina--">
+                <span class="ico" aria-hidden="true">&#xE76B;</span>
+            </button>
+            <span>Página @pagina de @TotalPaginas</span>
+            <button type="button" class="btn btn-icono" aria-label="Página siguiente"
+                    disabled="@(pagina >= TotalPaginas)" @onclick="() => pagina++">
+                <span class="ico" aria-hidden="true">&#xE76C;</span>
+            </button>
+        </nav>
+    </div>
+</section>
+
+@code {
+    private const int TamanoPagina = 7;
+
+    private string busqueda = "";
+    private string clasificacion = "";
+    private string grupo = "";
+    private int pagina = 1;
+    private List<Alumno> filtrados = new();
+
+    protected override void OnInitialized() => Actualizar();
+
+    private void Actualizar()
+    {
+        filtrados = Servicio.Buscar(busqueda, clasificacion, grupo);
+        pagina = 1;
+    }
+
+    private void Limpiar()
+    {
+        busqueda = clasificacion = grupo = "";
+        Actualizar();
+    }
+
+    private int TotalPaginas => Math.Max(1, (int)Math.Ceiling(filtrados.Count / (double)TamanoPagina));
+
+    private IEnumerable<Alumno> PaginaActual =>
+        filtrados.Skip((pagina - 1) * TamanoPagina).Take(TamanoPagina);
+
+    private string Resumen => filtrados.Count == 0
+        ? "Sin resultados"
+        : $"Mostrando {(pagina - 1) * TamanoPagina + 1}–{Math.Min(pagina * TamanoPagina, filtrados.Count)} de {filtrados.Count} alumnos";
+}

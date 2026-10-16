@@ -92,7 +92,7 @@ namespace CISOFTDataOperations.Database
         public static DataSet ExecuteProcedure(
             SqlConnection connection,
             string procedureName,
-            Action<string> messageHandler,
+            Action<string>? messageHandler,
             params SqlParameter[] parameters)
         {
             DataSet ds = new DataSet();

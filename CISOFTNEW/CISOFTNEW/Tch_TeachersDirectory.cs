@@ -50,7 +50,7 @@ namespace CISOFTNEW
             dgvMaestros.RowTemplate.Height = 58;
         }
 
-        public event EventHandler BackRequested;
+        public event EventHandler? BackRequested;
         private void btnSalir_Click(object sender, EventArgs e)
         {
             BackRequested?.Invoke(this, EventArgs.Empty);

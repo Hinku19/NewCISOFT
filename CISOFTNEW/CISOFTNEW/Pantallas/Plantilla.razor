@@ -1,0 +1,40 @@
+@* Estructura que comparten todas las pantallas: menú lateral + contenido *@
+@inherits LayoutComponentBase
+
+<div class="app">
+    <aside class="menu">
+        <div class="marca">
+            <span class="marca-icono" aria-hidden="true">C</span>
+            CISoft
+        </div>
+
+        @* Sustituye por: <img src="img/logo.png" alt="Logo de la institución" /> (guárdalo en wwwroot/img) *@
+        <div class="logo-institucion">[Logo de la institución]</div>
+
+        <nav aria-label="Menú principal">
+            <div class="menu-titulo">Catálogos</div>
+            <NavLink href="alumnos">
+                <span class="ico" aria-hidden="true">&#xE716;</span> Alumnos
+            </NavLink>
+            
+               <NavLink href="prueba">
+                 <span class="ico" aria-hidden="true">&#xE790;</span> Prueba
+               </NavLink>
+       
+        </nav>
+
+        <div class="menu-pie">
+            <button type="button" class="menu-boton" @onclick="Salir">
+                <span class="ico" aria-hidden="true">&#xE7E8;</span> Salir
+            </button>
+        </div>
+    </aside>
+
+    <main class="contenido">
+        @Body
+    </main>
+</div>
+
+@code {
+    private void Salir() => System.Windows.Forms.Application.Exit();
+}

@@ -8,10 +8,10 @@ namespace CISOFTDataOperations.Objects.Menu
     public class DashboardCard : Panel
     {
        // private Label lblIcon;
-        private Label lblTitle;
-        private Label lblDescription;
-        private Label lblValue;
-        private PictureBox pbIcon;
+        private Label lblTitle = null!;
+        private Label lblDescription = null!;
+        private Label lblValue = null!;
+        private PictureBox pbIcon = null!;
 
         private Color normalColor;
         private Color hoverColor;
@@ -96,17 +96,17 @@ namespace CISOFTDataOperations.Objects.Menu
             lblValue.Click += Card_Click;
         }
 
-        private void Card_MouseEnter(object sender, EventArgs e)
+        private void Card_MouseEnter(object? sender, EventArgs e)
         {
             this.BackColor = hoverColor;
         }
 
-        private void Card_MouseLeave(object sender, EventArgs e)
+        private void Card_MouseLeave(object? sender, EventArgs e)
         {
             this.BackColor = normalColor;
         }
 
-        private void Card_Click(object sender, EventArgs e)
+        private void Card_Click(object? sender, EventArgs e)
         {
             OnClick(e);
         }
@@ -158,7 +158,7 @@ namespace CISOFTDataOperations.Objects.Menu
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image CardImage
+        public Image? CardImage
         {
             get { return pbIcon.Image; }
             set { pbIcon.Image = value; }

@@ -1,0 +1,47 @@
+/* Estos estilos SOLO afectan a Prueba.razor (aislamiento de CSS de Blazor) */
+
+.banner {
+    padding: 40px;
+    border-radius: 20px;
+    color: #fff;
+    background: linear-gradient(135deg, #FAF33E, #134074 45%, #FAF33E);
+    background-size: 200% 200%;
+    animation: mover 8s ease infinite;
+    box-shadow: 0 20px 40px rgba(11, 37, 69, .35);
+}
+
+.banner h2 { font-size: 28px; margin-bottom: 8px; }
+.banner p { margin: 0; opacity: .9; }
+
+@keyframes mover {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.mosaico {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+}
+
+.cuadro {
+    height: 90px;
+    border-radius: 14px;
+    color: #fff;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.cuadro:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, .25);
+}
+
+/* Accesibilidad: sin animaciones para quien las desactivó en Windows */
+@media (prefers-reduced-motion: reduce) {
+    .banner { animation: none; }
+    .cuadro { transition: none; }
+}

@@ -24,13 +24,16 @@ namespace CISOFTNEW.Controles
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint |
                      ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
             BackColor = Color.White;
-            Padding = new Padding(20);
         }
+
+        // Relleno inicial de 20. Al declararlo así, el diseñador sí guarda
+        // cualquier otro valor que pongas (incluido 0) y no se "regresa" al ejecutar.
+        protected override Padding DefaultPadding => new Padding(20);
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             var g = e.Graphics;
-            g.Clear(Parent?.BackColor ?? SystemColors.Control);
+            g.Clear(Formas.FondoDe(Parent));
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             var r = new RectangleF(_grosorBorde / 2f, _grosorBorde / 2f,
@@ -49,6 +52,14 @@ namespace CISOFTNEW.Controles
 
     internal static class Formas
     {
+        /// <summary>Busca el primer contenedor con color sólido (ignora los Transparent),
+        /// para pintar correctamente el área fuera de las esquinas redondeadas.</summary>
+        public static Color FondoDe(Control? c)
+        {
+            while (c != null && c.BackColor.A < 255) c = c.Parent;
+            return c?.BackColor ?? SystemColors.Control;
+        }
+
         public static GraphicsPath Redondeado(RectangleF r, float radio)
         {
             var p = new GraphicsPath();

@@ -1,0 +1,192 @@
+/* =========================================================
+   CISoft · Estilos globales
+   Paleta NEW CISOFT + derivados accesibles (contraste AA)
+   ========================================================= */
+:root {
+    --primario:   #134074;
+    --encabezado: #13315C;
+    --oscuro:     #0B2545;
+    --acento:     #8DA9C4;
+    --fondo:      #EEF4ED;
+    --texto-sec:  #475A72;
+    --borde:      #6E87A3;
+    --linea:      #DCE6EF;
+    --fila-hover: #F4F8FB;
+    --peligro:    #B42318;
+    --radio:      16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    height: 100%;
+    font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+    font-size: 15px;
+    color: var(--oscuro);
+    background: var(--fondo);
+}
+
+h1, h2 { font-family: "Segoe UI Variable Display", "Segoe UI", sans-serif; margin: 0; }
+h1:focus { outline: none; }
+
+/* Foco visible para quien navega con teclado */
+:focus-visible { outline: 3px solid var(--primario); outline-offset: 2px; }
+
+/* Íconos del sistema (Windows 10/11) */
+.ico { font-family: "Segoe Fluent Icons", "Segoe MDL2 Assets"; font-size: 16px; font-weight: normal; line-height: 1; }
+
+.cargando { display: grid; place-items: center; height: 100vh; color: var(--texto-sec); }
+
+/* ---------- Estructura ---------- */
+.app { display: flex; height: 100vh; }
+
+.menu {
+    width: 248px; flex-shrink: 0;
+    background: var(--oscuro); color: var(--fondo);
+    display: flex; flex-direction: column; gap: 28px;
+    padding: 24px 16px;
+}
+.marca { display: flex; align-items: center; gap: 10px; padding: 0 8px; font-weight: 700; font-size: 20px; }
+.marca-icono { width: 36px; height: 36px; border-radius: 10px; background: var(--primario); display: grid; place-items: center; }
+.logo-institucion {
+    border: 1px dashed var(--acento); border-radius: 12px; height: 72px;
+    display: grid; place-items: center; color: var(--acento); font-size: 12px;
+}
+.menu nav { display: flex; flex-direction: column; gap: 6px; }
+.menu-titulo { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--acento); padding: 0 12px 6px; }
+.menu a, .menu-boton {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    height: 44px; padding: 0 12px; border-radius: 10px; border: 0;
+    background: transparent; color: var(--fondo);
+    font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+}
+.menu a:hover, .menu-boton:hover { background: var(--encabezado); }
+.menu a.active { background: var(--primario); font-weight: 700; }
+.menu-pie { margin-top: auto; border-top: 1px solid var(--encabezado); padding-top: 16px; }
+
+.contenido {
+    flex: 1; min-width: 0; overflow: auto;
+    padding: 32px 40px;
+    display: flex; flex-direction: column; gap: 24px;
+}
+
+/* ---------- Encabezado de pantalla ---------- */
+.encabezado { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.migas { font-size: 13px; font-weight: 600; color: var(--texto-sec); }
+.migas a { color: var(--texto-sec); }
+.encabezado h1 { font-size: 32px; margin: 6px 0; letter-spacing: -.02em; }
+.subtitulo { margin: 0; color: var(--texto-sec); }
+
+/* ---------- Tarjetas ---------- */
+.tarjeta { background: #fff; border-radius: var(--radio); box-shadow: 0 1px 2px rgba(11,37,69,.08); }
+
+/* ---------- Campos ---------- */
+.campo { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.campo label, .campo legend { font-size: 14px; font-weight: 600; padding: 0; }
+.ayuda { font-size: 13px; color: var(--texto-sec); }
+.req { color: var(--peligro); }
+
+.control {
+    height: 44px; width: 100%;
+    border: 1.5px solid var(--borde); border-radius: 10px;
+    padding: 0 14px; background: #fff;
+    font: inherit; color: var(--oscuro);
+}
+.control:hover { border-color: var(--oscuro); }
+.control:focus { outline: none; border-color: var(--primario); box-shadow: 0 0 0 3px rgba(19,64,116,.25); }
+.control[readonly] { background: var(--fondo); border-style: dashed; color: var(--texto-sec); }
+.control::placeholder { color: #5B6E86; }
+.mayusculas { text-transform: uppercase; letter-spacing: .04em; }
+
+/* Blazor agrega la clase "invalid" a los campos con error */
+.control.invalid { border-color: var(--peligro); }
+.validation-message { color: var(--peligro); font-size: 13px; }
+
+/* ---------- Botones ---------- */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 44px; padding: 0 18px; border-radius: 12px;
+    border: 1.5px solid transparent;
+    font: inherit; font-weight: 700; white-space: nowrap;
+    cursor: pointer; text-decoration: none;
+}
+.btn-primario { background: var(--primario); color: #fff; height: 48px; padding: 0 22px; }
+.btn-primario:hover { background: var(--oscuro); }
+.btn-secundario { background: #fff; color: var(--primario); border-color: var(--primario); }
+.btn-secundario:hover { background: var(--fondo); color: var(--oscuro); }
+.btn-icono { width: 40px; height: 40px; padding: 0; background: transparent; color: var(--primario); border-radius: 10px; }
+.btn-icono:hover { background: var(--linea); color: var(--oscuro); }
+.btn:disabled { opacity: .45; cursor: default; }
+
+/* ---------- Filtros ---------- */
+.filtros { display: flex; gap: 16px; align-items: flex-end; padding: 20px; }
+
+/* ---------- Tabla ---------- */
+.tabla-contenedor { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 320px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead th { background: var(--encabezado); color: #fff; text-align: left; padding: 14px 16px; font-weight: 700; }
+tbody tr { border-bottom: 1px solid var(--linea); }
+tbody tr:hover { background: var(--fila-hover); }
+td { padding: 12px 16px; }
+
+.alumno { display: flex; align-items: center; gap: 12px; }
+.avatar {
+    width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+    background: var(--linea); color: var(--primario);
+    display: grid; place-items: center; font-weight: 800; font-size: 13px;
+}
+.alumno-nombre { font-weight: 700; font-size: 15px; }
+.alumno-email { font-size: 13px; color: var(--texto-sec); }
+.pastilla {
+    display: inline-flex; align-items: center; height: 28px; padding: 0 12px;
+    border-radius: 999px; background: var(--fondo); border: 1px solid var(--acento);
+    font-weight: 700; font-size: 13px; color: var(--encabezado);
+}
+.acciones { display: flex; justify-content: flex-end; gap: 6px; }
+.vacio { padding: 48px; text-align: center; color: var(--texto-sec); }
+
+.pie-tabla {
+    margin-top: auto; display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; border-top: 1px solid var(--linea);
+    color: var(--texto-sec); font-size: 14px;
+}
+.paginacion { display: flex; align-items: center; gap: 8px; }
+
+/* ---------- Formulario ---------- */
+.pila { display: flex; flex-direction: column; gap: 20px; }
+.seccion { padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+.seccion h2 { font-size: 20px; }
+.seccion-desc { margin: 4px 0 0; color: var(--texto-sec); font-size: 14px; }
+.rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.rejilla-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.span-2 { grid-column: span 2; }
+.span-3 { grid-column: span 3; }
+
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.segmentado { display: flex; gap: 8px; }
+.segmentado label { flex: 1; position: relative; }
+.segmentado input { position: absolute; opacity: 0; }
+.segmentado span {
+    display: flex; align-items: center; justify-content: center; height: 44px;
+    border: 1.5px solid var(--borde); border-radius: 10px; font-weight: 700; cursor: pointer;
+}
+.segmentado input:checked + span { background: var(--primario); border-color: var(--primario); color: #fff; }
+.segmentado input:focus-visible + span { outline: 3px solid var(--primario); outline-offset: 2px; }
+
+.barra-acciones {
+    position: sticky; bottom: 0; z-index: 1;
+    margin: 0 -40px -32px;
+    display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+    padding: 16px 40px; background: #fff;
+    border-top: 1px solid var(--linea);
+    box-shadow: 0 -4px 16px rgba(11,37,69,.06);
+}
+.barra-acciones .estado { margin-right: auto; color: var(--texto-sec); font-size: 14px; }
+
+/* ---------- Error de Blazor ---------- */
+#blazor-error-ui {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;
+    background: #FDECEA; color: var(--peligro); padding: 12px 20px; font-weight: 600;
+}
+#blazor-error-ui .reload { margin-left: 12px; color: var(--primario); }

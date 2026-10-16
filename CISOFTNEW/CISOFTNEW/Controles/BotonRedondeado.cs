@@ -49,7 +49,7 @@ namespace CISOFTNEW.Controles
         protected override void OnPaint(PaintEventArgs e)
         {
             var g = e.Graphics;
-            g.Clear(Parent?.BackColor ?? SystemColors.Control);
+            g.Clear(Formas.FondoDe(Parent));
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             bool hover = _encima && Enabled;

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using CISOFTDataOperations.Objects.Menu;
 using CISOFTDataOperations.Security;
+using CISOFTNEW.Controles;
 
 namespace CISOFTNEW
 {
@@ -14,18 +15,157 @@ namespace CISOFTNEW
         {
             
             InitializeComponent();
-            
-            pnlContent.Controls.Add(tlpDashboard);
-            tlpDashboard.Dock = DockStyle.Fill;
-            tlpDashboard.BringToFront();
 
             _session = session;
 
-            ConfigurarDashboard();
+            ConfigurarSidebar();
 
             ConfigurarPantallaCompleta();
 
-            lblWelcome.Text = "Welcome " + _session.UserName;
+            MostrarDashboard();
+
+            lblUsuario.Text = _session.UserName;
+        }
+
+        private void ConfigurarSidebar()
+        {
+            flpMenu.Controls.Clear();
+
+            BotonRedondeado btnHome = CrearBotonMenu(
+                "Home",
+                "E80F");
+
+            btnHome.Click += (sender, e) =>
+                MostrarDashboard();
+
+            flpMenu.Controls.Add(btnHome);
+
+            // Academic
+            flpMenu.Controls.Add(CrearTituloSeccion("ACADEMIC"));
+
+            BotonRedondeado btnStudents = CrearBotonMenu(
+                "Students",
+                "E716");
+
+            btnStudents.Click += (sender, e) =>
+                AbrirStudents();
+
+            BotonRedondeado btnTeachers = CrearBotonMenu(
+                "Teachers",
+                "E77B");
+
+            btnTeachers.Click += (sender, e) =>
+                AbrirTeachers();
+
+            BotonRedondeado btnGroups = CrearBotonMenu(
+                "Groups",
+                "E7BE");
+
+            flpMenu.Controls.Add(btnStudents);
+            flpMenu.Controls.Add(btnTeachers);
+            flpMenu.Controls.Add(btnGroups);
+
+            // Catalogs
+            flpMenu.Controls.Add(CrearTituloSeccion("CATALOGS"));
+
+            BotonRedondeado btnLevels = CrearBotonMenu(
+                "Levels",
+                "E9D2");
+
+            // BotonRedondeado btnStages = CrearBotonMenu(
+            //     "Stages",
+            //     "E7C1");
+
+            BotonRedondeado btnBooks = CrearBotonMenu(
+                "Books",
+                "E8F1");
+
+            btnBooks.Click += (sender, e) =>
+                AbrirBooks();
+
+            flpMenu.Controls.Add(btnLevels);
+            // flpMenu.Controls.Add(btnStages);
+            flpMenu.Controls.Add(btnBooks);
+
+            // Administration
+            flpMenu.Controls.Add(CrearTituloSeccion("ADMINISTRATION"));
+
+            BotonRedondeado btnPayments = CrearBotonMenu(
+                "Payments",
+                "E8C7");
+
+            BotonRedondeado btnReports = CrearBotonMenu(
+                "Reports",
+                "E9F9");
+
+            flpMenu.Controls.Add(btnPayments);
+            flpMenu.Controls.Add(btnReports);
+        }
+
+        private BotonRedondeado CrearBotonMenu(
+            string texto,
+            string icono)
+        {
+            BotonRedondeado boton = new BotonRedondeado();
+
+            boton.Text = texto;
+            boton.Icono = icono;
+            boton.Alineacion = HorizontalAlignment.Left;
+            boton.Size = new Size(200, 42);
+            boton.Margin = new Padding(0, 0, 0, 2);
+            boton.Radio = 8;
+            boton.BackColor = Color.FromArgb(11, 37, 69);
+            boton.ColorHover = Color.FromArgb(19, 64, 116);
+            boton.ForeColor = Color.FromArgb(238, 244, 237);
+            boton.Font = new Font("Segoe UI", 11F);
+
+            return boton;
+        }
+
+        private Label CrearTituloSeccion(string texto)
+        {
+            Label titulo = new Label();
+
+            titulo.Text = texto;
+            titulo.AutoSize = false;
+            titulo.Size = new Size(200, 30);
+            titulo.Margin = new Padding(0, 10, 0, 0);
+            titulo.Padding = new Padding(14, 0, 0, 0);
+            titulo.TextAlign = ContentAlignment.BottomLeft;
+            titulo.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            titulo.ForeColor = Color.FromArgb(141, 169, 196);
+
+            return titulo;
+        }
+
+        private void AbrirStudents()
+        {
+            var studentsControl = new Stu_StudentDirectory();
+
+            studentsControl.BackRequested += (s, args) =>
+                MostrarDashboard();
+
+            MostrarControl(studentsControl);
+        }
+
+        private void AbrirTeachers()
+        {
+            var teachersControl = new Tch_TeachersDirectory();
+
+            teachersControl.BackRequested += (s, args) =>
+                MostrarDashboard();
+
+            MostrarControl(teachersControl);
+        }
+
+        private void AbrirBooks()
+        {
+            var booksControl = new Books();
+
+            booksControl.BackRequested += (s, args) =>
+                MostrarDashboard();
+
+            MostrarControl(booksControl);
         }
 
         private void ConfigurarPantallaCompleta()
@@ -35,12 +175,14 @@ namespace CISOFTNEW
             WindowState = FormWindowState.Maximized;
 
             Rectangle workingArea =
-                Screen.PrimaryScreen.WorkingArea;
+                Screen.PrimaryScreen!.WorkingArea;
 
             Location = workingArea.Location;
             Size = workingArea.Size;
         }
 
+        // Tablero anterior de 8 tarjetas. Ya no se usa (lo reemplazó Inicio);
+        // se deja mientras el nuevo inicio termina de quedar.
         private void ConfigurarDashboard()
         {
             tlpDashboard.Controls.Clear();
@@ -78,15 +220,7 @@ namespace CISOFTNEW
                 Resource.Resources.Students);
 
             cardStudents.Click += (sender, e) =>
-            {
-                var studentsControl = new Stu_StudentDirectory();
-
-                studentsControl.BackRequested += (s, args) =>
-                    MostrarDashboard();
-
-                MostrarControl(studentsControl);
-                lblWelcome.Visible = false;
-            };
+                AbrirStudents();
 
             DashboardCard cardTeachers = CrearCard(
                 "Teachers",
@@ -95,15 +229,7 @@ namespace CISOFTNEW
                 Resource.Resources.Teachers);
 
             cardTeachers.Click += (sender, e) =>
-            {
-                var teachersControl = new Tch_TeachersDirectory();
-
-                //teachersControl.BackRequested += (s, args) =>
-                //    MostrarDashboard();
-
-                MostrarControl(teachersControl);
-                lblWelcome.Visible = false;
-            };
+                AbrirTeachers();
 
             DashboardCard cardBooks = CrearCard(
                 "Books",
@@ -111,15 +237,18 @@ namespace CISOFTNEW
                 "",
                 Resource.Resources.Books);
 
+            cardBooks.Click += (sender, e) =>
+                AbrirBooks();
+
             DashboardCard cardLevels = CrearCard(
                 "Levels",
                 "Levels management",
                 "",
                 Resource.Resources.Levels);
 
-            DashboardCard cardCourses = CrearCard(
-                "Courses",
-                "Course management",
+            DashboardCard cardGroups = CrearCard(
+                "Groups",
+                "Groups management",
                 "",
                 Resource.Resources.Courses);
 
@@ -147,7 +276,7 @@ namespace CISOFTNEW
             tlpDashboard.Controls.Add(cardBooks, 2, 0);
             tlpDashboard.Controls.Add(cardLevels, 3, 0);
 
-            tlpDashboard.Controls.Add(cardCourses, 0, 1);
+            tlpDashboard.Controls.Add(cardGroups, 0, 1);
             tlpDashboard.Controls.Add(cardStages, 1, 1);
             tlpDashboard.Controls.Add(cardPayments, 2, 1);
             tlpDashboard.Controls.Add(cardReports, 3, 1);
@@ -158,7 +287,7 @@ namespace CISOFTNEW
             cardBooks.Anchor = AnchorStyles.None;
             cardLevels.Anchor = AnchorStyles.None;
 
-            cardCourses.Anchor = AnchorStyles.None;
+            cardGroups.Anchor = AnchorStyles.None;
             cardStages.Anchor = AnchorStyles.None;
             cardPayments.Anchor = AnchorStyles.None;
             cardReports.Anchor = AnchorStyles.None;
@@ -190,10 +319,8 @@ namespace CISOFTNEW
 
         private void MostrarDashboard()
         {
-            pnlContent.Controls.Clear();
-            pnlContent.Controls.Add(tlpDashboard);
-            tlpDashboard.Dock = DockStyle.Fill;
-            lblWelcome.Visible = true;
+            MostrarControl(
+                new Inicio(_session.UserName));
         }
     }
 }
