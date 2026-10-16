@@ -1,0 +1,42 @@
+@page "/prueba"
+
+<header class="encabezado">
+    <div>
+        <div class="migas">Pruebas</div>
+        <h1>Pantalla de prueba</h1>
+        <p class="subtitulo">Hecha en VS Code, editable desde Visual Studio.</p>
+    </div>
+</header>
+
+<section class="banner">
+    <h2>Hola, CISoft 👋</h2>
+    <p>Degradado animado, sombras y bordes redondeados: CSS que WinForms no tiene.</p>
+</section>
+
+<section class="tarjeta seccion">
+    <h2>Colores controlados desde C#</h2>
+
+    <div class="campo" style="max-width: 360px">
+        <label for="tono">Tono base: @tono°</label>
+        <input id="tono" type="range" min="0" max="360" @bind="tono" @bind:event="oninput" />
+    </div>
+
+    <div class="mosaico">
+        @for (int i = 0; i < 8; i++)
+        {
+            var h = (tono + i * 45) % 360;
+            <div class="cuadro" style="background: hsl(@h 70% 40%)">@h°</div>
+        }
+    </div>
+
+    <div>
+        <button type="button" class="btn btn-primario" @onclick="() => clics++">
+            Me han dado clic @clics veces
+        </button>
+    </div>
+</section>
+
+@code {
+    private int tono = 210;
+    private int clics = 0;
+}

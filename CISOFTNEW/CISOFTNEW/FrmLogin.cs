@@ -29,7 +29,7 @@ namespace CISOFTNEW
         private void ConfigurarPantallaCompleta()
         {
             Rectangle workingArea =
-                Screen.PrimaryScreen.WorkingArea;
+                Screen.PrimaryScreen!.WorkingArea;
 
             Location = workingArea.Location;
             Size = workingArea.Size;
@@ -92,7 +92,7 @@ namespace CISOFTNEW
                 Cursor = Cursors.WaitCursor;
 
                 //Autenticar usuario
-                UserSession session = UserAuthentication.Authenticate(user, password);
+                UserSession? session = UserAuthentication.Authenticate(user, password);
 
                 //Usuario o contraseña incorrectos
                 if (session == null)
@@ -129,7 +129,7 @@ namespace CISOFTNEW
                 // Mostrar el formulario principal
                 mainForm.Show();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show(
                     "An error occurred while trying to login.",

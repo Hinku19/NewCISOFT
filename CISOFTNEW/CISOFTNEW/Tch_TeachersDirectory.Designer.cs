@@ -267,8 +267,6 @@
         private Label lblCatAlu;
         private Controles.BotonRedondeado botonRedondeado1;
         private Controles.PanelRedondeado panelRedondeado1;
-        private Controles.CampoTexto campoTexto3;
-        private Controles.CampoTexto campoTexto2;
         private Controles.CampoTexto txtEmployeeId;
         private Guna.UI2.WinForms.Guna2ComboBox cmbMaestros;
         private Controles.BotonRedondeado btnLimpiar;

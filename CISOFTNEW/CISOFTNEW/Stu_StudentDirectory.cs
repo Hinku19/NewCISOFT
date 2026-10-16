@@ -48,7 +48,7 @@ namespace CISOFTNEW
 
         }
 
-        public event EventHandler BackRequested;
+        public event EventHandler? BackRequested;
 
         private void btnSalir_Click(object sender, EventArgs e)
         {

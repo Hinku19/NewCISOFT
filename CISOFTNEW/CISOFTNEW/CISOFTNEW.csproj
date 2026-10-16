@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- MSB3277: Microsoft.Web.WebView2.Wpf (dependencia de BlazorWebView) pide WindowsBase 5.0; en WinForms se usa 4.0 y es inofensivo -->
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,9 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="CISOFTDataOperations">
-      <HintPath>..\..\CISOFTDataOperations\CISOFTDataOperations\bin\Debug\net10.0-windows\CISOFTDataOperations.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\CISOFTDataOperations\CISOFTDataOperations\CISOFTDataOperations.csproj" />
   </ItemGroup>
   <ItemGroup>
 
