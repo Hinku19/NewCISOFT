@@ -6,21 +6,48 @@ using Microsoft.Data.SqlClient;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using CISOFTDataOperations.Database;
+using CISOFTDataOperations.Database;            
 
 namespace CISOFTNEW
 {
     public partial class Tch_TeachersDirectory : UserControl
     {
-        int? EmployeeId = null;
 
+        int EmployeeId;
         public Tch_TeachersDirectory()
         {
             InitializeComponent();
 
-            cmbMaestros.SelectionChangeCommitted += cmbMaestros_SelectionChangeCommitted;
+            dgvMaestros.SelectionChanged += dgvMaestros_SelectionChanged;
 
+            ConfigurarDgvMaestros();
+            CargarOpcionesSexo();
             CargarMaestros();
+        }
+
+        private void ConfigurarDgvMaestros()
+        {
+            dgvMaestros.AutoGenerateColumns = true;
+            dgvMaestros.ReadOnly = true;
+            dgvMaestros.AllowUserToAddRows = false;
+            dgvMaestros.AllowUserToDeleteRows = false;
+            dgvMaestros.AllowUserToResizeRows = false;
+            dgvMaestros.MultiSelect = false;
+            dgvMaestros.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvMaestros.RowHeadersVisible = false;
+            dgvMaestros.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvMaestros.BackgroundColor = Color.White;
+            dgvMaestros.BorderStyle = BorderStyle.None;
+            dgvMaestros.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvMaestros.GridColor = Color.FromArgb(220, 230, 238);
+            dgvMaestros.ColumnHeadersVisible = false;
+
+            dgvMaestros.DefaultCellStyle.SelectionBackColor = Color.FromArgb(218, 232, 246);
+            dgvMaestros.DefaultCellStyle.SelectionForeColor = Color.FromArgb(11, 37, 68);
+            dgvMaestros.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvMaestros.DefaultCellStyle.Padding = new Padding(10, 8, 6, 8);
+
+            dgvMaestros.RowTemplate.Height = 58;
         }
 
         public event EventHandler BackRequested;
@@ -31,40 +58,46 @@ namespace CISOFTNEW
 
         public void CargarMaestros()
         {
-            string sql = "SELECT EmployeeId, LTRIM(RTRIM(ISNULL(FirstName,'') + ' ' + ISNULL(PaternalSurname,'') + ' ' + ISNULL(MaternalSurname,''))) AS FullName FROM Teachers WHERE IsActive = 1";
+            const string sql = @"
+        SELECT EmployeeId,
+               LTRIM(RTRIM(
+                   ISNULL(FirstName, '') + ' ' +
+                   ISNULL(PaternalSurname, '') + ' ' +
+                   ISNULL(MaternalSurname, '')
+               )) AS FullName
+        FROM dbo.Teachers
+        WHERE IsActive = 1
+        ORDER BY FirstName, PaternalSurname;";
 
-            DataSet ds = CISOFTDataOperations.Database.DataOperations.GetData(CISOFTDataOperations.Database.Connection.NewCiSoft(), sql);
+            DataSet ds = CISOFTDataOperations.Database.DataOperations.GetData(
+                CISOFTDataOperations.Database.Connection.NewCiSoft(),
+                sql);
 
-            if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+            if (ds == null || ds.Tables.Count == 0)
             {
-                cmbMaestros.DataSource = null;
+                dgvMaestros.DataSource = null;
                 EmployeeId = 0;
                 return;
             }
 
-            DataTable dt = ds.Tables[0];
-            //Agregar la opción inicial
-            DataRow newRow = dt.NewRow();
-            newRow["EmployeeId"] = 0;
-            newRow["FullName"] = "Seleccione un maestro";
-            dt.Rows.InsertAt(newRow, 0);
-            cmbMaestros.DataSource = dt;
+            dgvMaestros.DataSource = ds.Tables[0];
 
-            cmbMaestros.ValueMember = "EmployeeId";
-            cmbMaestros.DisplayMember = "FullName";
-            cmbMaestros.DataSource = dt;
-            cmbMaestros.SelectedIndex = 0;
+            if (dgvMaestros.Columns.Contains("EmployeeId"))
+                dgvMaestros.Columns["EmployeeId"].Visible = false;
         }
 
-        private void cmbMaestros_SelectionChangeCommitted(object sender, EventArgs e)
+        private void dgvMaestros_SelectionChanged(object sender, EventArgs e)
         {
-            if (!int.TryParse(cmbMaestros.SelectedValue?.ToString(), out int employeeId)
-                || employeeId == 0)
-            {
-                LimpiarCamposMaestro();
+            if (dgvMaestros.CurrentRow == null ||
+                dgvMaestros.CurrentRow.Cells["EmployeeId"].Value == null)
                 return;
-            }
 
+            if (!int.TryParse(
+                dgvMaestros.CurrentRow.Cells["EmployeeId"].Value.ToString(),
+                out int employeeId))
+                return;
+
+            EmployeeId = employeeId;
             CargarDatosMaestro(employeeId);
         }
 
@@ -95,57 +128,66 @@ namespace CISOFTNEW
                         return;
                     }
 
-                    txtEmployee.Texto = Convert.ToString(reader["EmployeeId"]);
-                    txtFirsName.Texto = Convert.ToString(reader["FirstName"]);
-                    txtPaternalName.Texto = Convert.ToString(reader["PaternalSurname"]);
-                    txtMaternalName.Texto = Convert.ToString(reader["MaternalSurname"]);
-                    txtSex.Texto = Convert.ToString(reader["Sex"]);
-                    txtCURP.Texto = Convert.ToString(reader["CURP"]);
-                    txtEmail.Texto = Convert.ToString(reader["Email"]);
-                    txtPersonalPhone.Texto = Convert.ToString(reader["PersonalPhone"]);
-                    txtEmergencyPhone.Texto = Convert.ToString(reader["EmergencyPhone"]);
-                    txtAddress.Texto = Convert.ToString(reader["Address"]);
-                    txtExtNumber.Texto = Convert.ToString(reader["ExtNumber"]);
-                    txtIntNumber.Texto = Convert.ToString(reader["IntNumber"]);
-                    txtNeighborhood.Texto = Convert.ToString(reader["Colonia"]);
-                    txtZipCode.Texto = Convert.ToString(reader["ZipCode"]);
-                    txtCity.Texto = Convert.ToString(reader["Municipio"]);
-                    dtpBirthDate.Value = Convert.ToDateTime(reader["BirthDate"]);
+                    txtEmployeeId.Text = Convert.ToString(reader["EmployeeId"]);
+                    txtFirstName.Text = Convert.ToString(reader["FirstName"]);
+                    txtPaternalSurName.Text = Convert.ToString(reader["PaternalSurname"]);
+                    txtMaternalSurName.Text = Convert.ToString(reader["MaternalSurname"]);
+                    txtCURP.Text = Convert.ToString(reader["CURP"]);
+                    txtEmail.Text = Convert.ToString(reader["Email"]);
+                    txtPersonalPhone.Text = Convert.ToString(reader["PersonalPhone"]);
+                    txtEmergencyPhone.Text = Convert.ToString(reader["EmergencyPhone"]);
+                    txtAddress.Text = Convert.ToString(reader["Address"]);
+                    txtExtNum.Text = Convert.ToString(reader["ExtNumber"]);
+                    txtIntNum.Text = Convert.ToString(reader["IntNumber"]);
+                    txtColonia.Text = Convert.ToString(reader["Colonia"]);
+                    txtZipCode.Text = Convert.ToString(reader["ZipCode"]);
+                    txtCity.Text = Convert.ToString(reader["Municipio"]);
+                    dtpBirthdate.Value = Convert.ToDateTime(reader["BirthDate"]);
 
-                    bool isActive = reader["IsActive"] != DBNull.Value && Convert.ToBoolean(reader["IsActive"]);
+                    string sexo = Convert.ToString(reader["Sex"]).Trim().ToUpperInvariant();
 
-                    lblActive.Visible = isActive;
-                    lblInactive.Visible = !isActive;
+                    cmbSex.SelectedIndex = sexo == "M" ? 0 : sexo == "F" ? 1 : -1;
                 }
             }
         }
 
         private void LimpiarCamposMaestro()
         {
-            txtEmployee.Texto = string.Empty;
-            txtFirsName.Texto = string.Empty;
-            txtPaternalName.Texto = string.Empty;
-            txtMaternalName.Texto = string.Empty;
-            txtSex.Texto = string.Empty;
-            txtCURP.Texto = string.Empty;
-            txtEmail.Texto = string.Empty;
-            txtPersonalPhone.Texto = string.Empty;
-            txtEmergencyPhone.Texto = string.Empty;
-            txtAddress.Texto = string.Empty;
-            txtExtNumber.Texto = string.Empty;
-            txtIntNumber.Texto = string.Empty;
-            txtNeighborhood.Texto = string.Empty;
-            txtZipCode.Texto = string.Empty;
-            txtCity.Texto = string.Empty;
-            dtpBirthDate.Value = DateTime.Now;
-            lblActive.Visible = false;
-            lblInactive.Visible = false;
-
-            cmbMaestros.SelectedIndex = 0;
+            txtEmployeeId.Text = string.Empty;
+            txtFirstName.Text = string.Empty;
+            txtPaternalSurName.Text = string.Empty;
+            txtMaternalSurName.Text = string.Empty;
+            cmbSex.SelectedIndex = -1;
+            txtCURP.Text = string.Empty;
+            txtEmail.Text = string.Empty;
+            txtPersonalPhone.Text = string.Empty;
+            txtEmergencyPhone.Text = string.Empty;
+            txtAddress.Text = string.Empty;
+            txtExtNum.Text = string.Empty;
+            txtIntNum.Text = string.Empty;
+            txtColonia.Text = string.Empty;
+            txtZipCode.Text = string.Empty;
+            txtCity.Text = string.Empty;
+            dtpBirthdate.Value = DateTime.Now;
             gbxPersonal.Enabled = false;
-            gbxIsActive.Enabled = false;
-            gbxContact.Enabled = false;
-            gbxAddress.Enabled = false;
+            gbxContacto.Enabled = false;
+            gbxDireccion.Enabled = false;
+        }
+
+        private void CargarOpcionesSexo()
+        {
+            cmbSex.Items.Clear();
+            cmbSex.Items.Add(new OpcionSexo { Codigo = "M", Texto = "Masculino" });
+            cmbSex.Items.Add(new OpcionSexo { Codigo = "F", Texto = "Femenino" });
+
+            cmbSex.DisplayMember = "Texto";
+            cmbSex.ValueMember = "Codigo";
+        }
+
+        private class OpcionSexo
+        {
+            public string Codigo { get; set; }
+            public string Texto { get; set; }
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)

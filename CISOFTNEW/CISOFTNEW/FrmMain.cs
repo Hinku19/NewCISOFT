@@ -98,8 +98,8 @@ namespace CISOFTNEW
             {
                 var teachersControl = new Tch_TeachersDirectory();
 
-                teachersControl.BackRequested += (s, args) =>
-                    MostrarDashboard();
+                //teachersControl.BackRequested += (s, args) =>
+                //    MostrarDashboard();
 
                 MostrarControl(teachersControl);
                 lblWelcome.Visible = false;
