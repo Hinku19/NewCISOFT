@@ -38,7 +38,7 @@ namespace CISOFTNEW
                 1);
 
             tlpInicio.Controls.Add(
-                CrearTituloSeccion("Academic"),
+                CrearTituloSeccion("Académico"),
                 0,
                 2);
 
@@ -78,9 +78,11 @@ namespace CISOFTNEW
             Label lblFecha = new Label();
             lblFecha.Dock = DockStyle.Top;
             lblFecha.Height = 26;
-            lblFecha.Text = DateTime.Now.ToString(
-                "dddd, MMMM d",
-                new CultureInfo("en-US"));
+            // Fecha en español, p. ej. "Jueves, 16 de octubre"
+            string fecha = DateTime.Now.ToString(
+                "dddd, d 'de' MMMM",
+                new CultureInfo("es-MX"));
+            lblFecha.Text = char.ToUpper(fecha[0]) + fecha.Substring(1);
             lblFecha.Font = new Font("Segoe UI", 11F);
             lblFecha.ForeColor = AzulPrimario;
             lblFecha.TextAlign = ContentAlignment.BottomLeft;
@@ -97,7 +99,7 @@ namespace CISOFTNEW
             acciones.Margin = new Padding(0);
 
             BotonRedondeado btnNewStudent = new BotonRedondeado();
-            btnNewStudent.Text = "New student";
+            btnNewStudent.Text = "Nuevo alumno";
             btnNewStudent.Icono = "E710";
             btnNewStudent.Size = new Size(170, 46);
             btnNewStudent.Radio = 10;
@@ -107,7 +109,7 @@ namespace CISOFTNEW
             btnNewStudent.Font = new Font("Segoe UI Semibold", 10.5F);
 
             BotonRedondeado btnRegisterPayment = new BotonRedondeado();
-            btnRegisterPayment.Text = "Register payment";
+            btnRegisterPayment.Text = "Registrar pago";
             btnRegisterPayment.Icono = "E8C7";
             btnRegisterPayment.Size = new Size(200, 46);
             btnRegisterPayment.Radio = 10;
@@ -133,15 +135,15 @@ namespace CISOFTNEW
 
             if (hora < 12)
             {
-                return "Good morning";
+                return "Buenos días";
             }
 
             if (hora < 19)
             {
-                return "Good afternoon";
+                return "Buenas tardes";
             }
 
-            return "Good evening";
+            return "Buenas noches";
         }
 
         // ---------- Indicadores ----------
@@ -155,17 +157,17 @@ namespace CISOFTNEW
             lblPendingPayments = CrearValorIndicador();
 
             indicadores.Controls.Add(
-                CrearTarjetaIndicador("Active students", lblActiveStudents),
+                CrearTarjetaIndicador("Alumnos activos", lblActiveStudents),
                 0,
                 0);
 
             indicadores.Controls.Add(
-                CrearTarjetaIndicador("Groups in progress", lblGroupsInProgress),
+                CrearTarjetaIndicador("Grupos Activos", lblGroupsInProgress),
                 1,
                 0);
 
             indicadores.Controls.Add(
-                CrearTarjetaIndicador("Pending payments", lblPendingPayments),
+                CrearTarjetaIndicador("Pendientes de pago", lblPendingPayments),
                 2,
                 0);
 
@@ -215,17 +217,17 @@ namespace CISOFTNEW
             TableLayoutPanel academic = CrearTabla(3);
 
             academic.Controls.Add(
-                CrearTarjetaModulo("Students", "Register and track", "E716"),
+                CrearTarjetaModulo("Alumnos", "Registro y seguimiento", "E716"),
                 0,
                 0);
 
             academic.Controls.Add(
-                CrearTarjetaModulo("Teachers", "Staff and schedules", "E77B"),
+                CrearTarjetaModulo("Maestros", "Personal y horarios", "E77B"),
                 1,
                 0);
 
             academic.Controls.Add(
-                CrearTarjetaModulo("Groups", "Groups and classes", "E7BE"),
+                CrearTarjetaModulo("Grupos", "Grupos y clases", "E7BE"),
                 2,
                 0);
 
@@ -296,8 +298,8 @@ namespace CISOFTNEW
             Control catalogos = CrearCatalogos();
             catalogos.Margin = new Padding(0, 0, 14, 0);
 
-            inferior.Controls.Add(CrearTituloSeccion("Catalogs"), 0, 0);
-            inferior.Controls.Add(CrearTituloSeccion("Administration"), 1, 0);
+            inferior.Controls.Add(CrearTituloSeccion("Catálogos"), 0, 0);
+            inferior.Controls.Add(CrearTituloSeccion("Administración"), 1, 0);
             inferior.Controls.Add(catalogos, 0, 1);
             inferior.Controls.Add(CrearAdministracion(), 1, 1);
 
@@ -318,9 +320,9 @@ namespace CISOFTNEW
             lista.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             lista.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
 
-            lista.Controls.Add(CrearFilaCatalogo("Levels", "E9D2", true), 0, 0);
-            // lista.Controls.Add(CrearFilaCatalogo("Stages", "E7C1", true), 0, 1);
-            lista.Controls.Add(CrearFilaCatalogo("Books", "E8F1", false), 0, 1);
+            lista.Controls.Add(CrearFilaCatalogo("Niveles", "E9D2", true), 0, 0);
+            // lista.Controls.Add(CrearFilaCatalogo("Etapas", "E7C1", true), 0, 1);
+            lista.Controls.Add(CrearFilaCatalogo("Libros", "E8F1", false), 0, 1);
 
             tarjeta.Controls.Add(lista);
 
@@ -388,12 +390,12 @@ namespace CISOFTNEW
             administracion.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
             administracion.Controls.Add(
-                CrearBotonAdministracion("Payments", "E8C7", AzulPrimario),
+                CrearBotonAdministracion("Pagos", "E8C7", AzulPrimario),
                 0,
                 0);
 
             administracion.Controls.Add(
-                CrearBotonAdministracion("Reports", "E9F9", AzulSecundario),
+                CrearBotonAdministracion("Reportes", "E9F9", AzulSecundario),
                 0,
                 1);
 

@@ -18,6 +18,8 @@ namespace CISOFTNEW
 
             _session = session;
 
+            CargarLogo();
+
             ConfigurarSidebar();
 
             ConfigurarPantallaCompleta();
@@ -27,12 +29,25 @@ namespace CISOFTNEW
             lblUsuario.Text = _session.UserName;
         }
 
+        private void CargarLogo()
+        {
+            // La imagen original es enorme (14221 x 3884 px, ~220 MB en memoria).
+            // Se hace una copia pequeña para la barra lateral y se libera la original.
+            using (Bitmap original = Resource.Resources.EnglishCenter_Horizontal)
+            {
+                int ancho = 400;
+                int alto = original.Height * ancho / original.Width;
+
+                picLogo.Image = new Bitmap(original, ancho, alto);
+            }
+        }
+
         private void ConfigurarSidebar()
         {
             flpMenu.Controls.Clear();
 
             BotonRedondeado btnHome = CrearBotonMenu(
-                "Home",
+                "Inicio",
                 "E80F");
 
             btnHome.Click += (sender, e) =>
@@ -40,44 +55,44 @@ namespace CISOFTNEW
 
             flpMenu.Controls.Add(btnHome);
 
-            // Academic
-            flpMenu.Controls.Add(CrearTituloSeccion("ACADEMIC"));
+            // Académico
+            flpMenu.Controls.Add(CrearTituloSeccion("ACADÉMICO"));
 
             BotonRedondeado btnStudents = CrearBotonMenu(
-                "Students",
+                "Alumnos",
                 "E716");
 
             btnStudents.Click += (sender, e) =>
                 AbrirStudents();
 
             BotonRedondeado btnTeachers = CrearBotonMenu(
-                "Teachers",
+                "Maestros",
                 "E77B");
 
             btnTeachers.Click += (sender, e) =>
                 AbrirTeachers();
 
             BotonRedondeado btnGroups = CrearBotonMenu(
-                "Groups",
+                "Grupos",
                 "E7BE");
 
             flpMenu.Controls.Add(btnStudents);
             flpMenu.Controls.Add(btnTeachers);
             flpMenu.Controls.Add(btnGroups);
 
-            // Catalogs
-            flpMenu.Controls.Add(CrearTituloSeccion("CATALOGS"));
+            // Catálogos
+            flpMenu.Controls.Add(CrearTituloSeccion("CATÁLOGOS"));
 
             BotonRedondeado btnLevels = CrearBotonMenu(
-                "Levels",
+                "Niveles",
                 "E9D2");
 
             // BotonRedondeado btnStages = CrearBotonMenu(
-            //     "Stages",
+            //     "Etapas",
             //     "E7C1");
 
             BotonRedondeado btnBooks = CrearBotonMenu(
-                "Books",
+                "Libros",
                 "E8F1");
 
             btnBooks.Click += (sender, e) =>
@@ -87,15 +102,15 @@ namespace CISOFTNEW
             // flpMenu.Controls.Add(btnStages);
             flpMenu.Controls.Add(btnBooks);
 
-            // Administration
-            flpMenu.Controls.Add(CrearTituloSeccion("ADMINISTRATION"));
+            // Administración
+            flpMenu.Controls.Add(CrearTituloSeccion("ADMINISTRACIÓN"));
 
             BotonRedondeado btnPayments = CrearBotonMenu(
-                "Payments",
+                "Pagos",
                 "E8C7");
 
             BotonRedondeado btnReports = CrearBotonMenu(
-                "Reports",
+                "Reportes",
                 "E9F9");
 
             flpMenu.Controls.Add(btnPayments);
@@ -140,12 +155,10 @@ namespace CISOFTNEW
 
         private void AbrirStudents()
         {
-            var studentsControl = new Stu_StudentDirectory();
-
-            studentsControl.BackRequested += (s, args) =>
-                MostrarDashboard();
-
-            MostrarControl(studentsControl);
+            // Catálogo de alumnos en Blazor (Pantallas/Alumnos.razor).
+            // Desde ahí, Alumnos.razor navega solo a "nuevo" y "editar".
+            MostrarControl(
+                new PantallaBlazor("/alumnos"));
         }
 
         private void AbrirTeachers()
@@ -311,7 +324,16 @@ namespace CISOFTNEW
 
         private void MostrarControl(UserControl control)
         {
+            // Libera la pantalla anterior (importante para las de Blazor,
+            // que abren un navegador interno que se queda en memoria si no se libera)
+            Control[] anteriores = new Control[pnlContent.Controls.Count];
+            pnlContent.Controls.CopyTo(anteriores, 0);
             pnlContent.Controls.Clear();
+
+            foreach (Control anterior in anteriores)
+            {
+                anterior.Dispose();
+            }
 
             control.Dock = DockStyle.Fill;
             pnlContent.Controls.Add(control);

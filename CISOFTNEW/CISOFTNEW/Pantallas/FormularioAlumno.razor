@@ -61,10 +61,7 @@
                 <InputDate id="nacimiento" class="control" @bind-Value="alumno.FechaNacimiento" />
                 <ValidationMessage For="() => alumno.FechaNacimiento" />
             </div>
-            <div class="campo">
-                <label for="edad">Edad</label>
-                <input id="edad" class="control" readonly value="@(Edad?.ToString() ?? "Se calcula con la fecha")" />
-            </div>
+            <div></div>
 
             <div class="campo">
                 <label for="curp">CURP <span class="req">*</span></label>
@@ -211,18 +208,6 @@
     }
 
     private string Titulo => esNuevo ? "Nuevo alumno" : "Editar alumno";
-
-    private int? Edad
-    {
-        get
-        {
-            if (alumno.FechaNacimiento is not DateTime f) return null;
-            var hoy = DateTime.Today;
-            int edad = hoy.Year - f.Year;
-            if (f.Date > hoy.AddYears(-edad)) edad--;
-            return edad;
-        }
-    }
 
     private void Guardar()
     {

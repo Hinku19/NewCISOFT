@@ -1,12 +1,12 @@
 @* Componente raíz: decide qué pantalla mostrar según la ruta (@page) *@
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(Plantilla)" />
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(PlantillaContenido)" />
         @* Al cambiar de pantalla, mueve el foco al título (útil para lectores de pantalla) *@
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <LayoutView Layout="@typeof(Plantilla)">
+        <LayoutView Layout="@typeof(PlantillaContenido)">
             <h1>Pantalla no encontrada</h1>
         </LayoutView>
     </NotFound>
