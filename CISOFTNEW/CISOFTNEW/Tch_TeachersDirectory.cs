@@ -1,12 +1,14 @@
-﻿using System;
+﻿using CISOFTDataOperations.Database;
+using Guna.UI2.WinForms;
+using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using Microsoft.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Text;
 using System.Windows.Forms;
-using CISOFTDataOperations.Database;            
 
 namespace CISOFTNEW
 {
@@ -19,10 +21,109 @@ namespace CISOFTNEW
             InitializeComponent();
 
             dgvMaestros.SelectionChanged += dgvMaestros_SelectionChanged;
+            cmbSex.DropDownStyle = ComboBoxStyle.DropDownList;
 
             ConfigurarDgvMaestros();
             CargarOpcionesSexo();
             CargarMaestros();
+
+            RedondearPanel(pnlTeacherList, 10, Color.FromArgb(220, 230, 238));
+            RedondearPanel(pnlTeacherDetails, 10, Color.FromArgb(220, 230, 238));
+            RedondearPanel(tlpTeacherDetails, 10, Color.FromArgb(220, 230, 238));
+            RedondearPanel(pnlBottomAction, 10, Color.FromArgb(220, 230, 238));
+            RedondearPanel(flpBottomAction, 10, Color.FromArgb(220, 230, 238));
+
+
+            txtEmployeeId.KeyPress += SoloNumeros_KeyPress;
+            txtZipCode.KeyPress += SoloNumeros_KeyPress;
+            txtPersonalPhone.KeyPress += SoloNumeros_KeyPress;
+            txtEmergencyPhone.KeyPress += SoloNumeros_KeyPress;
+
+            txtFirstName.KeyPress += SoloLetras_KeyPress;
+            txtPaternalSurName.KeyPress += SoloLetras_KeyPress;
+            txtMaternalSurName.KeyPress += SoloLetras_KeyPress;
+            txtBuscarMaestro.KeyPress += SoloLetras_KeyPress;
+            txtCity.KeyPress += SoloLetras_KeyPress;
+
+            txtBuscarMaestro.Focus();
+
+        }
+
+        private void SoloNumeros_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
+        private void SoloLetras_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled =
+                !char.IsLetter(e.KeyChar) &&
+                e.KeyChar != ' ' &&
+                !char.IsControl(e.KeyChar);
+        }
+
+        private void RedondearPanel(Panel panel, int radio, Color colorBorde)
+        {
+            Region regionActual = null;
+
+            EventHandler actualizarForma = (sender, e) =>
+            {
+                Rectangle rect = panel.ClientRectangle;
+
+                if (rect.Width <= 0 || rect.Height <= 0)
+                    return;
+
+                int r = Math.Min(radio, Math.Min(rect.Width, rect.Height) / 2);
+
+                using (GraphicsPath path = CrearRectanguloRedondeado(rect, r))
+                {
+                    Region nuevaRegion = new Region(path);
+                    panel.Region = nuevaRegion;
+
+                    regionActual?.Dispose();
+                    regionActual = nuevaRegion;
+                }
+
+                panel.Invalidate();
+            };
+
+            panel.Resize += actualizarForma;
+
+            panel.Paint += (sender, e) =>
+            {
+                Rectangle rect = panel.ClientRectangle;
+                rect.Width -= 1;
+                rect.Height -= 1;
+
+                if (rect.Width <= 0 || rect.Height <= 0)
+                    return;
+
+                int r = Math.Min(radio, Math.Min(rect.Width, rect.Height) / 2);
+
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+                using (GraphicsPath path = CrearRectanguloRedondeado(rect, r))
+                using (Pen pen = new Pen(colorBorde, 1))
+                {
+                    e.Graphics.DrawPath(pen, path);
+                }
+            };
+
+            actualizarForma(panel, EventArgs.Empty);
+        }
+
+        private GraphicsPath CrearRectanguloRedondeado(Rectangle rect, int radio)
+        {
+            int diametro = radio * 2;
+            GraphicsPath path = new GraphicsPath();
+
+            path.AddArc(rect.X, rect.Y, diametro, diametro, 180, 90);
+            path.AddArc(rect.Right - diametro, rect.Y, diametro, diametro, 270, 90);
+            path.AddArc(rect.Right - diametro, rect.Bottom - diametro, diametro, diametro, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - diametro, diametro, diametro, 90, 90);
+            path.CloseFigure();
+
+            return path;
         }
 
         private void ConfigurarDgvMaestros()
@@ -56,6 +157,9 @@ namespace CISOFTNEW
             BackRequested?.Invoke(this, EventArgs.Empty);
         }
 
+        private DataTable _tablaMaestros;
+        private DataView _vistaMaestros;
+
         public void CargarMaestros()
         {
             const string sql = @"
@@ -80,10 +184,17 @@ namespace CISOFTNEW
                 return;
             }
 
-            dgvMaestros.DataSource = ds.Tables[0];
+            _tablaMaestros = ds.Tables[0];
+            _vistaMaestros = _tablaMaestros.DefaultView;
+
+            dgvMaestros.DataSource = _vistaMaestros;
+
+            //dgvMaestros.DataSource = ds.Tables[0];
 
             if (dgvMaestros.Columns.Contains("EmployeeId"))
                 dgvMaestros.Columns["EmployeeId"].Visible = false;
+
+            txtBuscarMaestro.Focus();
         }
 
         private void dgvMaestros_SelectionChanged(object sender, EventArgs e)
@@ -172,6 +283,12 @@ namespace CISOFTNEW
             gbxPersonal.Enabled = false;
             gbxContacto.Enabled = false;
             gbxDireccion.Enabled = false;
+            btnGuardar.Enabled = false;
+
+            btnEditar.Text = "Iniciar edición";
+
+            CargarMaestros();
+            txtBuscarMaestro.Focus();
         }
 
         private void CargarOpcionesSexo()
@@ -193,6 +310,106 @@ namespace CISOFTNEW
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             LimpiarCamposMaestro();
+        }
+
+        private void btnActualizar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("¿Desea actualizar la lista de maestros activos?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                int ActionPermit = 1;
+
+                var parametros = new SqlParameter[]
+                {
+                    new SqlParameter("@ActionPermit", SqlDbType.Int) { Value = ActionPermit }
+                };
+
+                DataSet ds =
+                    CISOFTDataOperations.Database.DataOperations.ExecuteProcedure(
+                        CISOFTDataOperations.Database.Connection.NewCiSoft(),
+                        "NewCiSoft_EmployeeUpdate",
+                        parametros);
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    DataRow resultado = ds.Tables[0].Rows[0];
+
+                    string mensaje = Convert.ToString(resultado["Message"]);
+                    int insertados = Convert.ToInt32(resultado["InsertedRows"]);
+
+                    MessageBox.Show($"{mensaje}\nMaestros insertados: {insertados}");
+                }
+
+                ActionPermit = 0;
+            }
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            int EditPermit;
+
+            if (gbxContacto.Enabled && gbxDireccion.Enabled && gbxPersonal.Enabled)
+            {
+                EditPermit = 0;
+                gbxContacto.Enabled = false;
+                gbxDireccion.Enabled = false;
+                gbxPersonal.Enabled = false;
+                btnGuardar.Enabled = false;
+                MessageBox.Show("La edición de registros ha sido deshabilitada.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                btnEditar.Text = "Iniciar edición";
+                return;
+            }
+
+            if (MessageBox.Show("¿Desea habilitar la edición de registros?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                EditPermit = 1;
+                gbxContacto.Enabled = true;
+                gbxDireccion.Enabled = true;
+                gbxPersonal.Enabled = true;
+                btnGuardar.Enabled = true;
+                btnEditar.Text = "Terminar edición";
+            }
+        }
+
+        private void txtBuscarMaestro_TextChanged(object sender, EventArgs e)
+        {
+            if (_vistaMaestros == null)
+                return;
+
+            string texto = txtBuscarMaestro.Text.Trim()
+                .Replace("'", "''");
+
+            _vistaMaestros.RowFilter = string.IsNullOrEmpty(texto)
+                ? string.Empty
+                : $"FullName LIKE '%{texto}%'";
+        }
+
+        private void btnBuscarColonia_Click(object sender, EventArgs e)
+        {
+            using (var ventana =
+                   new FrmBuscarDireccion(TipoBusquedaDireccion.Colonia))
+            {
+                if (ventana.ShowDialog(this) == DialogResult.OK)
+                {
+                    txtColonia.Text = ventana.ColoniaSeleccionada;
+                    txtZipCode.Text = ventana.CodigoPostalSeleccionado;
+                }
+            }
+        }
+
+        private void btnBuscarCP_Click(object sender, EventArgs e)
+        {
+            using (var ventana =
+                   new FrmBuscarDireccion(TipoBusquedaDireccion.CodigoPostal))
+            {
+                if (ventana.ShowDialog(this) == DialogResult.OK)
+                {
+                    txtZipCode.Text = ventana.CodigoPostalSeleccionado;
+
+                    // El código postal pudo cambiar; limpia la colonia anterior.
+                    txtColonia.Clear();
+                    txtColonia.Text = ventana.ColoniaSeleccionada;
+                }
+            }
         }
     }
 }
