@@ -1,0 +1,248 @@
+@page "/tipos-sangre"
+@inject ServicioTiposSangre Servicio
+
+<header class="encabezado">
+    <div>
+        <div class="migas">Catálogos / Tipos de sangre</div>
+        <h1>Tipos de sangre</h1>
+        <p class="subtitulo">Consulta y administra los tipos sanguíneos disponibles.</p>
+    </div>
+    @* Sin botón "Nuevo": los 8 tipos ya vienen cargados y no existen otros *@
+</header>
+
+<section class="tarjeta filtros" aria-label="Buscar y filtrar">
+    <div class="campo" style="flex: 1">
+        <label for="buscar">Buscar tipo</label>
+        <input id="buscar" type="search" class="control"
+               placeholder="Ej. A positivo, O-, AB+"
+               @bind="busqueda" @bind:event="oninput" @bind:after="Actualizar" />
+    </div>
+
+    <div class="campo" style="width: 220px">
+        <label for="estado">Estado</label>
+        <select id="estado" class="control" @bind="estado" @bind:after="Actualizar">
+            <option value="">Todos</option>
+            <option value="Activo">Activos</option>
+            <option value="Inactivo">Inactivos</option>
+        </select>
+    </div>
+
+    <button type="button" class="btn btn-secundario" @onclick="Limpiar">Limpiar filtros</button>
+</section>
+
+<section class="tarjeta tabla-contenedor" aria-label="Lista de tipos de sangre">
+    @if (filtrados.Count == 0)
+    {
+        <div class="vacio">No se encontraron tipos de sangre con esos filtros.</div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Tipo sanguíneo</th>
+                    <th scope="col">Factor Rh</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col" style="text-align: right">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in PaginaActual)
+                {
+                    <tr>
+                        <td>
+                            <div class="alumno">
+                                <div class="avatar avatar-sangre" aria-hidden="true"><span class="gota"></span></div>
+                                <div class="alumno-nombre">@t.Grupo</div>
+                            </div>
+                        </td>
+                        <td>@t.FactorRh</td>
+                        <td class="descripcion">@t.Descripcion</td>
+                        <td><span class="insignia @(t.Activo ? "activo" : "inactivo")">@(t.Activo ? "Activo" : "Inactivo")</span></td>
+                        <td>
+                            <div class="acciones">
+                                <button type="button" class="btn btn-icono" title="Ver"
+                                        aria-label="@($"Ver {t.Nombre}")" @onclick="() => AbrirVer(t)">
+                                    <span class="ico" aria-hidden="true">&#xE890;</span>
+                                </button>
+                                <button type="button" class="btn btn-icono" title="Editar"
+                                        aria-label="@($"Editar {t.Nombre}")" @onclick="() => AbrirEditar(t)">
+                                    <span class="ico" aria-hidden="true">&#xE70F;</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="pie-tabla">
+        <span>@Resumen</span>
+        <nav class="paginacion" aria-label="Paginación">
+            <button type="button" class="btn btn-icono" aria-label="Página anterior"
+                    disabled="@(pagina <= 1)" @onclick="() => pagina--">
+                <span class="ico" aria-hidden="true">&#xE76B;</span>
+            </button>
+            <span>Página @pagina de @TotalPaginas</span>
+            <button type="button" class="btn btn-icono" aria-label="Página siguiente"
+                    disabled="@(pagina >= TotalPaginas)" @onclick="() => pagina++">
+                <span class="ico" aria-hidden="true">&#xE76C;</span>
+            </button>
+        </nav>
+    </div>
+</section>
+
+@* ============ Ventana modal: ver / editar ============ *@
+@if (modo != Modo.Cerrado)
+{
+    <div class="modal-fondo" @onclick="Cerrar">
+        <div class="tarjeta modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo"
+             @onclick:stopPropagation @onkeydown="TeclaEnModal">
+
+            <h2 id="modal-titulo">@(modo == Modo.Editar ? $"Editar tipo {tipo.Nombre}" : $"Tipo {tipo.Nombre}")</h2>
+
+            @if (modo == Modo.Ver)
+            {
+                <dl class="detalle">
+                    <dt>Grupo</dt>
+                    <dd>@tipo.Grupo</dd>
+                    <dt>Factor Rh</dt>
+                    <dd>@tipo.FactorRh</dd>
+                    <dt>Descripción</dt>
+                    <dd>@(string.IsNullOrWhiteSpace(tipo.Descripcion) ? "—" : tipo.Descripcion)</dd>
+                    <dt>Estado</dt>
+                    <dd><span class="insignia @(tipo.Activo ? "activo" : "inactivo")">@(tipo.Activo ? "Activo" : "Inactivo")</span></dd>
+                </dl>
+
+                <div class="modal-pie">
+                    <button type="button" class="btn btn-secundario" @ref="botonCerrar" @onclick="Cerrar">Cerrar</button>
+                    <button type="button" class="btn btn-primario" @onclick="() => { modo = Modo.Editar; enfocar = true; }">
+                        <span class="ico" aria-hidden="true">&#xE70F;</span> Editar
+                    </button>
+                </div>
+            }
+            else
+            {
+                <EditForm Model="tipo" OnValidSubmit="Guardar" class="pila">
+                    <DataAnnotationsValidator />
+
+                    @* Grupo y Rh no se editan: son los que definen el tipo *@
+                    <div class="rejilla rejilla-2">
+                        <div class="campo">
+                            <label for="grupo">Grupo</label>
+                            <input id="grupo" class="control" readonly value="@tipo.Grupo" />
+                        </div>
+                        <div class="campo">
+                            <label for="rh">Factor Rh</label>
+                            <input id="rh" class="control" readonly value="@tipo.FactorRh" />
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="descripcion">Descripción</label>
+                        <InputTextArea id="descripcion" class="control area" rows="3" maxlength="250" @ref="campoDescripcion" @bind-Value="tipo.Descripcion" />
+                        <ValidationMessage For="() => tipo.Descripcion" />
+                    </div>
+
+                    <fieldset class="campo">
+                        <legend>Estado</legend>
+                        <InputRadioGroup @bind-Value="tipo.Activo">
+                            <div class="segmentado" style="max-width: 320px">
+                                <label><InputRadio TValue="bool" Value="true" /><span>Activo</span></label>
+                                <label><InputRadio TValue="bool" Value="false" /><span>Inactivo</span></label>
+                            </div>
+                        </InputRadioGroup>
+                        <span class="ayuda">Los inactivos no aparecerán al registrar alumnos</span>
+                    </fieldset>
+
+                    <div class="modal-pie">
+                        <button type="button" class="btn btn-secundario" @onclick="Cerrar">Cancelar</button>
+                        <button type="submit" class="btn btn-primario">
+                            <span class="ico" aria-hidden="true">&#xE74E;</span> Guardar
+                        </button>
+                    </div>
+                </EditForm>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private const int TamanoPagina = 8;
+
+    private enum Modo { Cerrado, Ver, Editar }
+
+    private string busqueda = "";
+    private string estado = "";
+    private int pagina = 1;
+    private List<TipoSangre> filtrados = new();
+
+    // Ventana modal. Se trabaja sobre una copia para que "Cancelar" no deje cambios a medias.
+    private Modo modo = Modo.Cerrado;
+    private TipoSangre tipo = new();
+    private bool enfocar;
+    private InputTextArea? campoDescripcion;
+    private ElementReference botonCerrar;
+
+    protected override void OnInitialized() => Actualizar();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Al abrir la ventana, el cursor va a la descripción (o al botón Cerrar en modo Ver)
+        if (!enfocar) return;
+        enfocar = false;
+
+        if (modo == Modo.Ver)
+            await botonCerrar.FocusAsync();
+        else if (campoDescripcion?.Element is ElementReference descripcion)
+            await descripcion.FocusAsync();
+    }
+
+    private void Actualizar()
+    {
+        filtrados = Servicio.Buscar(busqueda, estado);
+        pagina = 1;
+    }
+
+    private void Limpiar()
+    {
+        busqueda = estado = "";
+        Actualizar();
+    }
+
+    private void AbrirEditar(TipoSangre t) => Abrir(Modo.Editar, t.Clonar());
+
+    private void AbrirVer(TipoSangre t) => Abrir(Modo.Ver, t.Clonar());
+
+    private void Abrir(Modo nuevoModo, TipoSangre t)
+    {
+        tipo = t;
+        modo = nuevoModo;
+        enfocar = true;
+    }
+
+    private void Cerrar() => modo = Modo.Cerrado;
+
+    private void TeclaEnModal(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape") Cerrar();
+    }
+
+    private void Guardar()
+    {
+        Servicio.Guardar(tipo);
+        Cerrar();
+        Actualizar();
+    }
+
+    private int TotalPaginas => Math.Max(1, (int)Math.Ceiling(filtrados.Count / (double)TamanoPagina));
+
+    private IEnumerable<TipoSangre> PaginaActual =>
+        filtrados.Skip((pagina - 1) * TamanoPagina).Take(TamanoPagina);
+
+    private string Resumen => filtrados.Count == 0
+        ? "Sin resultados"
+        : $"Mostrando {(pagina - 1) * TamanoPagina + 1}–{Math.Min(pagina * TamanoPagina, filtrados.Count)} de {filtrados.Count} tipos de sangre";
+}

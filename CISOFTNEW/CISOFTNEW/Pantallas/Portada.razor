@@ -1,0 +1,20 @@
+@* Portada de un libro: la imagen si hay, o un ícono de libro si no.
+   Uso: <Portada Imagen="@libro.Portada" />  (Grande="true" para la ventana modal) *@
+
+@if (string.IsNullOrEmpty(Imagen))
+{
+    <div class="portada vacia @(Grande ? "grande" : "")" aria-hidden="true">
+        <span class="ico">&#xE8F1;</span>
+    </div>
+}
+else
+{
+    <img class="portada @(Grande ? "grande" : "")" src="@Imagen" alt="" />
+}
+
+@code {
+    /// <summary>Data URL de la imagen, o null.</summary>
+    [Parameter] public string? Imagen { get; set; }
+
+    [Parameter] public bool Grande { get; set; }
+}

@@ -39,6 +39,9 @@ namespace CISOFTNEW
 #endif
             // Servicios que pueden usar las pantallas (@inject)
             servicios.AddSingleton<ServicioAlumnos>();
+            servicios.AddSingleton<ServicioTiposEstudiante>();
+            servicios.AddSingleton<ServicioLibros>();
+            servicios.AddSingleton<ServicioTiposSangre>();
 
             return servicios.BuildServiceProvider();
         }

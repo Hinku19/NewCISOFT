@@ -123,7 +123,9 @@ h1:focus { outline: none; }
 .filtros { display: flex; gap: 16px; align-items: flex-end; padding: 20px; }
 
 /* ---------- Tabla ---------- */
-.tabla-contenedor { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 320px; }
+/* flex-shrink 0: la tarjeta nunca se encoge (si no, overflow:hidden cortaba la paginación);
+   si no cabe, se desplaza toda la pantalla (.contenido tiene overflow:auto) */
+.tabla-contenedor { flex: 1 0 auto; display: flex; flex-direction: column; overflow: hidden; min-height: 320px; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 thead th { background: var(--encabezado); color: #fff; text-align: left; padding: 14px 16px; font-weight: 700; }
 tbody tr { border-bottom: 1px solid var(--linea); }
@@ -183,6 +185,88 @@ fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
     box-shadow: 0 -4px 16px rgba(11,37,69,.06);
 }
 .barra-acciones .estado { margin-right: auto; color: var(--texto-sec); font-size: 14px; }
+
+/* ---------- Catálogos simples (Tipos de estudiante, etc.) ---------- */
+.texto-sec { color: var(--texto-sec); }
+td.descripcion { color: var(--texto-sec); max-width: 420px; }
+
+.insignia {
+    display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px;
+    border-radius: 999px; font-weight: 700; font-size: 13px;
+}
+.insignia::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.insignia.activo   { background: #E3F4E8; color: #1E6B3A; }
+.insignia.inactivo { background: var(--linea); color: var(--texto-sec); }
+
+.rejilla-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+textarea.control.area { height: auto; padding: 10px 14px; resize: vertical; min-height: 88px; }
+
+.con-sufijo { position: relative; }
+.con-sufijo .control { padding-right: 40px; }
+.con-sufijo .sufijo {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--texto-sec); font-weight: 700; pointer-events: none;
+}
+
+.insignia.alerta  { background: #FDF1D6; color: #8A5300; }
+.insignia.peligro { background: #FDECEA; color: var(--peligro); }
+
+/* Niveles (Libros) */
+.pastilla.nivel-basico     { background: #E4EEF9; border-color: #B7CDE6; color: var(--primario); }
+.pastilla.nivel-intermedio { background: #E1F1F5; border-color: #A9D3DE; color: #145A6B; }
+.pastilla.nivel-avanzado   { background: #EEE8F8; border-color: #CBBDE8; color: #4B2C83; }
+
+/* Portadas (Libros) */
+.portada {
+    width: 44px; height: 58px; flex-shrink: 0; border-radius: 4px;
+    object-fit: cover; box-shadow: 0 1px 3px rgba(11,37,69,.2);
+}
+.portada.vacia {
+    display: grid; place-items: center;
+    background: var(--linea); color: var(--primario); box-shadow: none;
+}
+.portada.grande { width: 120px; height: 160px; border-radius: 8px; }
+.portada.grande.vacia .ico { font-size: 32px; }
+
+.portada-editor { display: flex; align-items: center; gap: 20px; }
+.portada-botones { display: flex; align-items: center; gap: 8px; }
+.etiqueta { font-size: 14px; font-weight: 600; }
+
+/* El <input type="file"> real queda invisible dentro del botón "Elegir imagen" */
+.archivo-oculto { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+label.btn { position: relative; }
+label.btn:focus-within { outline: 3px solid var(--primario); outline-offset: 2px; }
+
+.libro-detalle { display: flex; gap: 24px; align-items: flex-start; }
+
+/* Gota de sangre (Tipos de sangre) */
+.avatar-sangre { background: #FBE4E4; }
+.gota {
+    width: 13px; height: 13px; margin-top: 3px;
+    background: #C62828;
+    border-radius: 0 50% 50% 50%;
+    transform: rotate(45deg);
+}
+
+/* ---------- Ventana modal ---------- */
+.modal-fondo {
+    position: fixed; inset: 0; z-index: 20;
+    background: rgba(11, 37, 69, .45);
+    display: grid; place-items: center; padding: 24px;
+}
+.modal {
+    width: 100%; max-width: 560px; max-height: 100%; overflow: auto;
+    padding: 28px; display: flex; flex-direction: column; gap: 20px;
+    box-shadow: 0 16px 48px rgba(11, 37, 69, .25);
+}
+.modal.modal-ancho { max-width: 760px; }
+.modal h2 { font-size: 22px; }
+.modal-pie { display: flex; justify-content: flex-end; gap: 12px; padding-top: 4px; }
+
+.detalle { display: grid; grid-template-columns: 120px 1fr; gap: 12px 16px; margin: 0; }
+.detalle dt { font-weight: 600; color: var(--texto-sec); }
+.detalle dd { margin: 0; }
 
 /* ---------- Error de Blazor ---------- */
 #blazor-error-ui {

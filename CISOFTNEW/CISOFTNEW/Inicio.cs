@@ -315,14 +315,18 @@ namespace CISOFTNEW
             lista.Dock = DockStyle.Fill;
             lista.BackColor = Color.Transparent;
             lista.ColumnCount = 1;
-            lista.RowCount = 2;
+            lista.RowCount = 4;
             lista.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            lista.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            lista.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            lista.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            lista.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            lista.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            lista.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
 
             lista.Controls.Add(CrearFilaCatalogo("Niveles", "E9D2", true), 0, 0);
             // lista.Controls.Add(CrearFilaCatalogo("Etapas", "E7C1", true), 0, 1);
-            lista.Controls.Add(CrearFilaCatalogo("Libros", "E8F1", false), 0, 1);
+            lista.Controls.Add(CrearFilaCatalogo("Libros", "E8F1", true), 0, 1);
+            lista.Controls.Add(CrearFilaCatalogo("Tipos de estudiante", "E8EC", true), 0, 2);
+            lista.Controls.Add(CrearFilaCatalogo("Tipos de sangre", "E95E", false), 0, 3);
 
             tarjeta.Controls.Add(lista);
 

@@ -1,0 +1,408 @@
+@page "/libros"
+@inject ServicioLibros Servicio
+
+<header class="encabezado">
+    <div>
+        <div class="migas">Catálogos / Libros</div>
+        <h1>Libros</h1>
+        <p class="subtitulo">Consulta y administra el material bibliográfico de los cursos.</p>
+    </div>
+    <button type="button" class="btn btn-primario" @onclick="AbrirNuevo">
+        <span class="ico" aria-hidden="true">&#xE710;</span> Nuevo libro
+    </button>
+</header>
+
+<section class="tarjeta filtros" aria-label="Buscar y filtrar">
+    <div class="campo" style="flex: 1">
+        <label for="buscar">Buscar libro</label>
+        <input id="buscar" type="search" class="control"
+               placeholder="Título, autor o ISBN"
+               @bind="busqueda" @bind:event="oninput" @bind:after="Actualizar" />
+    </div>
+
+    <div class="campo" style="width: 200px">
+        <label for="nivel">Nivel</label>
+        <select id="nivel" class="control" @bind="nivel" @bind:after="Actualizar">
+            <option value="">Todos</option>
+            @foreach (var n in Servicio.Niveles)
+            {
+                <option value="@n">@n</option>
+            }
+        </select>
+    </div>
+
+    <div class="campo" style="width: 200px">
+        <label for="estado">Disponibilidad</label>
+        <select id="estado" class="control" @bind="estado" @bind:after="Actualizar">
+            <option value="">Todas</option>
+            @foreach (var e in Servicio.Estados)
+            {
+                <option value="@e">@e</option>
+            }
+        </select>
+    </div>
+
+    <button type="button" class="btn btn-secundario" @onclick="Limpiar">Limpiar filtros</button>
+</section>
+
+<section class="tarjeta tabla-contenedor" aria-label="Lista de libros">
+    @if (filtrados.Count == 0)
+    {
+        <div class="vacio">No se encontraron libros con esos filtros.</div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Libro</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Nivel</th>
+                    <th scope="col">Existencias</th>
+                    <th scope="col">Ubicación</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col" style="text-align: right">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var l in PaginaActual)
+                {
+                    <tr>
+                        <td>
+                            <div class="alumno">
+                                <Portada Imagen="@l.Portada" />
+                                <div>
+                                    <div class="alumno-nombre">@l.Titulo</div>
+                                    @if (!string.IsNullOrEmpty(l.Isbn))
+                                    {
+                                        <div class="alumno-email">ISBN: @l.Isbn</div>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td>@l.Autor</td>
+                        <td><span class="pastilla @ClaseNivel(l.Nivel)">@l.Nivel</span></td>
+                        <td>@l.Existencias</td>
+                        <td>@(string.IsNullOrWhiteSpace(l.Ubicacion) ? "—" : l.Ubicacion)</td>
+                        <td><span class="insignia @ClaseEstado(l.Estado)">@l.Estado</span></td>
+                        <td>
+                            <div class="acciones">
+                                <button type="button" class="btn btn-icono" title="Ver"
+                                        aria-label="@($"Ver {l.Titulo}")" @onclick="() => AbrirVer(l)">
+                                    <span class="ico" aria-hidden="true">&#xE890;</span>
+                                </button>
+                                <button type="button" class="btn btn-icono" title="Editar"
+                                        aria-label="@($"Editar {l.Titulo}")" @onclick="() => AbrirEditar(l)">
+                                    <span class="ico" aria-hidden="true">&#xE70F;</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="pie-tabla">
+        <span>@Resumen</span>
+        <nav class="paginacion" aria-label="Paginación">
+            <button type="button" class="btn btn-icono" aria-label="Página anterior"
+                    disabled="@(pagina <= 1)" @onclick="() => pagina--">
+                <span class="ico" aria-hidden="true">&#xE76B;</span>
+            </button>
+            <span>Página @pagina de @TotalPaginas</span>
+            <button type="button" class="btn btn-icono" aria-label="Página siguiente"
+                    disabled="@(pagina >= TotalPaginas)" @onclick="() => pagina++">
+                <span class="ico" aria-hidden="true">&#xE76C;</span>
+            </button>
+        </nav>
+    </div>
+</section>
+
+@* ============ Ventana modal: ver / nuevo / editar ============ *@
+@if (modo != Modo.Cerrado)
+{
+    <div class="modal-fondo" @onclick="Cerrar">
+        <div class="tarjeta modal modal-ancho" role="dialog" aria-modal="true" aria-labelledby="modal-titulo"
+             @onclick:stopPropagation @onkeydown="TeclaEnModal">
+
+            <h2 id="modal-titulo">@TituloModal</h2>
+
+            @if (modo == Modo.Ver)
+            {
+                <div class="libro-detalle">
+                    <Portada Imagen="@libro.Portada" Grande="true" />
+
+                    <dl class="detalle">
+                        <dt>Autor</dt>
+                        <dd>@libro.Autor</dd>
+                        <dt>ISBN</dt>
+                        <dd>@(string.IsNullOrWhiteSpace(libro.Isbn) ? "—" : libro.Isbn)</dd>
+                        <dt>Nivel</dt>
+                        <dd><span class="pastilla @ClaseNivel(libro.Nivel)">@libro.Nivel</span></dd>
+                        <dt>Existencias</dt>
+                        <dd>@libro.Existencias <span class="texto-sec">(mínimo @libro.ExistenciaMinima)</span></dd>
+                        <dt>Ubicación</dt>
+                        <dd>@(string.IsNullOrWhiteSpace(libro.Ubicacion) ? "—" : libro.Ubicacion)</dd>
+                        <dt>Estado</dt>
+                        <dd><span class="insignia @ClaseEstado(libro.Estado)">@libro.Estado</span></dd>
+                    </dl>
+                </div>
+
+                <div class="modal-pie">
+                    <button type="button" class="btn btn-secundario" @ref="botonCerrar" @onclick="Cerrar">Cerrar</button>
+                    <button type="button" class="btn btn-primario" @onclick="() => { modo = Modo.Editar; enfocar = true; }">
+                        <span class="ico" aria-hidden="true">&#xE70F;</span> Editar
+                    </button>
+                </div>
+            }
+            else
+            {
+                <EditForm Model="libro" OnValidSubmit="Guardar" class="pila">
+                    <DataAnnotationsValidator />
+
+                    @* Portada *@
+                    <div class="portada-editor">
+                        <Portada Imagen="@libro.Portada" Grande="true" />
+                        <div class="campo">
+                            <span class="etiqueta">Portada</span>
+                            <div class="portada-botones">
+                                <label class="btn btn-secundario">
+                                    <span class="ico" aria-hidden="true">&#xEB9F;</span>
+                                    @(libro.Portada is null ? "Elegir imagen" : "Cambiar imagen")
+                                    <InputFile class="archivo-oculto" accept="image/png, image/jpeg" OnChange="CargarPortada" />
+                                </label>
+                                @if (libro.Portada is not null)
+                                {
+                                    <button type="button" class="btn btn-icono" title="Quitar portada" aria-label="Quitar portada"
+                                            @onclick="() => libro.Portada = null">
+                                        <span class="ico" aria-hidden="true">&#xE74D;</span>
+                                    </button>
+                                }
+                            </div>
+                            <span class="ayuda">JPG o PNG, máximo 5 MB (opcional)</span>
+                            @if (errorPortada is not null)
+                            {
+                                <div class="validation-message">@errorPortada</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="rejilla rejilla-2">
+                        <div class="campo span-2">
+                            <label for="titulo">Título <span class="req">*</span></label>
+                            <InputText id="titulo" class="control" maxlength="120" @ref="campoTitulo" @bind-Value="libro.Titulo" />
+                            <ValidationMessage For="() => libro.Titulo" />
+                        </div>
+
+                        <div class="campo">
+                            <label for="autor">Autor o editorial <span class="req">*</span></label>
+                            <InputText id="autor" class="control" maxlength="120" @bind-Value="libro.Autor" />
+                            <ValidationMessage For="() => libro.Autor" />
+                        </div>
+                        <div class="campo">
+                            <label for="isbn">ISBN</label>
+                            <InputText id="isbn" class="control" maxlength="17" placeholder="978-0194030412" @bind-Value="libro.Isbn" />
+                            <ValidationMessage For="() => libro.Isbn" />
+                            @if (errorGuardar is not null)
+                            {
+                                <div class="validation-message">@errorGuardar</div>
+                            }
+                        </div>
+
+                        <div class="campo">
+                            <label for="nivel-libro">Nivel <span class="req">*</span></label>
+                            <InputSelect id="nivel-libro" class="control" @bind-Value="libro.Nivel">
+                                <option value="">Selecciona…</option>
+                                @foreach (var n in Servicio.Niveles)
+                                {
+                                    <option value="@n">@n</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="() => libro.Nivel" />
+                        </div>
+                        <div class="campo">
+                            <label for="ubicacion">Ubicación</label>
+                            <InputText id="ubicacion" class="control" maxlength="40" placeholder="Ej. Estante A-1" @bind-Value="libro.Ubicacion" />
+                            <ValidationMessage For="() => libro.Ubicacion" />
+                        </div>
+
+                        <div class="campo">
+                            <label for="existencias">Existencias <span class="req">*</span></label>
+                            <InputNumber id="existencias" class="control" min="0" max="9999" @bind-Value="libro.Existencias" />
+                            <ValidationMessage For="() => libro.Existencias" />
+                        </div>
+                        <div class="campo">
+                            <label for="minima">Existencia mínima <span class="req">*</span></label>
+                            <InputNumber id="minima" class="control" min="0" max="9999" @bind-Value="libro.ExistenciaMinima" />
+                            <span class="ayuda">Con esta cantidad o menos sale "Bajo inventario"</span>
+                            <ValidationMessage For="() => libro.ExistenciaMinima" />
+                        </div>
+
+                        <fieldset class="campo span-2">
+                            <legend>Estado</legend>
+                            <InputRadioGroup @bind-Value="libro.Activo">
+                                <div class="segmentado" style="max-width: 320px">
+                                    <label><InputRadio TValue="bool" Value="true" /><span>Activo</span></label>
+                                    <label><InputRadio TValue="bool" Value="false" /><span>Inactivo</span></label>
+                                </div>
+                            </InputRadioGroup>
+                            <span class="ayuda">Inactivo = el libro ya no se usa en los cursos</span>
+                        </fieldset>
+                    </div>
+
+                    <div class="modal-pie">
+                        <button type="button" class="btn btn-secundario" @onclick="Cerrar">Cancelar</button>
+                        <button type="submit" class="btn btn-primario">
+                            <span class="ico" aria-hidden="true">&#xE74E;</span> Guardar
+                        </button>
+                    </div>
+                </EditForm>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private const int TamanoPagina = 7;
+    private const long TamanoMaximoPortada = 5 * 1024 * 1024;   // 5 MB
+
+    private enum Modo { Cerrado, Ver, Nuevo, Editar }
+
+    private string busqueda = "";
+    private string nivel = "";
+    private string estado = "";
+    private int pagina = 1;
+    private List<Libro> filtrados = new();
+
+    // Ventana modal. Se trabaja sobre una copia para que "Cancelar" no deje cambios a medias.
+    private Modo modo = Modo.Cerrado;
+    private Libro libro = new();
+    private string? errorGuardar;
+    private string? errorPortada;
+    private bool enfocar;
+    private InputText? campoTitulo;
+    private ElementReference botonCerrar;
+
+    protected override void OnInitialized() => Actualizar();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Al abrir la ventana, el cursor va al título (o al botón Cerrar en modo Ver)
+        if (!enfocar) return;
+        enfocar = false;
+
+        if (modo == Modo.Ver)
+            await botonCerrar.FocusAsync();
+        else if (campoTitulo?.Element is ElementReference titulo)
+            await titulo.FocusAsync();
+    }
+
+    private void Actualizar()
+    {
+        filtrados = Servicio.Buscar(busqueda, nivel, estado);
+        pagina = 1;
+    }
+
+    private void Limpiar()
+    {
+        busqueda = nivel = estado = "";
+        Actualizar();
+    }
+
+    private void AbrirNuevo() => Abrir(Modo.Nuevo, new Libro());
+
+    private void AbrirEditar(Libro l) => Abrir(Modo.Editar, l.Clonar());
+
+    private void AbrirVer(Libro l) => Abrir(Modo.Ver, l.Clonar());
+
+    private void Abrir(Modo nuevoModo, Libro l)
+    {
+        libro = l;
+        modo = nuevoModo;
+        errorGuardar = null;
+        errorPortada = null;
+        enfocar = true;
+    }
+
+    private void Cerrar() => modo = Modo.Cerrado;
+
+    private void TeclaEnModal(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape") Cerrar();
+    }
+
+    private async Task CargarPortada(InputFileChangeEventArgs e)
+    {
+        errorPortada = null;
+        IBrowserFile archivo = e.File;
+
+        if (archivo.ContentType is not ("image/jpeg" or "image/png"))
+        {
+            errorPortada = "Elige una imagen JPG o PNG.";
+            return;
+        }
+
+        if (archivo.Size > TamanoMaximoPortada)
+        {
+            errorPortada = "La imagen pesa más de 5 MB.";
+            return;
+        }
+
+        try
+        {
+            // Se reduce a un tamaño de portada (máx. 240 x 320) para no guardar imágenes enormes
+            IBrowserFile chica = await archivo.RequestImageFileAsync("image/jpeg", 240, 320);
+
+            using Stream lectura = chica.OpenReadStream(TamanoMaximoPortada);
+            using MemoryStream memoria = new MemoryStream();
+            await lectura.CopyToAsync(memoria);
+
+            libro.Portada = "data:image/jpeg;base64," + Convert.ToBase64String(memoria.ToArray());
+        }
+        catch (Exception)
+        {
+            errorPortada = "No se pudo leer la imagen. Intenta con otra.";
+        }
+    }
+
+    private void Guardar()
+    {
+        errorGuardar = Servicio.Guardar(libro);
+        if (errorGuardar is not null) return;
+
+        Cerrar();
+        Actualizar();
+    }
+
+    private string TituloModal => modo switch
+    {
+        Modo.Nuevo => "Nuevo libro",
+        Modo.Editar => "Editar libro",
+        _ => libro.Titulo ?? ""
+    };
+
+    private static string ClaseNivel(string? n) => n switch
+    {
+        "Intermedio" => "nivel-intermedio",
+        "Avanzado" => "nivel-avanzado",
+        _ => "nivel-basico"
+    };
+
+    private static string ClaseEstado(string e) => e switch
+    {
+        "Disponible" => "activo",
+        "Bajo inventario" => "alerta",
+        "Agotado" => "peligro",
+        _ => "inactivo"
+    };
+
+    private int TotalPaginas => Math.Max(1, (int)Math.Ceiling(filtrados.Count / (double)TamanoPagina));
+
+    private IEnumerable<Libro> PaginaActual =>
+        filtrados.Skip((pagina - 1) * TamanoPagina).Take(TamanoPagina);
+
+    private string Resumen => filtrados.Count == 0
+        ? "Sin resultados"
+        : $"Mostrando {(pagina - 1) * TamanoPagina + 1}–{Math.Min(pagina * TamanoPagina, filtrados.Count)} de {filtrados.Count} libros";
+}

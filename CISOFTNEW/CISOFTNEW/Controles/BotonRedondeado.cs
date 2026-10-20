@@ -15,6 +15,7 @@ namespace CISOFTNEW.Controles
         private Color _colorBorde = Color.Transparent;
         private float _grosorBorde = 0f;
         private string _icono = "";
+        private string _iconoDerecho = "";
         private bool _encima;
 
         [Category("CISoft"), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public int Radio { get => _radio; set { _radio = value; Invalidate(); } }
@@ -25,6 +26,9 @@ namespace CISOFTNEW.Controles
 
         /// <summary>Código del ícono en Segoe MDL2 Assets, p. ej. E710 (+), E721 (lupa), E70F (lápiz), E890 (ojo).</summary>
         [Category("CISoft"), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public string Icono { get => _icono; set { _icono = value ?? ""; Invalidate(); } }
+
+        /// <summary>Ícono opcional pegado al borde derecho (p. ej. E70D, flecha de desplegable). Vacío = sin ícono.</summary>
+        [Category("CISoft"), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public string IconoDerecho { get => _iconoDerecho; set { _iconoDerecho = value ?? ""; Invalidate(); } }
 
         [Category("CISoft"), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)] public HorizontalAlignment Alineacion { get; set; } = HorizontalAlignment.Center;
 
@@ -97,6 +101,15 @@ namespace CISOFTNEW.Controles
             if (Text.Length > 0)
                 TextRenderer.DrawText(g, Text, Font, new Rectangle(x, 0, tamTexto.Width + 2, Height), texto,
                     TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
+
+            string glifoDerecho = ConvertirIcono(_iconoDerecho);
+            if (glifoDerecho.Length > 0)
+            {
+                using var fuenteChica = new Font("Segoe MDL2 Assets", Font.Size * 0.75f);
+                Size tam = TextRenderer.MeasureText(g, glifoDerecho, fuenteChica, Size.Empty, TextFormatFlags.NoPadding);
+                TextRenderer.DrawText(g, glifoDerecho, fuenteChica, new Rectangle(Width - 14 - tam.Width, 0, tam.Width, Height), texto,
+                    TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
+            }
         }
 
         private static string ConvertirIcono(string codigo)

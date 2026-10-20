@@ -1,0 +1,285 @@
+@page "/tipos-estudiante"
+@inject ServicioTiposEstudiante Servicio
+
+<header class="encabezado">
+    <div>
+        <div class="migas">Catálogos / Tipos de estudiante</div>
+        <h1>Tipos de estudiante</h1>
+        <p class="subtitulo">Consulta y administra los tipos de inscripción y sus descuentos.</p>
+    </div>
+    <button type="button" class="btn btn-primario" @onclick="AbrirNuevo">
+        <span class="ico" aria-hidden="true">&#xE710;</span> Nuevo tipo
+    </button>
+</header>
+
+<section class="tarjeta filtros" aria-label="Buscar y filtrar">
+    <div class="campo" style="flex: 1">
+        <label for="buscar">Buscar tipo</label>
+        <input id="buscar" type="search" class="control"
+               placeholder="Ej. Paquete familiar, Hijo de empleado"
+               @bind="busqueda" @bind:event="oninput" @bind:after="Actualizar" />
+    </div>
+
+    <div class="campo" style="width: 220px">
+        <label for="estado">Estado</label>
+        <select id="estado" class="control" @bind="estado" @bind:after="Actualizar">
+            <option value="">Todos</option>
+            <option value="Activo">Activos</option>
+            <option value="Inactivo">Inactivos</option>
+        </select>
+    </div>
+
+    <button type="button" class="btn btn-secundario" @onclick="Limpiar">Limpiar filtros</button>
+</section>
+
+<section class="tarjeta tabla-contenedor" aria-label="Lista de tipos de estudiante">
+    @if (filtrados.Count == 0)
+    {
+        <div class="vacio">No se encontraron tipos de estudiante con esos filtros.</div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Tipo de estudiante</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Descuento</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col" style="text-align: right">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in PaginaActual)
+                {
+                    <tr>
+                        <td>
+                            <div class="alumno">
+                                <div class="avatar" aria-hidden="true"><span class="ico">&#xE8EC;</span></div>
+                                <div class="alumno-nombre">@t.Nombre</div>
+                            </div>
+                        </td>
+                        <td class="descripcion">@t.Descripcion</td>
+                        <td>
+                            @if (t.Descuento > 0)
+                            {
+                                <span class="pastilla">@TextoDescuento(t.Descuento)</span>
+                            }
+                            else
+                            {
+                                <span class="texto-sec">Sin descuento</span>
+                            }
+                        </td>
+                        <td><span class="insignia @(t.Activo ? "activo" : "inactivo")">@(t.Activo ? "Activo" : "Inactivo")</span></td>
+                        <td>
+                            <div class="acciones">
+                                <button type="button" class="btn btn-icono" title="Ver"
+                                        aria-label="@($"Ver {t.Nombre}")" @onclick="() => AbrirVer(t)">
+                                    <span class="ico" aria-hidden="true">&#xE890;</span>
+                                </button>
+                                <button type="button" class="btn btn-icono" title="Editar"
+                                        aria-label="@($"Editar {t.Nombre}")" @onclick="() => AbrirEditar(t)">
+                                    <span class="ico" aria-hidden="true">&#xE70F;</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="pie-tabla">
+        <span>@Resumen</span>
+        <nav class="paginacion" aria-label="Paginación">
+            <button type="button" class="btn btn-icono" aria-label="Página anterior"
+                    disabled="@(pagina <= 1)" @onclick="() => pagina--">
+                <span class="ico" aria-hidden="true">&#xE76B;</span>
+            </button>
+            <span>Página @pagina de @TotalPaginas</span>
+            <button type="button" class="btn btn-icono" aria-label="Página siguiente"
+                    disabled="@(pagina >= TotalPaginas)" @onclick="() => pagina++">
+                <span class="ico" aria-hidden="true">&#xE76C;</span>
+            </button>
+        </nav>
+    </div>
+</section>
+
+@* ============ Ventana modal: ver / nuevo / editar ============ *@
+@if (modo != Modo.Cerrado)
+{
+    <div class="modal-fondo" @onclick="Cerrar">
+        <div class="tarjeta modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo"
+             @onclick:stopPropagation @onkeydown="TeclaEnModal">
+
+            <h2 id="modal-titulo">@TituloModal</h2>
+
+            @if (modo == Modo.Ver)
+            {
+                <dl class="detalle">
+                    <dt>Nombre</dt>
+                    <dd>@tipo.Nombre</dd>
+                    <dt>Descripción</dt>
+                    <dd>@(string.IsNullOrWhiteSpace(tipo.Descripcion) ? "—" : tipo.Descripcion)</dd>
+                    <dt>Descuento</dt>
+                    <dd>@(tipo.Descuento > 0 ? TextoDescuento(tipo.Descuento) : "Sin descuento")</dd>
+                    <dt>Estado</dt>
+                    <dd><span class="insignia @(tipo.Activo ? "activo" : "inactivo")">@(tipo.Activo ? "Activo" : "Inactivo")</span></dd>
+                </dl>
+
+                <div class="modal-pie">
+                    <button type="button" class="btn btn-secundario" @ref="botonCerrar" @onclick="Cerrar">Cerrar</button>
+                    <button type="button" class="btn btn-primario" @onclick="() => modo = Modo.Editar">
+                        <span class="ico" aria-hidden="true">&#xE70F;</span> Editar
+                    </button>
+                </div>
+            }
+            else
+            {
+                <EditForm Model="tipo" OnValidSubmit="Guardar" class="pila">
+                    <DataAnnotationsValidator />
+
+                    <div class="campo">
+                        <label for="nombre">Nombre <span class="req">*</span></label>
+                        <InputText id="nombre" class="control" maxlength="60" @ref="campoNombre" @bind-Value="tipo.Nombre" />
+                        <ValidationMessage For="() => tipo.Nombre" />
+                        @if (errorGuardar is not null)
+                        {
+                            <div class="validation-message">@errorGuardar</div>
+                        }
+                    </div>
+
+                    <div class="campo">
+                        <label for="descripcion">Descripción</label>
+                        <InputTextArea id="descripcion" class="control area" rows="3" maxlength="250" @bind-Value="tipo.Descripcion" />
+                        <span class="ayuda">¿Quién entra en este tipo y qué debe presentar? (opcional)</span>
+                        <ValidationMessage For="() => tipo.Descripcion" />
+                    </div>
+
+                    <div class="rejilla rejilla-2">
+                        <div class="campo">
+                            <label for="descuento">Descuento <span class="req">*</span></label>
+                            <div class="con-sufijo">
+                                <InputNumber id="descuento" class="control" min="0" max="100" step="0.5" @bind-Value="tipo.Descuento" />
+                                <span class="sufijo" aria-hidden="true">%</span>
+                            </div>
+                            <span class="ayuda">0 si no tiene descuento</span>
+                            <ValidationMessage For="() => tipo.Descuento" />
+                        </div>
+
+                        <fieldset class="campo">
+                            <legend>Estado</legend>
+                            <InputRadioGroup @bind-Value="tipo.Activo">
+                                <div class="segmentado">
+                                    <label><InputRadio TValue="bool" Value="true" /><span>Activo</span></label>
+                                    <label><InputRadio TValue="bool" Value="false" /><span>Inactivo</span></label>
+                                </div>
+                            </InputRadioGroup>
+                            <span class="ayuda">Los inactivos no aparecerán al inscribir</span>
+                        </fieldset>
+                    </div>
+
+                    <div class="modal-pie">
+                        <button type="button" class="btn btn-secundario" @onclick="Cerrar">Cancelar</button>
+                        <button type="submit" class="btn btn-primario">
+                            <span class="ico" aria-hidden="true">&#xE74E;</span> Guardar
+                        </button>
+                    </div>
+                </EditForm>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private const int TamanoPagina = 7;
+
+    private enum Modo { Cerrado, Ver, Nuevo, Editar }
+
+    private string busqueda = "";
+    private string estado = "";
+    private int pagina = 1;
+    private List<TipoEstudiante> filtrados = new();
+
+    // Ventana modal. Se trabaja sobre una copia para que "Cancelar" no deje cambios a medias.
+    private Modo modo = Modo.Cerrado;
+    private TipoEstudiante tipo = new();
+    private string? errorGuardar;
+    private bool enfocar;
+    private InputText? campoNombre;
+    private ElementReference botonCerrar;
+
+    protected override void OnInitialized() => Actualizar();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Al abrir la ventana, el cursor va al primer campo (o al botón Cerrar en modo Ver)
+        if (!enfocar) return;
+        enfocar = false;
+
+        if (modo == Modo.Ver)
+            await botonCerrar.FocusAsync();
+        else if (campoNombre?.Element is ElementReference nombre)
+            await nombre.FocusAsync();
+    }
+
+    private void Actualizar()
+    {
+        filtrados = Servicio.Buscar(busqueda, estado);
+        pagina = 1;
+    }
+
+    private void Limpiar()
+    {
+        busqueda = estado = "";
+        Actualizar();
+    }
+
+    private void AbrirNuevo() => Abrir(Modo.Nuevo, new TipoEstudiante());
+
+    private void AbrirEditar(TipoEstudiante t) => Abrir(Modo.Editar, t.Clonar());
+
+    private void AbrirVer(TipoEstudiante t) => Abrir(Modo.Ver, t.Clonar());
+
+    private void Abrir(Modo nuevoModo, TipoEstudiante t)
+    {
+        tipo = t;
+        modo = nuevoModo;
+        errorGuardar = null;
+        enfocar = true;
+    }
+
+    private void Cerrar() => modo = Modo.Cerrado;
+
+    private void TeclaEnModal(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape") Cerrar();
+    }
+
+    private void Guardar()
+    {
+        errorGuardar = Servicio.Guardar(tipo);
+        if (errorGuardar is not null) return;
+
+        Cerrar();
+        Actualizar();
+    }
+
+    private string TituloModal => modo switch
+    {
+        Modo.Nuevo => "Nuevo tipo de estudiante",
+        Modo.Editar => "Editar tipo de estudiante",
+        _ => tipo.Nombre ?? ""
+    };
+
+    private static string TextoDescuento(decimal? d) => $"{d:0.##} %";
+
+    private int TotalPaginas => Math.Max(1, (int)Math.Ceiling(filtrados.Count / (double)TamanoPagina));
+
+    private IEnumerable<TipoEstudiante> PaginaActual =>
+        filtrados.Skip((pagina - 1) * TamanoPagina).Take(TamanoPagina);
+
+    private string Resumen => filtrados.Count == 0
+        ? "Sin resultados"
+        : $"Mostrando {(pagina - 1) * TamanoPagina + 1}–{Math.Min(pagina * TamanoPagina, filtrados.Count)} de {filtrados.Count} tipos";
+}

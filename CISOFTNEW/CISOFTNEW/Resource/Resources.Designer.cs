@@ -83,6 +83,16 @@ namespace CISOFTNEW.Resource {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap EnglishCenter_Emblema {
+            get {
+                object obj = ResourceManager.GetObject("EnglishCenter_Emblema", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap EnglishCenter_Horizontal {
             get {
                 object obj = ResourceManager.GetObject("EnglishCenter_Horizontal", resourceCulture);

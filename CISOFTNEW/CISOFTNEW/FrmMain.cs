@@ -11,9 +11,30 @@ namespace CISOFTNEW
     {
 
         private UserSession _session;
+
+        // ---------- Barra lateral ----------
+        private const int AnchoBarraAbierta = 220;
+        private const int AnchoBarraContraida = 72;
+
+        private bool _barraContraida;
+        private bool _catalogosAbiertos;
+
+        private Image? _logoCompleto;
+        private Image? _logoEmblema;
+
+        // Todos los botones del menú con su texto (al contraer se les quita el texto y queda solo el ícono)
+        private readonly List<(BotonRedondeado Boton, string Texto)> _botonesMenu = new();
+        private readonly List<Label> _titulosSeccion = new();
+        private readonly List<BotonRedondeado> _botonesCatalogos = new();
+        private readonly ToolTip _tooltipMenu = new ToolTip();
+
+        private BotonRedondeado btnContraer = null!;
+        private BotonRedondeado btnCatalogos = null!;
+        private ContextMenuStrip menuCatalogos = null!;
+
         public FrmMain(UserSession session)
         {
-            
+
             InitializeComponent();
 
             _session = session;
@@ -22,29 +43,72 @@ namespace CISOFTNEW
 
             ConfigurarSidebar();
 
+            AplicarEstadoBarra();
+
             ConfigurarPantallaCompleta();
 
             MostrarDashboard();
-
-            lblUsuario.Text = _session.UserName;
         }
 
         private void CargarLogo()
         {
-            // La imagen original es enorme (14221 x 3884 px, ~220 MB en memoria).
-            // Se hace una copia pequeña para la barra lateral y se libera la original.
+            // Logo horizontal (barra abierta). La imagen original es enorme
+            // (14221 x 3884 px, ~220 MB en memoria): se hace una copia pequeña y se libera la original.
             using (Bitmap original = Resource.Resources.EnglishCenter_Horizontal)
             {
                 int ancho = 400;
                 int alto = original.Height * ancho / original.Width;
 
-                picLogo.Image = new Bitmap(original, ancho, alto);
+                _logoCompleto = new Bitmap(original, ancho, alto);
+            }
+
+            // Emblema sin letras (barra contraída)
+            using (Bitmap original = Resource.Resources.EnglishCenter_Emblema)
+            {
+                int alto = 120;
+                int ancho = original.Width * alto / original.Height;
+
+                Bitmap emblema = new Bitmap(original, ancho, alto);
+
+                QuitarCuadritosDeFondo(emblema);
+
+                _logoEmblema = emblema;
+            }
+        }
+
+     //función que quita el fondo para añadir despues un fondo blanco 
+        private static void QuitarCuadritosDeFondo(Bitmap imagen)
+        {
+            for (int y = 0; y < imagen.Height; y++)
+            {
+                for (int x = 0; x < imagen.Width; x++)
+                {
+                    Color c = imagen.GetPixel(x, y);
+
+                    int mayor = Math.Max(c.R, Math.Max(c.G, c.B));
+                    int menor = Math.Min(c.R, Math.Min(c.G, c.B));
+
+                    // Gris claro: los tres canales parecidos y altos
+                    if (mayor - menor < 24 && menor > 170)
+                    {
+                        imagen.SetPixel(x, y, Color.White);
+                    }
+                }
             }
         }
 
         private void ConfigurarSidebar()
         {
             flpMenu.Controls.Clear();
+
+            btnContraer = CrearBotonMenu(
+                "MENÚ",
+                "E700");
+
+            btnContraer.Click += (sender, e) =>
+                AlternarBarra();
+
+            flpMenu.Controls.Add(btnContraer);
 
             BotonRedondeado btnHome = CrearBotonMenu(
                 "Inicio",
@@ -80,27 +144,8 @@ namespace CISOFTNEW
             flpMenu.Controls.Add(btnTeachers);
             flpMenu.Controls.Add(btnGroups);
 
-            // Catálogos
-            flpMenu.Controls.Add(CrearTituloSeccion("CATÁLOGOS"));
-
-            BotonRedondeado btnLevels = CrearBotonMenu(
-                "Niveles",
-                "E9D2");
-
-            // BotonRedondeado btnStages = CrearBotonMenu(
-            //     "Etapas",
-            //     "E7C1");
-
-            BotonRedondeado btnBooks = CrearBotonMenu(
-                "Libros",
-                "E8F1");
-
-            btnBooks.Click += (sender, e) =>
-                AbrirBooks();
-
-            flpMenu.Controls.Add(btnLevels);
-            // flpMenu.Controls.Add(btnStages);
-            flpMenu.Controls.Add(btnBooks);
+            // Catálogos (desplegable)
+            ConfigurarCatalogos();
 
             // Administración
             flpMenu.Controls.Add(CrearTituloSeccion("ADMINISTRACIÓN"));
@@ -115,6 +160,167 @@ namespace CISOFTNEW
 
             flpMenu.Controls.Add(btnPayments);
             flpMenu.Controls.Add(btnReports);
+        }
+
+        private void ConfigurarCatalogos()
+        {
+            // Para agregar un catálogo nuevo basta con agregar una línea aquí:
+            // no hay bronca si se respeta la estructura original
+            var catalogos = new (string Texto, string Icono, Action? Abrir)[]
+            {
+                ("Niveles", "E9D2", null),
+                // ("Etapas", "E7C1", null),
+                ("Libros", "E8F1", AbrirBooks),
+                ("Tipos de estudiante", "E8EC", AbrirTiposEstudiante),
+                ("Tipos de sangre", "E95E", AbrirTiposSangre),
+            };
+
+            btnCatalogos = CrearBotonMenu(
+                "Catálogos",
+                "E8FD");
+
+            btnCatalogos.Margin = new Padding(0, 10, 0, 2);
+
+            btnCatalogos.Click += (sender, e) =>
+                AlternarCatalogos();
+
+            flpMenu.Controls.Add(btnCatalogos);
+
+            // Menú flotante para cuando la barra está contraída
+            menuCatalogos = new ContextMenuStrip();
+            menuCatalogos.Renderer = new MenuFlotanteRenderer();
+            menuCatalogos.ShowImageMargin = false;
+            menuCatalogos.Font = new Font("Segoe UI", 10.5F);
+            menuCatalogos.Padding = new Padding(0, 4, 0, 4);
+
+            ToolStripLabel tituloFlotante = new ToolStripLabel("CATÁLOGOS");
+            tituloFlotante.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            tituloFlotante.ForeColor = Color.FromArgb(141, 169, 196);
+            tituloFlotante.Padding = new Padding(4, 2, 0, 4);
+
+            menuCatalogos.Items.Add(tituloFlotante);
+
+            foreach (var catalogo in catalogos)
+            {
+                // Botón dentro del desplegable
+                BotonRedondeado boton = CrearBotonMenu(
+                    catalogo.Texto,
+                    catalogo.Icono);
+
+                boton.Height = 38;
+                boton.Padding = new Padding(18, 0, 0, 0);
+                boton.Font = new Font("Segoe UI", 10.5F);
+                boton.Visible = false;
+
+                // Opción del menú flotante
+                ToolStripMenuItem opcion = new ToolStripMenuItem(catalogo.Texto);
+                opcion.Padding = new Padding(8, 6, 24, 6);
+
+                if (catalogo.Abrir is not null)
+                {
+                    Action abrir = catalogo.Abrir;
+
+                    boton.Click += (sender, e) => abrir();
+                    opcion.Click += (sender, e) => abrir();
+                }
+
+                _botonesCatalogos.Add(boton);
+                flpMenu.Controls.Add(boton);
+                menuCatalogos.Items.Add(opcion);
+            }
+        }
+
+        private void AlternarCatalogos()
+        {
+            if (_barraContraida)
+            {
+                // Barra contraída: el menú aparece flotando a la derecha del botón
+                menuCatalogos.Show(
+                    btnCatalogos,
+                    new Point(btnCatalogos.Width + 6, 0));
+
+                return;
+            }
+
+            _catalogosAbiertos = !_catalogosAbiertos;
+
+            AplicarEstadoBarra();
+        }
+
+        private void AlternarBarra()
+        {
+            _barraContraida = !_barraContraida;
+
+            AplicarEstadoBarra();
+        }
+
+        /// <summary>Acomoda toda la barra según esté abierta o contraída
+        /// y según el desplegable de Catálogos esté abierto o cerrado.</summary>
+        private void AplicarEstadoBarra()
+        {
+            bool contraida = _barraContraida;
+
+            pnlSidebar.SuspendLayout();
+            flpMenu.SuspendLayout();
+
+            pnlSidebar.Width = contraida ? AnchoBarraContraida : AnchoBarraAbierta;
+
+            // Logo: horizontal completo o solo el emblema
+            picLogo.Image = contraida ? _logoEmblema : _logoCompleto;
+            pnlLogo.Padding = contraida ? new Padding(8, 14, 8, 14) : new Padding(12, 14, 12, 14);
+            pnlLogoFondo.Padding = contraida ? new Padding(4) : new Padding(10, 6, 10, 6);
+
+            // Botones: con texto (abierta) o solo ícono con tooltip (contraída)
+            foreach (var (boton, texto) in _botonesMenu)
+            {
+                boton.Text = contraida ? "" : texto;
+                boton.Width = contraida ? AnchoBarraContraida - 16 : 200;
+                boton.Alineacion = contraida ? HorizontalAlignment.Center : HorizontalAlignment.Left;
+
+                _tooltipMenu.SetToolTip(boton, contraida ? texto : null);
+            }
+
+            _tooltipMenu.SetToolTip(btnContraer, contraida ? "Expandir menú" : null);
+
+            // Títulos de sección: solo con la barra abierta
+            foreach (Label titulo in _titulosSeccion)
+            {
+                titulo.Visible = !contraida;
+            }
+
+            // Desplegable de Catálogos: flecha ▾/▴ y sus opciones (solo con la barra abierta)
+            btnCatalogos.IconoDerecho = contraida ? "" : (_catalogosAbiertos ? "E70E" : "E70D");
+
+            foreach (BotonRedondeado boton in _botonesCatalogos)
+            {
+                boton.Visible = !contraida && _catalogosAbiertos;
+            }
+
+            // Usuario: nombre completo o solo iniciales
+            lblUsuario.Text = contraida ? Iniciales(_session.UserName) : _session.UserName;
+            lblUsuario.Padding = contraida ? new Padding(0) : new Padding(20, 0, 0, 0);
+            lblUsuario.TextAlign = contraida ? ContentAlignment.MiddleCenter : ContentAlignment.MiddleLeft;
+            _tooltipMenu.SetToolTip(lblUsuario, contraida ? _session.UserName : null);
+
+            flpMenu.ResumeLayout();
+            pnlSidebar.ResumeLayout();
+        }
+
+        private static string Iniciales(string? nombre)
+        {
+            string[] palabras = (nombre ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (palabras.Length == 0)
+            {
+                return "";
+            }
+
+            if (palabras.Length == 1)
+            {
+                return palabras[0].Substring(0, Math.Min(2, palabras[0].Length)).ToUpper();
+            }
+
+            return (palabras[0].Substring(0, 1) + palabras[1].Substring(0, 1)).ToUpper();
         }
 
         private BotonRedondeado CrearBotonMenu(
@@ -134,6 +340,8 @@ namespace CISOFTNEW
             boton.ForeColor = Color.FromArgb(238, 244, 237);
             boton.Font = new Font("Segoe UI", 11F);
 
+            _botonesMenu.Add((boton, texto));
+
             return boton;
         }
 
@@ -150,6 +358,8 @@ namespace CISOFTNEW
             titulo.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
             titulo.ForeColor = Color.FromArgb(141, 169, 196);
 
+            _titulosSeccion.Add(titulo);
+
             return titulo;
         }
 
@@ -159,6 +369,13 @@ namespace CISOFTNEW
             // Desde ahí, Alumnos.razor navega solo a "nuevo" y "editar".
             MostrarControl(
                 new PantallaBlazor("/alumnos"));
+        }
+
+        private void AbrirTiposEstudiante()
+        {
+            // Catálogo en Blazor (Pantallas/TiposEstudiante.razor)
+            MostrarControl(
+                new PantallaBlazor("/tipos-estudiante"));
         }
 
         private void AbrirTeachers()
@@ -173,12 +390,17 @@ namespace CISOFTNEW
 
         private void AbrirBooks()
         {
-            var booksControl = new Books();
+            // Catálogo en Blazor (Pantallas/Libros.razor).
+            // La versión anterior en WinForms (Books.cs) ya no se usa.
+            MostrarControl(
+                new PantallaBlazor("/libros"));
+        }
 
-            booksControl.BackRequested += (s, args) =>
-                MostrarDashboard();
-
-            MostrarControl(booksControl);
+        private void AbrirTiposSangre()
+        {
+            // Catálogo en Blazor (Pantallas/TiposSangre.razor)
+            MostrarControl(
+                new PantallaBlazor("/tipos-sangre"));
         }
 
         private void ConfigurarPantallaCompleta()
