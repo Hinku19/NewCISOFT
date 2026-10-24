@@ -217,7 +217,7 @@
             tlpHeader.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tlpHeader.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tlpHeader.Size = new Size(1405, 99);
-            tlpHeader.TabIndex = 0;
+            tlpHeader.TabIndex = 199;
             // 
             // flowLayoutPanel1
             // 
@@ -229,7 +229,7 @@
             flowLayoutPanel1.Location = new Point(1030, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(372, 93);
-            flowLayoutPanel1.TabIndex = 1;
+            flowLayoutPanel1.TabIndex = 198;
             flowLayoutPanel1.WrapContents = false;
             // 
             // btnEditar
@@ -248,7 +248,7 @@
             btnEditar.Name = "btnEditar";
             btnEditar.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnEditar.Size = new Size(180, 45);
-            btnEditar.TabIndex = 2;
+            btnEditar.TabIndex = 196;
             btnEditar.Text = "Iniciar edición";
             tlpInfo.SetToolTip(btnEditar, "Inicia o finaliza el proceso de edición de datos");
             btnEditar.Click += btnEditar_Click;
@@ -270,7 +270,7 @@
             btnActualizar.Name = "btnActualizar";
             btnActualizar.ShadowDecoration.CustomizableEdges = customizableEdges4;
             btnActualizar.Size = new Size(180, 45);
-            btnActualizar.TabIndex = 1;
+            btnActualizar.TabIndex = 197;
             btnActualizar.Text = "Actualizar Registros";
             tlpInfo.SetToolTip(btnActualizar, "Permite actualizar la lista de maestros activos");
             btnActualizar.Click += btnActualizar_Click;
@@ -290,7 +290,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 46.23656F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 30.1075268F));
             tableLayoutPanel1.Size = new Size(977, 93);
-            tableLayoutPanel1.TabIndex = 2;
+            tableLayoutPanel1.TabIndex = 200;
             // 
             // lblSubtittle
             // 
@@ -300,7 +300,7 @@
             lblSubtittle.Location = new Point(3, 65);
             lblSubtittle.Name = "lblSubtittle";
             lblSubtittle.Size = new Size(348, 20);
-            lblSubtittle.TabIndex = 3;
+            lblSubtittle.TabIndex = 203;
             lblSubtittle.Text = "Consulta y actualiza la información de los maestros";
             // 
             // lblTittle
@@ -311,7 +311,7 @@
             lblTittle.Location = new Point(3, 22);
             lblTittle.Name = "lblTittle";
             lblTittle.Size = new Size(144, 40);
-            lblTittle.TabIndex = 2;
+            lblTittle.TabIndex = 202;
             lblTittle.Text = "Maestros";
             // 
             // lblBreadcrumb
@@ -322,7 +322,7 @@
             lblBreadcrumb.Location = new Point(3, 0);
             lblBreadcrumb.Name = "lblBreadcrumb";
             lblBreadcrumb.Size = new Size(135, 17);
-            lblBreadcrumb.TabIndex = 1;
+            lblBreadcrumb.TabIndex = 201;
             lblBreadcrumb.Text = "Catálogos / Maestros";
             // 
             // tlpContent
@@ -395,7 +395,7 @@
             txtBuscarMaestro.SelectedText = "";
             txtBuscarMaestro.ShadowDecoration.CustomizableEdges = customizableEdges6;
             txtBuscarMaestro.Size = new Size(409, 36);
-            txtBuscarMaestro.TabIndex = 15;
+            txtBuscarMaestro.TabIndex = 195;
             tlpInfo.SetToolTip(txtBuscarMaestro, "Cuadro de texto para filtrar maestros por nombre");
             txtBuscarMaestro.TextChanged += txtBuscarMaestro_TextChanged;
             // 
@@ -408,7 +408,7 @@
             lblListaMaestros.Location = new Point(3, 0);
             lblListaMaestros.Name = "lblListaMaestros";
             lblListaMaestros.Size = new Size(409, 32);
-            lblListaMaestros.TabIndex = 0;
+            lblListaMaestros.TabIndex = 196;
             lblListaMaestros.Text = "Maestros";
             // 
             // dgvMaestros
@@ -444,7 +444,7 @@
             dgvMaestros.ReadOnly = true;
             dgvMaestros.RowHeadersVisible = false;
             dgvMaestros.Size = new Size(409, 615);
-            dgvMaestros.TabIndex = 2;
+            dgvMaestros.TabIndex = 193;
             dgvMaestros.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvMaestros.ThemeStyle.GridColor = Color.FromArgb(220, 229, 236);
             dgvMaestros.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F);
@@ -480,7 +480,7 @@
             tlpTeacherDetails.RowStyles.Add(new RowStyle(SizeType.Percent, 88F));
             tlpTeacherDetails.RowStyles.Add(new RowStyle(SizeType.Percent, 6F));
             tlpTeacherDetails.Size = new Size(978, 709);
-            tlpTeacherDetails.TabIndex = 0;
+            tlpTeacherDetails.TabIndex = 190;
             // 
             // pnlBottomAction
             // 
@@ -493,7 +493,7 @@
             pnlBottomAction.Name = "pnlBottomAction";
             pnlBottomAction.ShadowDecoration.CustomizableEdges = customizableEdges14;
             pnlBottomAction.Size = new Size(972, 37);
-            pnlBottomAction.TabIndex = 1;
+            pnlBottomAction.TabIndex = 150;
             // 
             // flpBottomAction
             // 
@@ -505,7 +505,7 @@
             flpBottomAction.Location = new Point(328, 0);
             flpBottomAction.Name = "flpBottomAction";
             flpBottomAction.Size = new Size(644, 37);
-            flpBottomAction.TabIndex = 0;
+            flpBottomAction.TabIndex = 145;
             // 
             // btnSalir
             // 
@@ -522,7 +522,7 @@
             btnSalir.Name = "btnSalir";
             btnSalir.ShadowDecoration.CustomizableEdges = customizableEdges8;
             btnSalir.Size = new Size(129, 32);
-            btnSalir.TabIndex = 0;
+            btnSalir.TabIndex = 21;
             btnSalir.Text = "Salir";
             tlpInfo.SetToolTip(btnSalir, "Regresar a menú principal");
             btnSalir.Click += btnSalir_Click;
@@ -542,7 +542,7 @@
             btnLimpiar.Name = "btnLimpiar";
             btnLimpiar.ShadowDecoration.CustomizableEdges = customizableEdges10;
             btnLimpiar.Size = new Size(142, 32);
-            btnLimpiar.TabIndex = 1;
+            btnLimpiar.TabIndex = 20;
             btnLimpiar.Text = "Limpiar pantalla";
             tlpInfo.SetToolTip(btnLimpiar, "Limpia pantalla");
             btnLimpiar.Click += btnLimpiar_Click;
@@ -563,9 +563,10 @@
             btnGuardar.Name = "btnGuardar";
             btnGuardar.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnGuardar.Size = new Size(152, 32);
-            btnGuardar.TabIndex = 2;
+            btnGuardar.TabIndex = 19;
             btnGuardar.Text = "Guardar cambios";
             tlpInfo.SetToolTip(btnGuardar, "Guarda los cambios realizados en los datos del maestro");
+            btnGuardar.Click += btnGuardar_Click;
             // 
             // pnlDatos
             // 
@@ -578,7 +579,7 @@
             pnlDatos.Padding = new Padding(10);
             pnlDatos.ShadowDecoration.CustomizableEdges = customizableEdges58;
             pnlDatos.Size = new Size(972, 607);
-            pnlDatos.TabIndex = 2;
+            pnlDatos.TabIndex = 190;
             // 
             // tlpGroupbox
             // 
@@ -625,7 +626,7 @@
             gbxDireccion.Name = "gbxDireccion";
             gbxDireccion.ShadowDecoration.CustomizableEdges = customizableEdges32;
             gbxDireccion.Size = new Size(946, 195);
-            gbxDireccion.TabIndex = 2;
+            gbxDireccion.TabIndex = 11;
             gbxDireccion.Text = "Dirección";
             // 
             // btnBuscarCP
@@ -645,7 +646,7 @@
             btnBuscarCP.Name = "btnBuscarCP";
             btnBuscarCP.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btnBuscarCP.Size = new Size(43, 36);
-            btnBuscarCP.TabIndex = 30;
+            btnBuscarCP.TabIndex = 65;
             btnBuscarCP.Visible = false;
             btnBuscarCP.Click += btnBuscarCP_Click;
             // 
@@ -666,7 +667,7 @@
             btnBuscarColonia.Name = "btnBuscarColonia";
             btnBuscarColonia.ShadowDecoration.CustomizableEdges = customizableEdges18;
             btnBuscarColonia.Size = new Size(43, 36);
-            btnBuscarColonia.TabIndex = 29;
+            btnBuscarColonia.TabIndex = 16;
             btnBuscarColonia.Click += btnBuscarColonia_Click;
             // 
             // lblCiudad
@@ -678,7 +679,7 @@
             lblCiudad.Location = new Point(554, 112);
             lblCiudad.Name = "lblCiudad";
             lblCiudad.Size = new Size(64, 17);
-            lblCiudad.TabIndex = 28;
+            lblCiudad.TabIndex = 65;
             lblCiudad.Text = "Localidad";
             // 
             // lblZipCode
@@ -690,7 +691,7 @@
             lblZipCode.Location = new Point(324, 112);
             lblZipCode.Name = "lblZipCode";
             lblZipCode.Size = new Size(91, 17);
-            lblZipCode.TabIndex = 27;
+            lblZipCode.TabIndex = 64;
             lblZipCode.Text = "Código postal";
             // 
             // txtCity
@@ -714,7 +715,7 @@
             txtCity.SelectedText = "";
             txtCity.ShadowDecoration.CustomizableEdges = customizableEdges20;
             txtCity.Size = new Size(361, 36);
-            txtCity.TabIndex = 26;
+            txtCity.TabIndex = 18;
             // 
             // txtZipCode
             // 
@@ -737,7 +738,7 @@
             txtZipCode.SelectedText = "";
             txtZipCode.ShadowDecoration.CustomizableEdges = customizableEdges22;
             txtZipCode.Size = new Size(160, 36);
-            txtZipCode.TabIndex = 25;
+            txtZipCode.TabIndex = 17;
             // 
             // txtColonia
             // 
@@ -760,7 +761,7 @@
             txtColonia.SelectedText = "";
             txtColonia.ShadowDecoration.CustomizableEdges = customizableEdges24;
             txtColonia.Size = new Size(233, 36);
-            txtColonia.TabIndex = 23;
+            txtColonia.TabIndex = 15;
             // 
             // lblColonia
             // 
@@ -771,7 +772,7 @@
             lblColonia.Location = new Point(10, 112);
             lblColonia.Name = "lblColonia";
             lblColonia.Size = new Size(52, 17);
-            lblColonia.TabIndex = 24;
+            lblColonia.TabIndex = 63;
             lblColonia.Text = "Colonia";
             // 
             // lblIntNum
@@ -783,7 +784,7 @@
             lblIntNum.Location = new Point(732, 47);
             lblIntNum.Name = "lblIntNum";
             lblIntNum.Size = new Size(102, 17);
-            lblIntNum.TabIndex = 22;
+            lblIntNum.TabIndex = 62;
             lblIntNum.Text = "Número interior";
             // 
             // lblExtNum
@@ -795,7 +796,7 @@
             lblExtNum.Location = new Point(532, 47);
             lblExtNum.Name = "lblExtNum";
             lblExtNum.Size = new Size(105, 17);
-            lblExtNum.TabIndex = 21;
+            lblExtNum.TabIndex = 61;
             lblExtNum.Text = "Número exterior";
             // 
             // txtIntNum
@@ -819,7 +820,7 @@
             txtIntNum.SelectedText = "";
             txtIntNum.ShadowDecoration.CustomizableEdges = customizableEdges26;
             txtIntNum.Size = new Size(194, 36);
-            txtIntNum.TabIndex = 20;
+            txtIntNum.TabIndex = 14;
             // 
             // txtExtNum
             // 
@@ -842,7 +843,7 @@
             txtExtNum.SelectedText = "";
             txtExtNum.ShadowDecoration.CustomizableEdges = customizableEdges28;
             txtExtNum.Size = new Size(194, 36);
-            txtExtNum.TabIndex = 19;
+            txtExtNum.TabIndex = 13;
             // 
             // txtAddress
             // 
@@ -865,7 +866,7 @@
             txtAddress.SelectedText = "";
             txtAddress.ShadowDecoration.CustomizableEdges = customizableEdges30;
             txtAddress.Size = new Size(518, 36);
-            txtAddress.TabIndex = 17;
+            txtAddress.TabIndex = 12;
             // 
             // lblAddress
             // 
@@ -876,7 +877,7 @@
             lblAddress.Location = new Point(8, 47);
             lblAddress.Name = "lblAddress";
             lblAddress.Size = new Size(36, 17);
-            lblAddress.TabIndex = 18;
+            lblAddress.TabIndex = 60;
             lblAddress.Text = "Calle";
             // 
             // gbxContacto
@@ -900,7 +901,7 @@
             gbxContacto.Name = "gbxContacto";
             gbxContacto.ShadowDecoration.CustomizableEdges = customizableEdges40;
             gbxContacto.Size = new Size(946, 187);
-            gbxContacto.TabIndex = 1;
+            gbxContacto.TabIndex = 7;
             gbxContacto.Text = "Contacto";
             // 
             // lblEmergencyPhone
@@ -912,7 +913,7 @@
             lblEmergencyPhone.Location = new Point(465, 122);
             lblEmergencyPhone.Name = "lblEmergencyPhone";
             lblEmergencyPhone.Size = new Size(149, 17);
-            lblEmergencyPhone.TabIndex = 18;
+            lblEmergencyPhone.TabIndex = 59;
             lblEmergencyPhone.Text = "Teléfono de emergencia";
             // 
             // txtEmergencyPhone
@@ -936,7 +937,7 @@
             txtEmergencyPhone.SelectedText = "";
             txtEmergencyPhone.ShadowDecoration.CustomizableEdges = customizableEdges34;
             txtEmergencyPhone.Size = new Size(461, 36);
-            txtEmergencyPhone.TabIndex = 17;
+            txtEmergencyPhone.TabIndex = 10;
             // 
             // txtPersonalPhone
             // 
@@ -959,7 +960,7 @@
             txtPersonalPhone.SelectedText = "";
             txtPersonalPhone.ShadowDecoration.CustomizableEdges = customizableEdges36;
             txtPersonalPhone.Size = new Size(451, 36);
-            txtPersonalPhone.TabIndex = 15;
+            txtPersonalPhone.TabIndex = 9;
             // 
             // lblPersonalPhone
             // 
@@ -970,7 +971,7 @@
             lblPersonalPhone.Location = new Point(8, 122);
             lblPersonalPhone.Name = "lblPersonalPhone";
             lblPersonalPhone.Size = new Size(113, 17);
-            lblPersonalPhone.TabIndex = 16;
+            lblPersonalPhone.TabIndex = 58;
             lblPersonalPhone.Text = "Teléfono personal";
             // 
             // txtEmail
@@ -994,7 +995,7 @@
             txtEmail.SelectedText = "";
             txtEmail.ShadowDecoration.CustomizableEdges = customizableEdges38;
             txtEmail.Size = new Size(918, 36);
-            txtEmail.TabIndex = 15;
+            txtEmail.TabIndex = 8;
             // 
             // lblEmail
             // 
@@ -1005,7 +1006,7 @@
             lblEmail.Location = new Point(8, 55);
             lblEmail.Name = "lblEmail";
             lblEmail.Size = new Size(117, 17);
-            lblEmail.TabIndex = 14;
+            lblEmail.TabIndex = 57;
             lblEmail.Text = "Correo electrónico";
             // 
             // gbxPersonal
@@ -1037,7 +1038,7 @@
             gbxPersonal.Padding = new Padding(5);
             gbxPersonal.ShadowDecoration.CustomizableEdges = customizableEdges56;
             gbxPersonal.Size = new Size(946, 187);
-            gbxPersonal.TabIndex = 0;
+            gbxPersonal.TabIndex = 189;
             gbxPersonal.Text = "Datos Personales";
             // 
             // lblBirthdate
@@ -1049,7 +1050,7 @@
             lblBirthdate.Location = new Point(726, 115);
             lblBirthdate.Name = "lblBirthdate";
             lblBirthdate.Size = new Size(127, 17);
-            lblBirthdate.TabIndex = 14;
+            lblBirthdate.TabIndex = 56;
             lblBirthdate.Text = "Fecha de nacimiento";
             // 
             // lblCURP
@@ -1061,17 +1062,17 @@
             lblCURP.Location = new Point(235, 115);
             lblCURP.Name = "lblCURP";
             lblCURP.Size = new Size(40, 17);
-            lblCURP.TabIndex = 13;
+            lblCURP.TabIndex = 55;
             lblCURP.Text = "CURP";
             // 
             // dtpBirthdate
             // 
-            dtpBirthdate.BackColor = Color.Transparent;
+            dtpBirthdate.BackColor = Color.WhiteSmoke;
             dtpBirthdate.BorderColor = Color.FromArgb(141, 169, 196);
             dtpBirthdate.BorderRadius = 10;
             dtpBirthdate.Checked = true;
             dtpBirthdate.CustomizableEdges = customizableEdges41;
-            dtpBirthdate.FillColor = Color.Transparent;
+            dtpBirthdate.FillColor = Color.WhiteSmoke;
             dtpBirthdate.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             dtpBirthdate.ForeColor = Color.FromArgb(16, 64, 116);
             dtpBirthdate.Format = DateTimePickerFormat.Short;
@@ -1081,7 +1082,7 @@
             dtpBirthdate.Name = "dtpBirthdate";
             dtpBirthdate.ShadowDecoration.CustomizableEdges = customizableEdges42;
             dtpBirthdate.Size = new Size(200, 36);
-            dtpBirthdate.TabIndex = 12;
+            dtpBirthdate.TabIndex = 6;
             dtpBirthdate.TextAlign = HorizontalAlignment.Center;
             dtpBirthdate.Value = new DateTime(2026, 10, 16, 10, 22, 0, 797);
             // 
@@ -1106,7 +1107,7 @@
             txtCURP.SelectedText = "";
             txtCURP.ShadowDecoration.CustomizableEdges = customizableEdges44;
             txtCURP.Size = new Size(467, 36);
-            txtCURP.TabIndex = 11;
+            txtCURP.TabIndex = 5;
             // 
             // lblSex
             // 
@@ -1117,7 +1118,7 @@
             lblSex.Location = new Point(8, 115);
             lblSex.Name = "lblSex";
             lblSex.Size = new Size(36, 17);
-            lblSex.TabIndex = 10;
+            lblSex.TabIndex = 54;
             lblSex.Text = "Sexo";
             // 
             // cmbSex
@@ -1137,7 +1138,7 @@
             cmbSex.Name = "cmbSex";
             cmbSex.ShadowDecoration.CustomizableEdges = customizableEdges46;
             cmbSex.Size = new Size(200, 36);
-            cmbSex.TabIndex = 9;
+            cmbSex.TabIndex = 4;
             // 
             // lblName
             // 
@@ -1148,7 +1149,7 @@
             lblName.Location = new Point(186, 45);
             lblName.Name = "lblName";
             lblName.Size = new Size(57, 17);
-            lblName.TabIndex = 8;
+            lblName.TabIndex = 51;
             lblName.Text = "Nombre";
             // 
             // txtFirstName
@@ -1172,7 +1173,7 @@
             txtFirstName.SelectedText = "";
             txtFirstName.ShadowDecoration.CustomizableEdges = customizableEdges48;
             txtFirstName.Size = new Size(221, 36);
-            txtFirstName.TabIndex = 7;
+            txtFirstName.TabIndex = 1;
             // 
             // lblPaternalSurName
             // 
@@ -1183,7 +1184,7 @@
             lblPaternalSurName.Location = new Point(413, 46);
             lblPaternalSurName.Name = "lblPaternalSurName";
             lblPaternalSurName.Size = new Size(105, 17);
-            lblPaternalSurName.TabIndex = 6;
+            lblPaternalSurName.TabIndex = 52;
             lblPaternalSurName.Text = "Apellido Paterno";
             // 
             // txtPaternalSurName
@@ -1207,7 +1208,7 @@
             txtPaternalSurName.SelectedText = "";
             txtPaternalSurName.ShadowDecoration.CustomizableEdges = customizableEdges50;
             txtPaternalSurName.Size = new Size(262, 36);
-            txtPaternalSurName.TabIndex = 5;
+            txtPaternalSurName.TabIndex = 2;
             // 
             // lblMaternalSurName
             // 
@@ -1218,7 +1219,7 @@
             lblMaternalSurName.Location = new Point(681, 45);
             lblMaternalSurName.Name = "lblMaternalSurName";
             lblMaternalSurName.Size = new Size(110, 17);
-            lblMaternalSurName.TabIndex = 4;
+            lblMaternalSurName.TabIndex = 53;
             lblMaternalSurName.Text = "Apellido Materno";
             // 
             // txtMaternalSurName
@@ -1253,7 +1254,7 @@
             lblEmployeeId.Location = new Point(8, 46);
             lblEmployeeId.Name = "lblEmployeeId";
             lblEmployeeId.Size = new Size(138, 17);
-            lblEmployeeId.TabIndex = 2;
+            lblEmployeeId.TabIndex = 50;
             lblEmployeeId.Text = "Número de empleado";
             // 
             // txtEmployeeId

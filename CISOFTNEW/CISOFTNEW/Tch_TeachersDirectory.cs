@@ -305,6 +305,8 @@ namespace CISOFTNEW
         {
             public string Codigo { get; set; }
             public string Texto { get; set; }
+
+            public override string ToString() => Texto;
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -367,6 +369,7 @@ namespace CISOFTNEW
                 gbxPersonal.Enabled = true;
                 btnGuardar.Enabled = true;
                 btnEditar.Text = "Terminar edición";
+                txtFirstName.Focus();
             }
         }
 
@@ -409,6 +412,122 @@ namespace CISOFTNEW
                     txtColonia.Clear();
                     txtColonia.Text = ventana.ColoniaSeleccionada;
                 }
+            }
+        }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("¿Desea guardar los cambios realizados?","Confirmación",MessageBoxButtons.YesNo,MessageBoxIcon.Question) != DialogResult.Yes)
+            {
+                return;
+            }
+
+            if (cmbSex.SelectedItem is not OpcionSexo opcion)
+            {
+                MessageBox.Show("Selecciona Masculino o Femenino.");
+                return;
+            }
+
+            if (!decimal.TryParse(txtPersonalPhone.Text.Trim(), out decimal personalPhone))
+            {
+                MessageBox.Show("Escribe un teléfono personal válido.");
+                return;
+            }
+
+            if (!int.TryParse(txtZipCode.Text.Trim(), out int zipCode))
+            {
+                MessageBox.Show("Escribe un código postal válido.");
+                return;
+            }
+
+            // Es opcional: vacío se envía como NULL.
+            object emergencyPhoneValue = DBNull.Value;
+            string emergencyText = txtEmergencyPhone.Text.Trim();
+
+            if (!string.IsNullOrWhiteSpace(emergencyText))
+            {
+                if (!decimal.TryParse(emergencyText, out decimal emergencyPhone))
+                {
+                    MessageBox.Show("El teléfono de emergencia debe ser numérico.");
+                    return;
+                }
+
+                emergencyPhoneValue = emergencyPhone;
+            }
+
+            try
+            {
+                CISOFTDataOperations.Database.DataOperations.ExecuteProcedure(CISOFTDataOperations.Database.Connection.NewCiSoft(),
+                    "NewCiSoft_DataEmployeeUpdate", new SqlParameter[]
+                    {
+                new SqlParameter("@EmployeeId", SqlDbType.Int)
+                    { Value = EmployeeId },
+
+                new SqlParameter("@FirstName", SqlDbType.VarChar, 25)
+                    { Value = txtFirstName.Text.Trim() },
+
+                new SqlParameter("@PaternalSurname", SqlDbType.VarChar, 35)
+                    { Value = txtPaternalSurName.Text.Trim() },
+
+                new SqlParameter("@MaternalSurname", SqlDbType.VarChar, 35)
+                    { Value = txtMaternalSurName.Text.Trim() },
+
+                new SqlParameter("@Sex", SqlDbType.Char, 1)
+                    { Value = opcion.Codigo },
+
+                new SqlParameter("@CURP", SqlDbType.VarChar, 18)
+                    { Value = txtCURP.Text.Trim() },
+
+                new SqlParameter("@Email", SqlDbType.VarChar, 35)
+                    { Value = txtEmail.Text.Trim() },
+
+                new SqlParameter("@PersonalPhone", SqlDbType.Decimal)
+                    { Precision = 10, Scale = 0, Value = personalPhone },
+
+                new SqlParameter("@EmergencyPhone", SqlDbType.Decimal)
+                    { Precision = 10, Scale = 0, Value = emergencyPhoneValue },
+
+                new SqlParameter("@Address", SqlDbType.VarChar, 100)
+                    { Value = txtAddress.Text.Trim() },
+
+                new SqlParameter("@ExtNumber", SqlDbType.VarChar, 10)
+                    { Value = txtExtNum.Text.Trim() },
+
+                new SqlParameter("@IntNumber", SqlDbType.VarChar, 10)
+                    { Value = txtIntNum.Text.Trim() },
+
+                new SqlParameter("@Neighborhood", SqlDbType.VarChar, 20)
+                    { Value = txtColonia.Text.Trim() },
+
+                new SqlParameter("@ZipCode", SqlDbType.Int)
+                    { Value = zipCode },
+
+                new SqlParameter("@City", SqlDbType.VarChar, 15)
+                    { Value = txtCity.Text.Trim() },
+
+                new SqlParameter("@BirthDate", SqlDbType.Date)
+                    { Value = dtpBirthdate.Value.Date }
+                    });
+
+                MessageBox.Show("Datos actualizados correctamente.","Confirmación", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if(MessageBox.Show("¿Desea continuar con la edición de registros?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    gbxContacto.Enabled = false;
+                    gbxDireccion.Enabled = false;
+                    gbxPersonal.Enabled = false;
+                    btnGuardar.Enabled = false;
+                    btnEditar.Text = "Iniciar edición";
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error al guardar",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

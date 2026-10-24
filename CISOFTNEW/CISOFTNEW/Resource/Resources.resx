@@ -118,6 +118,84 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Alergias_Aines" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\aines.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Alergenos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\alergenos.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Altramuces" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\altramuces.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Anestesicos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\anestesicos.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Antibioticos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\antibioticos.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Anticonvulsivos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\anticonvulsivos.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Apio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\apio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Asma" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\asma.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Cacahuate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cacahuate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Cereales_con_gluten" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cereales_con_gluten.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Default" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\alergia_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Frutos_de_cascara" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\frutos_de_cascara.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Huevo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\huevo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Lacteos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lacteos.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Legumbres" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\legumbres.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Maiz" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\maiz.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Mariscos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mariscos.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Medios_de_contraste" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\medios_de_contraste.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Moluscos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\moluscos.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Mostaza" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mostaza.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Pescado" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pescado.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Picaduras" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\picaduras.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Quimioterapeuticos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\quimioterapeuticos.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Sesamo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sesamo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Soya" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\soya.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Alergias_Sulfitos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sulfitos.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Books" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Books.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -164,4 +242,3 @@
     <value>..\Resources\Teachers.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
-

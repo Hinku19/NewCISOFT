@@ -173,6 +173,7 @@ namespace CISOFTNEW
                 ("Libros", "E8F1", AbrirBooks),
                 ("Tipos de estudiante", "E8EC", AbrirTiposEstudiante),
                 ("Tipos de sangre", "E95E", AbrirTiposSangre),
+                ("Alergias", "E8E8", AbrirAlergias)
             };
 
             btnCatalogos = CrearBotonMenu(
@@ -401,6 +402,16 @@ namespace CISOFTNEW
             // Catálogo en Blazor (Pantallas/TiposSangre.razor)
             MostrarControl(
                 new PantallaBlazor("/tipos-sangre"));
+        }
+
+        private void AbrirAlergias()
+        {
+            var allergiesControl = new Cat_AllergiesDirectory();
+
+            allergiesControl.BackRequested += (s, args) =>
+                MostrarDashboard();
+
+            MostrarControl(allergiesControl);
         }
 
         private void ConfigurarPantallaCompleta()
