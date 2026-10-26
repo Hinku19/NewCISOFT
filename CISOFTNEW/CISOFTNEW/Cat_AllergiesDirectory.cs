@@ -18,6 +18,10 @@ namespace CISOFTNEW
         {
             InitializeComponent();
 
+            RedondearPanel(pnlTabla, 10, Color.FromArgb(220, 230, 238));
+            RedondearPanel(pnlPaginacion, 10, Color.FromArgb(220, 230, 238));
+            //RedondearPanel(tlpPaginacion, 10, Color.FromArgb(220, 230, 238));
+
             // Evita que las conexiones de eventos duplicadas desde el
             // diseñador y desde código causen doble ejecución.
             Load -= Cat_AllergiesDirectory_Load;
@@ -40,6 +44,70 @@ namespace CISOFTNEW
 
             btnSalir.Click -= btnSalir_Click;
             btnSalir.Click += btnSalir_Click;
+        }
+
+        private void RedondearPanel(Panel panel, int radio, Color colorBorde)
+        {
+            Region regionActual = null;
+
+            EventHandler actualizarForma = (sender, e) =>
+            {
+                Rectangle rect = panel.ClientRectangle;
+
+                if (rect.Width <= 0 || rect.Height <= 0)
+                    return;
+
+                int r = Math.Min(radio, Math.Min(rect.Width, rect.Height) / 2);
+
+                using (GraphicsPath path = CrearRectanguloRedondeado(rect, r))
+                {
+                    Region nuevaRegion = new Region(path);
+                    panel.Region = nuevaRegion;
+
+                    regionActual?.Dispose();
+                    regionActual = nuevaRegion;
+                }
+
+                panel.Invalidate();
+            };
+
+            panel.Resize += actualizarForma;
+
+            panel.Paint += (sender, e) =>
+            {
+                Rectangle rect = panel.ClientRectangle;
+                rect.Width -= 1;
+                rect.Height -= 1;
+
+                if (rect.Width <= 0 || rect.Height <= 0)
+                    return;
+
+                int r = Math.Min(radio, Math.Min(rect.Width, rect.Height) / 2);
+
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+                using (GraphicsPath path = CrearRectanguloRedondeado(rect, r))
+                using (Pen pen = new Pen(colorBorde, 1))
+                {
+                    e.Graphics.DrawPath(pen, path);
+                }
+            };
+
+            actualizarForma(panel, EventArgs.Empty);
+        }
+
+        private GraphicsPath CrearRectanguloRedondeado(Rectangle rect, int radio)
+        {
+            int diametro = radio * 2;
+            GraphicsPath path = new GraphicsPath();
+
+            path.AddArc(rect.X, rect.Y, diametro, diametro, 180, 90);
+            path.AddArc(rect.Right - diametro, rect.Y, diametro, diametro, 270, 90);
+            path.AddArc(rect.Right - diametro, rect.Bottom - diametro, diametro, diametro, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - diametro, diametro, diametro, 90, 90);
+            path.CloseFigure();
+
+            return path;
         }
 
         private void Cat_AllergiesDirectory_Load(object sender, EventArgs e)
@@ -673,7 +741,7 @@ namespace CISOFTNEW
                     _alergiasFiltradas.ImportRow(fila);
             }
 
-            _paginaActual = 1;
+            //_paginaActual = 1;
             MostrarPaginaActual();
         }
 
@@ -688,7 +756,7 @@ namespace CISOFTNEW
             {
                 var pantalla = new Cat_AllergiesInsert
                 {
-                    Dock = DockStyle.Fill
+                    Dock = DockStyle.Fill,
                 };
 
                 ventana.Controls.Add(pantalla);

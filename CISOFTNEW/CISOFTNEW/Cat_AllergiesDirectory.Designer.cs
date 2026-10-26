@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
@@ -81,6 +82,7 @@
             btnPaginaActual = new Guna.UI2.WinForms.Guna2Button();
             btnAnterior = new Guna.UI2.WinForms.Guna2Button();
             lblResumen = new Label();
+            ttAyuda = new ToolTip(components);
             pnlMain.SuspendLayout();
             tlpPage.SuspendLayout();
             pnlTabla.SuspendLayout();
@@ -217,7 +219,7 @@
             tableLayoutPanel1.RowCount = 3;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 34.375F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 65.625F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
             tableLayoutPanel1.Size = new Size(1062, 102);
             tableLayoutPanel1.TabIndex = 0;
             // 
@@ -225,7 +227,7 @@
             // 
             lblDescripcion.AutoSize = true;
             lblDescripcion.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblDescripcion.Location = new Point(3, 76);
+            lblDescripcion.Location = new Point(3, 77);
             lblDescripcion.Name = "lblDescripcion";
             lblDescripcion.Size = new Size(306, 20);
             lblDescripcion.TabIndex = 2;
@@ -279,6 +281,7 @@
             btnNuevaAlergia.Size = new Size(183, 43);
             btnNuevaAlergia.TabIndex = 1;
             btnNuevaAlergia.Text = "+ Nueva alergia";
+            ttAyuda.SetToolTip(btnNuevaAlergia, "Agregar nuevo registro de alergía");
             btnNuevaAlergia.Click += btnNuevaAlergia_Click;
             // 
             // btnSalir
@@ -300,6 +303,7 @@
             btnSalir.Size = new Size(184, 43);
             btnSalir.TabIndex = 2;
             btnSalir.Text = "Salir";
+            ttAyuda.SetToolTip(btnSalir, "Regresar al menú principal");
             btnSalir.Click += btnSalir_Click;
             // 
             // pnlFiltros
@@ -357,6 +361,7 @@
             btnLimpiarFiltros.Size = new Size(225, 36);
             btnLimpiarFiltros.TabIndex = 7;
             btnLimpiarFiltros.Text = "Limpiar Filtros";
+            ttAyuda.SetToolTip(btnLimpiarFiltros, "Limpia filtros de pantalla");
             btnLimpiarFiltros.Click += btnLimpiarFiltros_Click;
             // 
             // cmbEstado
@@ -378,6 +383,7 @@
             cmbEstado.ShadowDecoration.CustomizableEdges = customizableEdges12;
             cmbEstado.Size = new Size(367, 36);
             cmbEstado.TabIndex = 4;
+            ttAyuda.SetToolTip(cmbEstado, "Filtra el contenido por activos o inactivos");
             cmbEstado.SelectedIndexChanged += cmbEstado_SelectedIndexChanged;
             // 
             // lblEstado
@@ -427,6 +433,7 @@
             txtBuscarAlergia.ShadowDecoration.CustomizableEdges = customizableEdges14;
             txtBuscarAlergia.Size = new Size(826, 36);
             txtBuscarAlergia.TabIndex = 5;
+            ttAyuda.SetToolTip(txtBuscarAlergia, "Filtra el contenido de las alergías por texto");
             txtBuscarAlergia.TextChanged += txtBuscarAlergia_TextChanged;
             // 
             // pnlPaginacion
@@ -476,6 +483,7 @@
             btnSiguiente.Size = new Size(34, 34);
             btnSiguiente.TabIndex = 2;
             btnSiguiente.Text = ">";
+            ttAyuda.SetToolTip(btnSiguiente, "Muestra siguiente página con alergías");
             btnSiguiente.Click += btnSiguiente_Click;
             // 
             // btnPaginaActual
@@ -513,6 +521,7 @@
             btnAnterior.Size = new Size(34, 34);
             btnAnterior.TabIndex = 4;
             btnAnterior.Text = "<";
+            ttAyuda.SetToolTip(btnAnterior, "Muestra la página anterior de alergías");
             btnAnterior.Click += btnAnterior_Click;
             // 
             // lblResumen
@@ -526,6 +535,12 @@
             lblResumen.Size = new Size(204, 20);
             lblResumen.TabIndex = 0;
             lblResumen.Text = "Mostrando 1 - 5 de 5 alergias";
+            // 
+            // ttAyuda
+            // 
+            ttAyuda.AutoPopDelay = 5000;
+            ttAyuda.InitialDelay = 200;
+            ttAyuda.ReshowDelay = 100;
             // 
             // Cat_AllergiesDirectory
             // 
@@ -580,5 +595,6 @@
         private Guna.UI2.WinForms.Guna2Button btnSiguiente;
         private Guna.UI2.WinForms.Guna2Button btnPaginaActual;
         private Guna.UI2.WinForms.Guna2Button btnAnterior;
+        private ToolTip ttAyuda;
     }
 }

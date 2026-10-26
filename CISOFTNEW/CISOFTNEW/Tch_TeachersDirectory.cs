@@ -352,6 +352,7 @@ namespace CISOFTNEW
             if (gbxContacto.Enabled && gbxDireccion.Enabled && gbxPersonal.Enabled)
             {
                 EditPermit = 0;
+                dgvMaestros.Enabled = true;
                 gbxContacto.Enabled = false;
                 gbxDireccion.Enabled = false;
                 gbxPersonal.Enabled = false;
@@ -364,6 +365,7 @@ namespace CISOFTNEW
             if (MessageBox.Show("¿Desea habilitar la edición de registros?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 EditPermit = 1;
+                dgvMaestros.Enabled = false;
                 gbxContacto.Enabled = true;
                 gbxDireccion.Enabled = true;
                 gbxPersonal.Enabled = true;
@@ -516,6 +518,7 @@ namespace CISOFTNEW
                     gbxDireccion.Enabled = false;
                     gbxPersonal.Enabled = false;
                     btnGuardar.Enabled = false;
+                    dgvMaestros.Enabled = true;
                     btnEditar.Text = "Iniciar edición";
                 }
             }

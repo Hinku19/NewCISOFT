@@ -143,16 +143,25 @@ namespace CISOFTNEW
             }
         }
 
-        private void btnExit_Click(
-        object sender,
-        EventArgs e)
+        private void btnExit_Click(object sender, EventArgs e)
         {
-            Close();
+            DialogResult respuesta = MessageBox.Show(
+            "¿Está seguro de que desea salir del sistema?",
+            "Confirmar salida",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question);
+
+            if (respuesta == DialogResult.Yes)
+            {
+                Close();
+            }
+            else
+            {
+                txtUser.Focus();
+            }
         }
 
-        private void RedondearPanel(
-        Panel panel,
-        int radio)
+        private void RedondearPanel(Panel panel, int radio)
         {
             GraphicsPath path = new GraphicsPath();
 

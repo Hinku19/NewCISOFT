@@ -76,7 +76,7 @@ namespace CISOFTNEW
             }
         }
 
-     //función que quita el fondo para añadir despues un fondo blanco 
+        //función que quita el fondo para añadir despues un fondo blanco 
         private static void QuitarCuadritosDeFondo(Bitmap imagen)
         {
             for (int y = 0; y < imagen.Height; y++)
@@ -168,7 +168,7 @@ namespace CISOFTNEW
             // no hay bronca si se respeta la estructura original
             var catalogos = new (string Texto, string Icono, Action? Abrir)[]
             {
-                ("Niveles", "E9D2", null),
+                ("Niveles", "E9D2", AbrirLevels),
                 // ("Etapas", "E7C1", null),
                 ("Libros", "E8F1", AbrirBooks),
                 ("Tipos de estudiante", "E8EC", AbrirTiposEstudiante),
@@ -389,6 +389,16 @@ namespace CISOFTNEW
             MostrarControl(teachersControl);
         }
 
+        private void AbrirLevels()
+        {
+            var levelsControl = new Cat_LevelsDirectory();
+
+            levelsControl.BackRequested += (s, args) =>
+                MostrarDashboard();
+
+            MostrarControl(levelsControl);
+        }
+
         private void AbrirBooks()
         {
             // Catálogo en Blazor (Pantallas/Libros.razor).
@@ -576,6 +586,20 @@ namespace CISOFTNEW
         {
             MostrarControl(
                 new Inicio(_session.UserName));
+        }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult respuesta = MessageBox.Show(
+                        "¿Está seguro de que desea cerrar sesión?",
+                        "Confirmar cierre de sesión",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+            if (respuesta == DialogResult.No)
+            {
+                e.Cancel = true; // Cancela el cierre
+            }
         }
     }
 }

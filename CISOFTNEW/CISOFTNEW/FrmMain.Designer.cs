@@ -32,11 +32,11 @@ namespace CISOFTNEW
             tlpDashboard = new TableLayoutPanel();
             pnlContent = new Panel();
             pnlSidebar = new Panel();
+            flpMenu = new FlowLayoutPanel();
+            lblUsuario = new Label();
             pnlLogo = new Panel();
             pnlLogoFondo = new CISOFTNEW.Controles.PanelRedondeado();
             picLogo = new PictureBox();
-            flpMenu = new FlowLayoutPanel();
-            lblUsuario = new Label();
             pnlContent.SuspendLayout();
             pnlSidebar.SuspendLayout();
             pnlLogo.SuspendLayout();
@@ -58,11 +58,11 @@ namespace CISOFTNEW
             tlpDashboard.RowCount = 2;
             tlpDashboard.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tlpDashboard.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpDashboard.Size = new Size(1822, 646);
+            tlpDashboard.Size = new Size(1602, 671);
             tlpDashboard.TabIndex = 0;
-            //
+            // 
             // pnlContent
-            //
+            // 
             pnlContent.BackColor = Color.FromArgb(238, 244, 237);
             pnlContent.Controls.Add(tlpDashboard);
             pnlContent.Dock = DockStyle.Fill;
@@ -70,9 +70,9 @@ namespace CISOFTNEW
             pnlContent.Name = "pnlContent";
             pnlContent.Size = new Size(1602, 671);
             pnlContent.TabIndex = 2;
-            //
+            // 
             // pnlSidebar
-            //
+            // 
             pnlSidebar.BackColor = Color.FromArgb(11, 37, 69);
             pnlSidebar.Controls.Add(flpMenu);
             pnlSidebar.Controls.Add(lblUsuario);
@@ -82,38 +82,9 @@ namespace CISOFTNEW
             pnlSidebar.Name = "pnlSidebar";
             pnlSidebar.Size = new Size(220, 671);
             pnlSidebar.TabIndex = 1;
-            //
-            // pnlLogo
-            //
-            pnlLogo.Controls.Add(pnlLogoFondo);
-            pnlLogo.Dock = DockStyle.Top;
-            pnlLogo.Location = new Point(0, 0);
-            pnlLogo.Name = "pnlLogo";
-            pnlLogo.Padding = new Padding(12, 14, 12, 14);
-            pnlLogo.Size = new Size(220, 90);
-            pnlLogo.TabIndex = 0;
-            //
-            // pnlLogoFondo
-            //
-            pnlLogoFondo.BackColor = Color.White;
-            pnlLogoFondo.Controls.Add(picLogo);
-            pnlLogoFondo.Dock = DockStyle.Fill;
-            pnlLogoFondo.Name = "pnlLogoFondo";
-            pnlLogoFondo.Padding = new Padding(10, 6, 10, 6);
-            pnlLogoFondo.Radio = 10;
-            pnlLogoFondo.TabIndex = 0;
-            //
-            // picLogo
-            //
-            picLogo.BackColor = Color.White;
-            picLogo.Dock = DockStyle.Fill;
-            picLogo.Name = "picLogo";
-            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
-            picLogo.TabIndex = 0;
-            picLogo.TabStop = false;
-            //
+            // 
             // flpMenu
-            //
+            // 
             flpMenu.AutoScroll = true;
             flpMenu.Dock = DockStyle.Fill;
             flpMenu.FlowDirection = FlowDirection.TopDown;
@@ -123,9 +94,9 @@ namespace CISOFTNEW
             flpMenu.Size = new Size(220, 521);
             flpMenu.TabIndex = 1;
             flpMenu.WrapContents = false;
-            //
+            // 
             // lblUsuario
-            //
+            // 
             lblUsuario.Dock = DockStyle.Bottom;
             lblUsuario.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblUsuario.ForeColor = Color.FromArgb(238, 244, 237);
@@ -135,9 +106,45 @@ namespace CISOFTNEW
             lblUsuario.Size = new Size(220, 60);
             lblUsuario.TabIndex = 2;
             lblUsuario.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
+            // pnlLogo
+            // 
+            pnlLogo.Controls.Add(pnlLogoFondo);
+            pnlLogo.Dock = DockStyle.Top;
+            pnlLogo.Location = new Point(0, 0);
+            pnlLogo.Name = "pnlLogo";
+            pnlLogo.Padding = new Padding(12, 14, 12, 14);
+            pnlLogo.Size = new Size(220, 90);
+            pnlLogo.TabIndex = 0;
+            // 
+            // pnlLogoFondo
+            // 
+            pnlLogoFondo.BackColor = Color.White;
+            pnlLogoFondo.BordePunteado = false;
+            pnlLogoFondo.ColorBorde = Color.Transparent;
+            pnlLogoFondo.Controls.Add(picLogo);
+            pnlLogoFondo.Dock = DockStyle.Fill;
+            pnlLogoFondo.GrosorBorde = 0F;
+            pnlLogoFondo.Location = new Point(12, 14);
+            pnlLogoFondo.Name = "pnlLogoFondo";
+            pnlLogoFondo.Padding = new Padding(10, 6, 10, 6);
+            pnlLogoFondo.Radio = 10;
+            pnlLogoFondo.Size = new Size(196, 62);
+            pnlLogoFondo.TabIndex = 0;
+            // 
+            // picLogo
+            // 
+            picLogo.BackColor = Color.White;
+            picLogo.Dock = DockStyle.Fill;
+            picLogo.Location = new Point(10, 6);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(176, 50);
+            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            picLogo.TabIndex = 0;
+            picLogo.TabStop = false;
+            // 
             // FrmMain
-            //
+            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1822, 671);
@@ -147,6 +154,7 @@ namespace CISOFTNEW
             Margin = new Padding(3, 2, 3, 2);
             Name = "FrmMain";
             Text = "SOCOADA English Center";
+            FormClosing += FrmMain_FormClosing;
             pnlContent.ResumeLayout(false);
             pnlContent.PerformLayout();
             pnlSidebar.ResumeLayout(false);
