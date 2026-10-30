@@ -1,13 +1,18 @@
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Globalization;
 using System.Text;
+using Microsoft.Data.SqlClient;
 
 namespace CISOFTNEW.Servicios
 {
-    /// <summary>Tipo sanguíneo (grupo ABO + factor Rh). Son 8 fijos: solo se edita la descripción y el estado.</summary>
+    //Tipo sanguíneo (grupo ABO + factor Rh). Son 8 fijos: solo se edita la descripción y el estado.
     public class TipoSangre
     {
         public int Id { get; set; }
+
+        public string BloodName{get; set; } = "";
+
 
         /// <summary>A, B, AB u O.</summary>
         public string Grupo { get; set; } = "";
@@ -27,18 +32,22 @@ namespace CISOFTNEW.Servicios
         public TipoSangre Clonar() => (TipoSangre)MemberwiseClone();
     }
 
-    /// <summary>
-    /// Punto único de acceso a los tipos de sangre para todas las pantallas.
-    /// HOY: usa una lista en memoria con los 8 tipos.
-    /// DESPUÉS: aquí se conecta CISOFTDataOperations sin tocar las pantallas.
-    /// </summary>
+   
+    // Punto único de acceso a los tipos de sangre para todas las pantallas.
+    //Lee y guarda con el SP dbo.NewCisoft_BloodTypes.
+    
     public class ServicioTiposSangre
     {
-        private readonly List<TipoSangre> _tipos = DatosIniciales();
+        private const string SP = "dbo.NewCisoft_BloodTypes";
+
+        // Se carga una vez y se reutiliza en cada búsqueda (son 8 tipos de sangre distintos).
+        private List<TipoSangre>? _tipos;
 
         /// <param name="estado">"" = todos, "Activo" o "Inactivo".</param>
         public List<TipoSangre> Buscar(string texto, string estado)
         {
+            _tipos ??= CargarDeBase();
+
             var q = Normalizar(texto.Trim()).Replace("-", "−");
             return _tipos
                 .Where(t => q.Length == 0
@@ -49,13 +58,54 @@ namespace CISOFTNEW.Servicios
                 .ToList();
         }
 
-        /// <summary>Guarda los cambios de un tipo existente (no se pueden crear nuevos).</summary>
+        //Obliga a volver a leer de la base en la siguiente búsqueda.
+        public void Recargar() => _tipos = null;
+
+        //Guarda descripción y estado de un tipo existente (no se pueden crear nuevos)
         public void Guardar(TipoSangre tipo)
         {
-            tipo.Descripcion = tipo.Descripcion?.Trim();
+            // No se manda @BloodName: el SP conserva el nombre actual.
+            // Descripción vacía ("") = borrar la descripción en la base.
+            CISOFTDataOperations.Database.DataOperations.ExecuteProcedure(
+                CISOFTDataOperations.Database.Connection.NewCiSoft(),
+                SP,
+                new SqlParameter("@Option", SqlDbType.VarChar, 10) { Value = "UPDATE" },
+                new SqlParameter("@BloodTypeId", SqlDbType.Int) { Value = tipo.Id },
+              
+                new SqlParameter("@IsActive", SqlDbType.Bit) { Value = tipo.Activo });
 
-            int i = _tipos.FindIndex(t => t.Id == tipo.Id);
-            if (i >= 0) _tipos[i] = tipo;
+            Recargar();
+        }
+
+        private static List<TipoSangre> CargarDeBase()
+        {
+            DataSet ds = CISOFTDataOperations.Database.DataOperations.ExecuteProcedure(
+                CISOFTDataOperations.Database.Connection.NewCiSoft(),
+                SP,
+                new SqlParameter("@Option", SqlDbType.VarChar, 10) { Value = "LIST" });
+
+            var lista = new List<TipoSangre>();
+
+            if (ds == null || ds.Tables.Count == 0)
+                return lista;
+
+            foreach (DataRow r in ds.Tables[0].Rows)
+            {
+                // BloodName viene como "A+", "O-", "AB+", etc.
+                string nombre = Convert.ToString(r["BloodNAme"])?.Trim() ?? "";
+
+                lista.Add(new TipoSangre
+                {
+                    Id = Convert.ToInt32(r["BloodTypeId"]),
+                    BloodName = nombre,
+                    Grupo = nombre.TrimEnd('+', '-', '−').Trim(),
+                    RhPositivo = nombre.EndsWith("+"),
+                   // Descripcion = r["Description"] as string,   // DBNull -> null
+                    Activo = Convert.ToBoolean(r["IsActive"])
+                });
+            }
+
+            return lista;
         }
 
         private static string Normalizar(string? s)
@@ -66,22 +116,5 @@ namespace CISOFTNEW.Servicios
                     sb.Append(c);
             return sb.ToString().ToLowerInvariant();
         }
-
-        private static List<TipoSangre> DatosIniciales() => new()
-        {
-            Nuevo(1, "A", true, "Antígeno A en la superficie de los glóbulos rojos."),
-            Nuevo(2, "A", false, "Antígeno A en la superficie de los glóbulos rojos."),
-            Nuevo(3, "B", true, "Antígeno B en la superficie de los glóbulos rojos."),
-            Nuevo(4, "B", false, "Antígeno B en la superficie de los glóbulos rojos."),
-            Nuevo(5, "AB", true, "Antígenos A y B en la superficie de los glóbulos rojos."),
-            Nuevo(6, "AB", false, "Antígenos A y B en la superficie de los glóbulos rojos."),
-            Nuevo(7, "O", true, "Sin antígenos A ni B en la superficie de los glóbulos rojos."),
-            Nuevo(8, "O", false, "Sin antígenos A ni B en la superficie de los glóbulos rojos."),
-        };
-
-        private static TipoSangre Nuevo(int id, string grupo, bool rhPositivo, string descripcion) => new()
-        {
-            Id = id, Grupo = grupo, RhPositivo = rhPositivo, Descripcion = descripcion
-        };
     }
 }

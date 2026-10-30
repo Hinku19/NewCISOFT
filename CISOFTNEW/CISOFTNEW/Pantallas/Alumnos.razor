@@ -17,15 +17,15 @@
     <div class="campo" style="flex: 1">
         <label for="buscar">Buscar alumno</label>
         <input id="buscar" type="search" class="control"
-               placeholder="Nombre, matrícula, CURP o RFC"
+               placeholder="Nombre, matrícula, CURP o correo"
                @bind="busqueda" @bind:event="oninput" @bind:after="Actualizar" />
     </div>
 
     <div class="campo" style="width: 220px">
-        <label for="clasificacion">Clasificación</label>
-        <select id="clasificacion" class="control" @bind="clasificacion" @bind:after="Actualizar">
-            <option value="">Todas</option>
-            @foreach (var c in Servicio.Clasificaciones)
+        <label for="tipo">Tipo</label>
+        <select id="tipo" class="control" @bind="tipo" @bind:after="Actualizar">
+            <option value="">Todos</option>
+            @foreach (var c in Servicio.Tipos)
             {
                 <option value="@c">@c</option>
             }
@@ -40,6 +40,15 @@
             {
                 <option value="@g">@g</option>
             }
+        </select>
+    </div>
+
+    <div class="campo" style="width: 180px">
+        <label for="estado">Estado</label>
+        <select id="estado" class="control" @bind="estado" @bind:after="Actualizar">
+            <option value="">Todos</option>
+            <option value="Activo">Activos</option>
+            <option value="Inactivo">Inactivos</option>
         </select>
     </div>
 
@@ -58,9 +67,10 @@
                 <tr>
                     <th scope="col">Alumno</th>
                     <th scope="col">Matrícula</th>
-                    <th scope="col">Clasificación</th>
+                    <th scope="col">Tipo</th>
                     <th scope="col">Grupo</th>
                     <th scope="col">Celular</th>
+                    <th scope="col">Estado</th>
                     <th scope="col" style="text-align: right">Acciones</th>
                 </tr>
             </thead>
@@ -78,11 +88,17 @@
                             </div>
                         </td>
                         <td>@a.Matricula</td>
-                        <td><span class="pastilla">@a.Clasificacion</span></td>
+                        <td><span class="pastilla">@a.Tipo</span></td>
                         <td>@a.Grupo</td>
                         <td>@a.Celular</td>
+                        <td><span class="insignia @(a.Activo ? "activo" : "inactivo")">@(a.Activo ? "Activo" : "Inactivo")</span></td>
                         <td>
                             <div class="acciones">
+                                <button type="button" class="btn btn-icono" title="Ver"
+                                        aria-label="@($"Ver a {a.NombreCompleto}")"
+                                        @onclick='() => Nav.NavigateTo($"alumnos/ver/{a.Matricula}")'>
+                                    <span class="ico" aria-hidden="true">&#xE890;</span>
+                                </button>
                                 <button type="button" class="btn btn-icono" title="Editar"
                                         aria-label="@($"Editar a {a.NombreCompleto}")"
                                         @onclick='() => Nav.NavigateTo($"alumnos/editar/{a.Matricula}")'>
@@ -116,22 +132,28 @@
     private const int TamanoPagina = 7;
 
     private string busqueda = "";
-    private string clasificacion = "";
+    private string tipo = "";
     private string grupo = "";
+    private string estado = "Activo";
     private int pagina = 1;
     private List<Alumno> filtrados = new();
 
-    protected override void OnInitialized() => Actualizar();
+    protected override void OnInitialized()
+    {
+        Servicio.CargarAlumnos();
+        Actualizar();
+    }
 
     private void Actualizar()
     {
-        filtrados = Servicio.Buscar(busqueda, clasificacion, grupo);
+        filtrados = Servicio.Buscar(busqueda, tipo, grupo, estado);
         pagina = 1;
     }
 
     private void Limpiar()
     {
-        busqueda = clasificacion = grupo = "";
+        busqueda = tipo = grupo = "";
+        estado = "Activo";
         Actualizar();
     }
 

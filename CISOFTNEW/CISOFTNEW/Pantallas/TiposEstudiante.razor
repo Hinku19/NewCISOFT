@@ -5,7 +5,7 @@
     <div>
         <div class="migas">Catálogos / Tipos de estudiante</div>
         <h1>Tipos de estudiante</h1>
-        <p class="subtitulo">Consulta y administra los tipos de inscripción y sus descuentos.</p>
+        <p class="subtitulo">Consulta y administra los tipos de inscripción y sus precios.</p>
     </div>
     <button type="button" class="btn btn-primario" @onclick="AbrirNuevo">
         <span class="ico" aria-hidden="true">&#xE710;</span> Nuevo tipo
@@ -43,8 +43,7 @@
             <thead>
                 <tr>
                     <th scope="col">Tipo de estudiante</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Descuento</th>
+                    <th scope="col">Precio</th>
                     <th scope="col">Estado</th>
                     <th scope="col" style="text-align: right">Acciones</th>
                 </tr>
@@ -59,15 +58,14 @@
                                 <div class="alumno-nombre">@t.Nombre</div>
                             </div>
                         </td>
-                        <td class="descripcion">@t.Descripcion</td>
                         <td>
-                            @if (t.Descuento > 0)
+                            @if (t.Precio > 0)
                             {
-                                <span class="pastilla">@TextoDescuento(t.Descuento)</span>
+                                <span class="pastilla">@TextoPrecio(t.Precio)</span>
                             }
                             else
                             {
-                                <span class="texto-sec">Sin descuento</span>
+                                <span class="texto-sec">Sin costo</span>
                             }
                         </td>
                         <td><span class="insignia @(t.Activo ? "activo" : "inactivo")">@(t.Activo ? "Activo" : "Inactivo")</span></td>
@@ -119,10 +117,8 @@
                 <dl class="detalle">
                     <dt>Nombre</dt>
                     <dd>@tipo.Nombre</dd>
-                    <dt>Descripción</dt>
-                    <dd>@(string.IsNullOrWhiteSpace(tipo.Descripcion) ? "—" : tipo.Descripcion)</dd>
-                    <dt>Descuento</dt>
-                    <dd>@(tipo.Descuento > 0 ? TextoDescuento(tipo.Descuento) : "Sin descuento")</dd>
+                    <dt>Precio</dt>
+                    <dd>@(tipo.Precio > 0 ? TextoPrecio(tipo.Precio) : "Sin costo")</dd>
                     <dt>Estado</dt>
                     <dd><span class="insignia @(tipo.Activo ? "activo" : "inactivo")">@(tipo.Activo ? "Activo" : "Inactivo")</span></dd>
                 </dl>
@@ -149,22 +145,15 @@
                         }
                     </div>
 
-                    <div class="campo">
-                        <label for="descripcion">Descripción</label>
-                        <InputTextArea id="descripcion" class="control area" rows="3" maxlength="250" @bind-Value="tipo.Descripcion" />
-                        <span class="ayuda">¿Quién entra en este tipo y qué debe presentar? (opcional)</span>
-                        <ValidationMessage For="() => tipo.Descripcion" />
-                    </div>
-
                     <div class="rejilla rejilla-2">
                         <div class="campo">
-                            <label for="descuento">Descuento <span class="req">*</span></label>
-                            <div class="con-sufijo">
-                                <InputNumber id="descuento" class="control" min="0" max="100" step="0.5" @bind-Value="tipo.Descuento" />
-                                <span class="sufijo" aria-hidden="true">%</span>
+                            <label for="precio">Precio <span class="req">*</span></label>
+                            <div class="con-prefijo">
+                                <span class="prefijo" aria-hidden="true">$</span>
+                                <InputNumber id="precio" class="control" min="0" step="0.01" @bind-Value="tipo.Precio" />
                             </div>
-                            <span class="ayuda">0 si no tiene descuento</span>
-                            <ValidationMessage For="() => tipo.Descuento" />
+                            <span class="ayuda">En pesos (MXN). 0 si no tiene costo</span>
+                            <ValidationMessage For="() => tipo.Precio" />
                         </div>
 
                         <fieldset class="campo">
@@ -209,7 +198,11 @@
     private InputText? campoNombre;
     private ElementReference botonCerrar;
 
-    protected override void OnInitialized() => Actualizar();
+    protected override void OnInitialized()
+    {
+        Servicio.CargarTipos();
+        Actualizar();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -272,7 +265,7 @@
         _ => tipo.Nombre ?? ""
     };
 
-    private static string TextoDescuento(decimal? d) => $"{d:0.##} %";
+    private static string TextoPrecio(decimal? p) => (p ?? 0).ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("es-MX"));
 
     private int TotalPaginas => Math.Max(1, (int)Math.Ceiling(filtrados.Count / (double)TamanoPagina));
 

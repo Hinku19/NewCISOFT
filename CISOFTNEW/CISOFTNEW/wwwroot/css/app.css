@@ -204,6 +204,12 @@ textarea.control.area { height: auto; padding: 10px 14px; resize: vertical; min-
 
 .con-sufijo { position: relative; }
 .con-sufijo .control { padding-right: 40px; }
+.con-prefijo { position: relative; }
+.con-prefijo .control { padding-left: 32px; }
+.con-prefijo .prefijo {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--texto-sec); font-weight: 700; pointer-events: none;
+}
 .con-sufijo .sufijo {
     position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
     color: var(--texto-sec); font-weight: 700; pointer-events: none;
@@ -267,6 +273,13 @@ label.btn:focus-within { outline: 3px solid var(--primario); outline-offset: 2px
 .detalle { display: grid; grid-template-columns: 120px 1fr; gap: 12px 16px; margin: 0; }
 .detalle dt { font-weight: 600; color: var(--texto-sec); }
 .detalle dd { margin: 0; }
+
+/* ---------- Detalle de alumno (solo lectura) ---------- */
+.datos { margin: 0; }
+.datos dt { font-size: 13px; font-weight: 600; color: var(--texto-sec); margin-bottom: 4px; }
+.datos dd { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+.avatar-grande { width: 64px; height: 64px; font-size: 22px; }
+.encabezado .subtitulo .insignia { margin-left: 8px; vertical-align: middle; }
 
 /* ---------- Error de Blazor ---------- */
 #blazor-error-ui {

@@ -41,7 +41,6 @@
             <thead>
                 <tr>
                     <th scope="col">Tipo sanguíneo</th>
-                    <th scope="col">Factor Rh</th>
                     <th scope="col">Descripción</th>
                     <th scope="col">Estado</th>
                     <th scope="col" style="text-align: right">Acciones</th>
@@ -54,11 +53,10 @@
                         <td>
                             <div class="alumno">
                                 <div class="avatar avatar-sangre" aria-hidden="true"><span class="gota"></span></div>
-                                <div class="alumno-nombre">@t.Grupo</div>
+                                <div class="alumno-nombre">@t.BloodName</div>
                             </div>
                         </td>
                         <td>@t.FactorRh</td>
-                        <td class="descripcion">@t.Descripcion</td>
                         <td><span class="insignia @(t.Activo ? "activo" : "inactivo")">@(t.Activo ? "Activo" : "Inactivo")</span></td>
                         <td>
                             <div class="acciones">
@@ -116,6 +114,10 @@
                     <dd><span class="insignia @(tipo.Activo ? "activo" : "inactivo")">@(tipo.Activo ? "Activo" : "Inactivo")</span></dd>
                 </dl>
 
+                @if (error is not null)
+                        {
+                            <span class="insignia peligro" role="alert">@error</span>
+                        }
                 <div class="modal-pie">
                     <button type="button" class="btn btn-secundario" @ref="botonCerrar" @onclick="Cerrar">Cerrar</button>
                     <button type="button" class="btn btn-primario" @onclick="() => { modo = Modo.Editar; enfocar = true; }">
@@ -183,10 +185,15 @@
     private Modo modo = Modo.Cerrado;
     private TipoSangre tipo = new();
     private bool enfocar;
+    private string? error;
     private InputTextArea? campoDescripcion;
     private ElementReference botonCerrar;
 
-    protected override void OnInitialized() => Actualizar();
+    protected override void OnInitialized()
+    {
+        Servicio.Recargar();
+        Actualizar();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

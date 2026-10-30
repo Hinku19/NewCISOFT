@@ -1,0 +1,132 @@
+@page "/alumnos/ver/{Matricula}"
+@inject ServicioAlumnos Servicio
+@inject ServicioTiposSangre ServicioSangre
+@inject NavigationManager Nav
+
+@if (alumno is null)
+{
+    <header class="encabezado">
+        <div>
+            <div class="migas"><a href="alumnos">Alumnos</a> / Detalle</div>
+            <h1>Alumno no encontrado</h1>
+            <p class="subtitulo">No existe un alumno con la matrícula @Matricula.</p>
+        </div>
+        <button type="button" class="btn btn-secundario" @onclick='() => Nav.NavigateTo("alumnos")'>Regresar</button>
+    </header>
+}
+else
+{
+    <div class="pila">
+        <header class="encabezado">
+            <div class="alumno">
+                <div class="avatar avatar-grande" aria-hidden="true">@alumno.Iniciales</div>
+                <div>
+                    <div class="migas"><a href="alumnos">Alumnos</a> / Detalle</div>
+                    <h1>@alumno.NombreCompleto</h1>
+                    <p class="subtitulo">
+                        Matrícula @alumno.Matricula
+                        <span class="insignia @(alumno.Activo ? "activo" : "inactivo")">@(alumno.Activo ? "Activo" : "Inactivo")</span>
+                    </p>
+                </div>
+            </div>
+            <div class="acciones">
+                <button type="button" class="btn btn-secundario" @onclick='() => Nav.NavigateTo("alumnos")'>Regresar</button>
+                <button type="button" class="btn btn-primario" @onclick='() => Nav.NavigateTo($"alumnos/editar/{alumno.Matricula}")'>
+                    <span class="ico" aria-hidden="true">&#xE70F;</span> Editar
+                </button>
+            </div>
+        </header>
+
+        @* ============ 1. Datos personales ============ *@
+        <section class="tarjeta seccion" aria-labelledby="h-personales">
+            <h2 id="h-personales">Datos personales</h2>
+            <dl class="rejilla datos">
+                <div><dt>No. cliente STG</dt><dd>@Valor(alumno.NoClienteStg)</dd></div>
+                <div><dt>Sexo</dt><dd>@Valor(alumno.Sexo)</dd></div>
+                <div><dt>Fecha de nacimiento</dt><dd>@FechaNacimiento</dd></div>
+                <div><dt>CURP</dt><dd class="mayusculas">@Valor(alumno.Curp)</dd></div>
+            </dl>
+        </section>
+
+        @* ============ 2. Contacto ============ *@
+        <section class="tarjeta seccion" aria-labelledby="h-contacto">
+            <h2 id="h-contacto">Contacto</h2>
+            <dl class="rejilla datos">
+                <div><dt>Correo electrónico</dt><dd>@Valor(alumno.Email)</dd></div>
+                <div><dt>Teléfono</dt><dd>@Valor(alumno.Telefono)</dd></div>
+                <div><dt>Celular</dt><dd>@Valor(alumno.Celular)</dd></div>
+            </dl>
+        </section>
+
+        @* ============ 3. Domicilio ============ *@
+        <section class="tarjeta seccion" aria-labelledby="h-domicilio">
+            <h2 id="h-domicilio">Domicilio</h2>
+            <dl class="rejilla datos">
+                <div class="span-2"><dt>Dirección</dt><dd>@Valor(Direccion)</dd></div>
+                <div><dt>Código postal</dt><dd>@Valor(alumno.CodigoPostal)</dd></div>
+                <div class="span-2"><dt>Colonia</dt><dd>@Valor(alumno.Colonia)</dd></div>
+                <div><dt>Ciudad</dt><dd>@Valor(alumno.Ciudad)</dd></div>
+            </dl>
+        </section>
+
+        @* ============ 4. Datos médicos ============ *@
+        <section class="tarjeta seccion" aria-labelledby="h-medicos">
+            <h2 id="h-medicos">Datos médicos</h2>
+            <dl class="rejilla datos">
+                <div><dt>Tipo de sangre</dt><dd>@Valor(TipoSangre, "Sin especificar")</dd></div>
+                <div class="span-2"><dt>Alergias</dt><dd>@Valor(alumno.Alergias, "Ninguna registrada")</dd></div>
+            </dl>
+        </section>
+
+        @* ============ 5. Tipo ============ *@
+        <section class="tarjeta seccion" aria-labelledby="h-tipo">
+            <h2 id="h-tipo">Tipo y grupo</h2>
+            <dl class="rejilla datos">
+                <div>
+                    <dt>Tipo de inscripción</dt>
+                    <dd>
+                        @if (string.IsNullOrWhiteSpace(alumno.Tipo)) { <span class="texto-sec">—</span> }
+                        else { <span class="pastilla">@alumno.Tipo</span> }
+                    </dd>
+                </div>
+                <div><dt>Grupo asignado</dt><dd>@Valor(alumno.Grupo, "Sin grupo")</dd></div>
+            </dl>
+        </section>
+    </div>
+}
+
+@code {
+    /// <summary>Viene de la ruta /alumnos/ver/{Matricula}.</summary>
+    [Parameter] public string? Matricula { get; set; }
+
+    private Alumno? alumno;
+
+    protected override void OnParametersSet() =>
+        alumno = Matricula is null ? null : Servicio.ObtenerPorMatricula(Matricula);
+
+    private string FechaNacimiento => alumno?.FechaNacimiento is DateTime f
+        ? $"{f:dd/MM/yyyy} ({Edad(f)} años)"
+        : "—";
+
+    private string? Direccion => alumno is null ? null : string.Join(" ", new[]
+        {
+            alumno.Calle,
+            string.IsNullOrWhiteSpace(alumno.NoExterior) ? null : $"#{alumno.NoExterior}",
+            string.IsNullOrWhiteSpace(alumno.NoInterior) ? null : $"int. {alumno.NoInterior}"
+        }.Where(s => !string.IsNullOrWhiteSpace(s)));
+
+    /// <summary>Usa el nombre si ya viene; si no, lo busca en el catálogo por BloodTypeId.</summary>
+    private string? TipoSangre => alumno?.TipoSangre
+        ?? ServicioSangre.Buscar("", "").FirstOrDefault(t => t.Id == alumno?.BloodTypeId)?.Nombre;
+
+    private static string Valor(string? s, string vacio = "—") =>
+        string.IsNullOrWhiteSpace(s) ? vacio : s;
+
+    private static int Edad(DateTime nacimiento)
+    {
+        var hoy = DateTime.Today;
+        int edad = hoy.Year - nacimiento.Year;
+        if (nacimiento.Date > hoy.AddYears(-edad)) edad--;
+        return edad;
+    }
+}

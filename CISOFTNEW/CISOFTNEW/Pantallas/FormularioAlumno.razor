@@ -1,6 +1,7 @@
 @page "/alumnos/nuevo"
 @page "/alumnos/editar/{Matricula}"
 @inject ServicioAlumnos Servicio
+@inject ServicioTiposSangre ServicioSangre
 @inject NavigationManager Nav
 
 <EditForm Model="alumno" OnValidSubmit="Guardar" class="pila">
@@ -32,10 +33,16 @@
             <div></div>
 
             <div class="campo">
-                <label for="nombres">Nombre(s) <span class="req">*</span></label>
-                <InputText id="nombres" class="control" @bind-Value="alumno.Nombres" />
-                <ValidationMessage For="() => alumno.Nombres" />
+                <label for="primer-nombre">Primer nombre <span class="req">*</span></label>
+                <InputText id="primer-nombre" class="control" @bind-Value="alumno.PrimerNombre" />
+                <ValidationMessage For="() => alumno.PrimerNombre" />
             </div>
+            <div class="campo">
+                <label for="segundo-nombre">Segundo nombre</label>
+                <InputText id="segundo-nombre" class="control" @bind-Value="alumno.SegundoNombre" />
+            </div>
+            <div></div>
+
             <div class="campo">
                 <label for="paterno">Apellido paterno <span class="req">*</span></label>
                 <InputText id="paterno" class="control" @bind-Value="alumno.ApellidoPaterno" />
@@ -45,6 +52,7 @@
                 <label for="materno">Apellido materno</label>
                 <InputText id="materno" class="control" @bind-Value="alumno.ApellidoMaterno" />
             </div>
+            <div></div>
 
             <fieldset class="campo">
                 <legend>Sexo <span class="req">*</span></legend>
@@ -68,12 +76,6 @@
                 <InputText id="curp" class="control mayusculas" maxlength="18" @bind-Value="alumno.Curp" />
                 <span class="ayuda">18 caracteres</span>
                 <ValidationMessage For="() => alumno.Curp" />
-            </div>
-            <div class="campo">
-                <label for="rfc">RFC</label>
-                <InputText id="rfc" class="control mayusculas" maxlength="13" @bind-Value="alumno.Rfc" />
-                <span class="ayuda">13 caracteres, con homoclave</span>
-                <ValidationMessage For="() => alumno.Rfc" />
             </div>
         </div>
     </section>
@@ -135,40 +137,56 @@
                 <ValidationMessage For="() => alumno.Colonia" />
             </div>
 
-            <div class="campo">
+            <div class="campo span-2">
                 <label for="ciudad">Ciudad <span class="req">*</span></label>
                 <InputText id="ciudad" class="control" @bind-Value="alumno.Ciudad" />
                 <ValidationMessage For="() => alumno.Ciudad" />
             </div>
+        </div>
+    </section>
+
+    @* ============ 4. Datos médicos ============ *@
+    <section class="tarjeta seccion" aria-labelledby="h-medicos">
+        <div>
+            <h2 id="h-medicos">Datos médicos</h2>
+            <p class="seccion-desc">Información en caso de emergencia.</p>
+        </div>
+        <div class="rejilla">
             <div class="campo">
-                <label for="estado">Estado <span class="req">*</span></label>
-                <InputText id="estado" class="control" @bind-Value="alumno.Estado" />
-                <ValidationMessage For="() => alumno.Estado" />
+                <label for="sangre">Tipo de sangre</label>
+                <InputSelect id="sangre" class="control" @bind-Value="alumno.TipoSangre">
+                    <option value="">Sin especificar</option>
+                    @foreach (var t in TiposSangre)
+                    {
+                        <option value="@t">@t</option>
+                    }
+                </InputSelect>
             </div>
-            <div class="campo">
-                <label for="pais">País <span class="req">*</span></label>
-                <InputText id="pais" class="control" @bind-Value="alumno.Pais" />
-                <ValidationMessage For="() => alumno.Pais" />
+            <div class="campo span-2">
+                <label for="alergias">Alergias</label>
+                <InputTextArea id="alergias" class="control area" rows="3" maxlength="500"
+                               placeholder="Ej. penicilina, cacahuate. Déjalo vacío si no tiene." @bind-Value="alumno.Alergias" />
+                <ValidationMessage For="() => alumno.Alergias" />
             </div>
         </div>
     </section>
 
-    @* ============ 4. Clasificación ============ *@
-    <section class="tarjeta seccion" aria-labelledby="h-clasificacion">
+    @* ============ 5. Tipo ============ *@
+    <section class="tarjeta seccion" aria-labelledby="h-tipo">
         <div>
-            <h2 id="h-clasificacion">Clasificación y grupo</h2>
+            <h2 id="h-tipo">Tipo y grupo</h2>
         </div>
         <div class="rejilla">
             <div class="campo">
-                <label for="clasif">Clasificado como <span class="req">*</span></label>
-                <InputSelect id="clasif" class="control" @bind-Value="alumno.Clasificacion">
+                <label for="tipo">Tipo de inscripción <span class="req">*</span></label>
+                <InputSelect id="tipo" class="control" @bind-Value="alumno.Tipo">
                     <option value="">Selecciona una opción</option>
-                    @foreach (var c in Servicio.Clasificaciones)
+                    @foreach (var c in Servicio.Tipos)
                     {
                         <option value="@c">@c</option>
                     }
                 </InputSelect>
-                <ValidationMessage For="() => alumno.Clasificacion" />
+                <ValidationMessage For="() => alumno.Tipo" />
             </div>
             <div class="campo">
                 <label for="grupo">Grupo asignado</label>
@@ -180,11 +198,25 @@
                     }
                 </InputSelect>
             </div>
+            <fieldset class="campo">
+                <legend>Estado</legend>
+                <InputRadioGroup @bind-Value="alumno.Activo">
+                    <div class="segmentado">
+                        <label><InputRadio TValue="bool" Value="true" /><span>Activo</span></label>
+                        <label><InputRadio TValue="bool" Value="false" /><span>Inactivo</span></label>
+                    </div>
+                </InputRadioGroup>
+                <span class="ayuda">Inactivo = dado de baja</span>
+            </fieldset>
         </div>
     </section>
 
     <div class="barra-acciones">
         <span class="estado">@(esNuevo ? "Borrador sin guardar" : "Editando registro existente")</span>
+                @if (errorGuardar is not null)
+        {
+            <div class="validation-message">@errorGuardar</div>
+        }
         <button type="button" class="btn btn-secundario" @onclick='() => Nav.NavigateTo("alumnos")'>Cancelar</button>
         <button type="submit" class="btn btn-primario">
             <span class="ico" aria-hidden="true">&#xE73E;</span> Guardar alumno
@@ -209,9 +241,19 @@
 
     private string Titulo => esNuevo ? "Nuevo alumno" : "Editar alumno";
 
+    /// <summary>Tipos de sangre activos del catálogo. Si el alumno ya tenía uno que después
+    /// se desactivó, se conserva en la lista para no perderlo al editar.</summary>
+    private IEnumerable<string> TiposSangre =>
+        ServicioSangre.Buscar("", "Activo").Select(t => t.Nombre)
+            .Union(string.IsNullOrEmpty(alumno.TipoSangre) ? Array.Empty<string>() : new[] { alumno.TipoSangre });
+
+private string? errorGuardar;
+
     private void Guardar()
     {
-        Servicio.Guardar(alumno);
+        errorGuardar = Servicio.Guardar(alumno);
+        if (errorGuardar is not null) return;
+
         Nav.NavigateTo("alumnos");
     }
 }
